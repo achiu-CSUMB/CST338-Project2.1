@@ -1,18 +1,48 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
-group = 'org.example'
+group = 'com.daclink'
 version = '1.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
+
+application {
+    mainClass = 'Main'
+}
 
 repositories {
     mavenCentral()
 }
 
+def javafxVersion = '25'
+def javafxClassifier = 'win'  // x64 Windows binaries — works via emulation on ARM64
+
 dependencies {
-    testImplementation platform('org.junit:junit-bom:6.0.0')
+    // JavaFX modules — 'win' classifier = x64, runs under Windows ARM64 emulation
+    implementation "org.openjfx:javafx-base:${javafxVersion}:${javafxClassifier}"
+    implementation "org.openjfx:javafx-graphics:${javafxVersion}:${javafxClassifier}"
+    implementation "org.openjfx:javafx-controls:${javafxVersion}:${javafxClassifier}"
+    implementation "org.openjfx:javafx-fxml:${javafxVersion}:${javafxClassifier}"
+
+    // JUnit
+    testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+// Pass JavaFX module-path and add-modules to the run task
+run {
+    doFirst {
+        jvmArgs = [
+                '--module-path', configurations.runtimeClasspath.asPath,
+                '--add-modules', 'javafx.controls,javafx.fxml'
+        ]
+    }
 }
 
 test {
