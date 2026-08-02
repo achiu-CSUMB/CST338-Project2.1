@@ -10,6 +10,13 @@ repositories {
 }
 
 dependencies {
+
+    // SQLite JDBC driver
+    implementation 'org.xerial:sqlite-jdbc:3.50.3.0'
+
+    // H2 Database Engine
+    testImplementation 'com.h2database:h2:2.3.232'
+
     testImplementation platform('org.junit:junit-bom:6.0.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

@@ -3,7 +3,7 @@ package model;
 /**
  * Author: John Ly
  * Date: 8/1/2026
- * Description:
+ * Description: For user accounts
  */
 public class User {
 
