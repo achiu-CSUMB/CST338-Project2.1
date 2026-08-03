@@ -1,3 +1,5 @@
+import java.sql.Connection;
+import java.util.ArrayList;
 /**
  * @author Dominic Casoli
  * <br>
@@ -7,6 +9,10 @@
  * Provides methods to create, retrieve, update, delete, and list courses.
  */
 public class CourseDao {
+
+    // Stores the database connection.
+    private Connection connection;
+
     /**
      * Creates a CourseDao object.
      */
@@ -52,8 +58,9 @@ public class CourseDao {
     /**
      * Returns all the courses.
      */
-    public void getAllCourses() {
+    public ArrayList<Course> getAllCourses() {
         // TODO: Retrieve every course from database.
+        return null;
 
     }
 }
