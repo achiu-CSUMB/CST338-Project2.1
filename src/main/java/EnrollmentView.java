@@ -8,7 +8,7 @@ import javafx.scene.layout.VBox;
  * <br>
  * created: 8/2/2026
  * @since '1.0-SNAPSHOT'
- * Description:
+ * Description: Displays enrollment interface. Lets students enroll in available courses, drop courses, and view their currently enrolled courses.
  */
 public class EnrollmentView extends VBox {
 

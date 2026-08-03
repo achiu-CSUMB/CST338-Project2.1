@@ -3,7 +3,7 @@
  * <br>
  * created: 8/2/2026
  * @since '1.0-SNAPSHOT'
- * Description:
+ * Description: Stores enrollment information that connects students to courses. Tracks the student, the course, and if the student is in a waitlist.
  */
 
 public class Enrollment {
@@ -11,14 +11,16 @@ public class Enrollment {
     private int enrollmentId;
     private int studentId;
     private int courseId;
-    // TODO: Use this field when implementing waitlist enhancement.
+    // Use this field when implementing waitlist enhancement.
     private boolean waitlisted;
 
     /**
      * Creates a new enrollment.
      */
     public Enrollment(int studentId, int courseId) {
-        // TODO: Initialize student ID and course ID.
+        this.studentId = studentId;
+        this.courseId = courseId;
+        this.waitlisted = false;
     }
 
     /**
@@ -26,11 +28,49 @@ public class Enrollment {
      */
     public Enrollment(int enrollmentId, int studentId, int courseId) {
         // TODO: Initialize all enrollment fields.
+        this.enrollmentId = enrollmentId;
+        this.studentId = studentId;
+        this.courseId = courseId;
+        this.waitlisted = false;
     }
 
-    // TODO: Create getters for enrollmentId, studentId, courseId, & waitlisted.
+    // Getters
 
-    // TODO: Create setters.
+    public int getEnrollmentId() {
+        return enrollmentId;
+    }
+
+    public int getStudentId() {
+        return studentId;
+    }
+
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public boolean isWaitlisted() {
+        return waitlisted;
+    }
+
+
+    // Setters
+
+    public void setEnrollmentId(int enrollmentId) {
+        this.enrollmentId = enrollmentId;
+    }
+
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
+
+    public void setWaitlisted(boolean waitlisted) {
+        this.waitlisted = waitlisted;
+    }
+
 
     // TODO: Write the header descriptions later.
 }

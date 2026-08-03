@@ -6,7 +6,8 @@ import java.util.ArrayList;
  * <br>
  * created: 8/2/2026
  * @since '1.0-SNAPSHOT'
- * Description:
+ * Description: Handles CRUD operations for student enrollments. Provides methods for managing the enrollments, retrieving students in courses...
+ * ....retrieving a student's courses, and checking for duplicate enrollment.
  */
 public class EnrollmentDao {
     // TODO: Store the database connection.

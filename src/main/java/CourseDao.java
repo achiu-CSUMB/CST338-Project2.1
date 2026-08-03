@@ -3,7 +3,8 @@
  * <br>
  * created: 8/2/2026
  * @since '1.0-SNAPSHOT'
- * Description:
+ * Description: Handles CRUD operations for the Course objects in the SQLite database.
+ * Provides methods to create, retrieve, update, delete, and list courses.
  */
 public class CourseDao {
     /**

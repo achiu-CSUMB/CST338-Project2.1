@@ -8,7 +8,8 @@ import javafx.scene.layout.VBox;
  * <br>
  * created: 8/2/2026
  * @since '1.0-SNAPSHOT'
- * Description:
+ * Description: Displays Course Management interface. Allows teachers to create, edit, and remove courses...
+ * ...while displaying the current course list to users.
  */
 public class CoursesView extends VBox {
 
