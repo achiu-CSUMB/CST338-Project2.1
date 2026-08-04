@@ -11,7 +11,7 @@ import java.sql.SQLException;
 /**
  * Author: Oswald Perales
  * Date: 8/3/2026
- * Description: Handles data ops for assignments
+ * Description: Handles data for assignments
  */
 public class AssignmentDao {
 
@@ -25,7 +25,7 @@ public class AssignmentDao {
         this.connection = connection;
     }
 
-    // Inserts a new assignment
+    // New assignment insert
     public boolean insert(Assignment assignment) {
         String sql = """
                 INSERT INTO assignments
@@ -53,14 +53,16 @@ public class AssignmentDao {
 
                 return true;
             }
+
         } catch (SQLException e) {
-            System.err.println("Could not insert assignment: " + e.getMessage());
+            System.err.println("Could not insert assignment: "
+                    + e.getMessage());
         }
 
         return false;
     }
 
-    // Finds the assignment using its ID
+    // Finds an assignment by ID
     public Assignment findById(int assignmentId) {
         String sql = """
                 SELECT assignment_id, course_id, title,
@@ -84,11 +86,63 @@ public class AssignmentDao {
                     );
                 }
             }
+
         } catch (SQLException e) {
             System.err.println("Could not find assignment by ID: "
                     + e.getMessage());
         }
 
         return null;
+    }
+
+    // Updates an assignment
+    public boolean update(Assignment assignment) {
+        String sql = """
+                UPDATE assignments
+                SET course_id = ?, title = ?, description = ?,
+                    due_date = ?, max_points = ?
+                WHERE assignment_id = ?;
+                """;
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, assignment.getCourseId());
+            statement.setString(2, assignment.getTitle());
+            statement.setString(3, assignment.getDescription());
+            statement.setString(4, assignment.getDueDate());
+            statement.setDouble(5, assignment.getMaxPoints());
+            statement.setInt(6, assignment.getAssignmentId());
+
+            int rowsUpdated = statement.executeUpdate();
+
+            return rowsUpdated > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Could not update assignment: "
+                    + e.getMessage());
+        }
+
+        return false;
+    }
+
+    // Deletes an assignment
+    public boolean delete(int assignmentId) {
+        String sql = """
+                DELETE FROM assignments
+                WHERE assignment_id = ?;
+                """;
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, assignmentId);
+
+            int rowsDeleted = statement.executeUpdate();
+
+            return rowsDeleted > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Could not delete assignment: "
+                    + e.getMessage());
+        }
+
+        return false;
     }
 }
