@@ -27,7 +27,6 @@ public class Enrollment {
      * Creates an enrollment with all the information
      */
     public Enrollment(int enrollmentId, int studentId, int courseId) {
-        // TODO: Initialize all enrollment fields.
         this.enrollmentId = enrollmentId;
         this.studentId = studentId;
         this.courseId = courseId;

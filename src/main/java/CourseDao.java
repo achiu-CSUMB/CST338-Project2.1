@@ -28,7 +28,6 @@ public class CourseDao {
      * Inserts a course to the database.
      */
     public boolean insert(Course course) {
-        // TODO: Insert the course into the database.
         String sql = """
                 INSERT INTO courses (title, teacher_id)
                 VALUES (?, ?);

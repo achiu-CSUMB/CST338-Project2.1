@@ -24,7 +24,7 @@ public class EnrollmentView extends VBox {
 
     // Buttons for enrollment actions.
     private Button enrollButton = new Button("Enroll");
-    private Button dropButton = new Button ("Drop");
+    private Button dropButton = new Button("Drop");
 
     // Page title.
     private Label titleLabel = new Label("Enrollment Management");
@@ -38,6 +38,13 @@ public class EnrollmentView extends VBox {
         studentIdColumn = new TableColumn<>("Student ID");
         courseIdColumn = new TableColumn<>("Course ID");
         waitlistedColumn = new TableColumn<>("Waitlisted");
+
+        enrollmentTable.getColumns().addAll(
+                enrollmentIdColumn,
+                studentIdColumn,
+                courseIdColumn,
+                waitlistedColumn
+        );
 
         // Configure table size.
         enrollmentTable.setPrefWidth(400);
