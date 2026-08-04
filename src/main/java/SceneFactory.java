@@ -1,3 +1,5 @@
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 /**
@@ -16,13 +18,14 @@ public class SceneFactory {
 
     public enum SceneType {
         LOGIN,
-        MAIN_MENU,
-        ACCOUNTS,
+        REGISTER,
+        //MAIN_MENU,
+        //ACCOUNTS,
         COURSES,
         ENROLLMENT,
-        GRADES,
-        STATISTICS,
-        ASSIGNMENTS
+        //GRADES,
+        //STATISTICS,
+        //ASSIGNMENTS
     }
 
     public SceneFactory (Stage stage) {
@@ -32,15 +35,32 @@ public class SceneFactory {
     public Scene createScene(SceneType type){
 
         return switch (type) {
-            case LOGIN -> new Scene(new LoginView(), SCENE_WIDTH,SCENE_HEIGHT);
-            case MAIN_MENU -> new Scene(new MainMenuView(), SCENE_WIDTH,SCENE_HEIGHT);
-            case ACCOUNTS -> new Scene(new AccountsView(), SCENE_WIDTH,SCENE_HEIGHT);
+            case LOGIN -> loadFxmlScene("/views/login-view.fxml");
+            case REGISTER -> loadFxmlScene("/views/register-view.fxml");
+            //case MAIN_MENU -> new Scene(new MainMenuView(), SCENE_WIDTH,SCENE_HEIGHT);
+            //case ACCOUNTS -> new Scene(new AccountsView(), SCENE_WIDTH,SCENE_HEIGHT);
             case COURSES -> new Scene(new CoursesView(), SCENE_WIDTH,SCENE_HEIGHT);
             case ENROLLMENT -> new Scene(new EnrollmentView(), SCENE_WIDTH,SCENE_HEIGHT);
-            case GRADES -> new Scene(new GradesView(), SCENE_WIDTH,SCENE_HEIGHT);
-            case STATISTICS -> new Scene(new StatisticsView(), SCENE_WIDTH,SCENE_HEIGHT);
-            case ASSIGNMENTS -> new Scene(new AssignmentsView(), SCENE_WIDTH,SCENE_HEIGHT);
+            //case GRADES -> new Scene(new GradesView(), SCENE_WIDTH,SCENE_HEIGHT);
+            //case STATISTICS -> new Scene(new StatisticsView(), SCENE_WIDTH,SCENE_HEIGHT);
+            //case ASSIGNMENTS -> new Scene(new AssignmentsView(), SCENE_WIDTH,SCENE_HEIGHT);
         };
+    }
+
+    private Scene loadFxmlScene(String resourcePath){
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    SceneFactory.class.getResource(resourcePath)
+            );
+
+            Parent root = loader.load();
+            return new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
+        } catch (Exception e) {
+            throw new RuntimeException(
+                    "Can't load FXML scene: " + resourcePath,
+                    e
+            );
+        }
     }
 
     public void showScene (SceneType type) {
