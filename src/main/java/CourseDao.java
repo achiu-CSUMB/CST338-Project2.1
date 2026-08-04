@@ -1,4 +1,8 @@
+import database.DatabaseManager;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 /**
  * @author Dominic Casoli
@@ -17,7 +21,7 @@ public class CourseDao {
      * Creates a CourseDao object.
      */
     public CourseDao() {
-        // TODO: Connect to the project database.
+        connection = DatabaseManager.getInstance().getConnection();
     }
 
     /**
@@ -25,6 +29,28 @@ public class CourseDao {
      */
     public boolean insert(Course course) {
         // TODO: Insert the course into the database.
+        String sql = """
+                INSERT INTO courses (title, teacher_id)
+                VALUES (?, ?);
+                """;
+
+        try (PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, course.getCourseName());
+            statement.setInt(2, course.getTeacherId());
+
+            int rowsInserted = statement.executeUpdate();
+
+            if (rowsInserted > 0) {
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        course.setCourseId(generatedKeys.getInt(1));
+                    }
+                }
+                return true;
+            }
+        } catch (SQLException e) {
+            System.err.println("Could not insert course: " + e.getMessage());
+        }
         return false;
     }
 

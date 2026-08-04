@@ -1,5 +1,6 @@
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
 
@@ -12,24 +13,51 @@ import javafx.scene.layout.VBox;
  */
 public class EnrollmentView extends VBox {
 
-    // TODO: Create enrollment table.
-    private TableView<Enrollment> enrollmentTable;
+    // Table displaying student enrollments.
+    private TableView<Enrollment> enrollmentTable = new TableView<>();
 
-    // TODO: Create buttons.
-    private Button enrollButton;
-    private Button dropButton;
+    // Table columns.
+    private TableColumn<Enrollment, Integer> enrollmentIdColumn;
+    private TableColumn<Enrollment, Integer> studentIdColumn;
+    private TableColumn<Enrollment, Integer> courseIdColumn;
+    private TableColumn<Enrollment, Boolean> waitlistedColumn;
 
-    // TODO: Create page title.
-    private Label titleLabel;
+    // Buttons for enrollment actions.
+    private Button enrollButton = new Button("Enroll");
+    private Button dropButton = new Button ("Drop");
+
+    // Page title.
+    private Label titleLabel = new Label("Enrollment Management");
 
     /**
      * Creates the enrollment view.
      */
     public EnrollmentView() {
-        // TODO: Create JavaFX controls
+        // Create JavaFX controls.
+        enrollmentIdColumn = new TableColumn<>("Enrollment ID");
+        studentIdColumn = new TableColumn<>("Student ID");
+        courseIdColumn = new TableColumn<>("Course ID");
+        waitlistedColumn = new TableColumn<>("Waitlisted");
 
-        // TODO: Arrange controls.
+        // Configure table size.
+        enrollmentTable.setPrefWidth(400);
+        enrollmentTable.setPrefHeight(250);
 
-        // TODO: Connect buttons to event handlers.
+        // Arrange controls.
+        this.getChildren().addAll(
+                titleLabel,
+                enrollmentTable,
+                enrollButton,
+                dropButton
+        );
+
+        // Connect buttons to event handlers.
+        enrollButton.setOnAction(e -> {
+            System.out.println("Enroll button clicked");
+        });
+
+        dropButton.setOnAction(e -> {
+            System.out.println("Drop button clicked");
+        });
     }
 }

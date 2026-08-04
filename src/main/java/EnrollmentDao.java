@@ -1,3 +1,4 @@
+import database.DatabaseManager;
 import java.sql.Connection;
 import java.util.ArrayList;
 
@@ -17,7 +18,7 @@ public class EnrollmentDao {
      * Creates an EnrollmentDao object.
      */
     public EnrollmentDao() {
-        // TODO: Connect to the project database.
+        connection = DatabaseManager.getInstance().getConnection();
     }
 
     /**

@@ -73,6 +73,13 @@ public class Course {
         this.teacherId = teacherId;
     }
 
+    /**
+     * Updates the course ID.
+     */
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
+
 
     // TODO: Add any validation for course info.
 
