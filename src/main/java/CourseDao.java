@@ -25,6 +25,14 @@ public class CourseDao {
     }
 
     /**
+     * Creates a CourseDao object using the connection.
+     * Used for testing database.
+     */
+    public CourseDao(Connection connection) {
+        this.connection = connection;
+    }
+
+    /**
      * Inserts a course to the database.
      */
     public boolean insert(Course course) {
@@ -57,7 +65,27 @@ public class CourseDao {
      * Finds a course through its ID.
      */
     public Course findById(int courseId) {
-        // TODO: Retrieve course via the given ID.
+        String sql = """
+                SELECT course_id, title, teacher_id
+                FROM courses
+                WHERE course_id = ?;
+                """;
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, courseId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return new Course(
+                            resultSet.getInt("course_id"),
+                            resultSet.getString("title"),
+                            resultSet.getInt("teacher_id")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Could not find course: " + e.getMessage());
+        }
 
         return null;
     }
@@ -66,7 +94,20 @@ public class CourseDao {
      * Updates an existing course.
      */
     public boolean update(Course course) {
-        // TODO: Update the selected course.
+        String sql = """
+                UPDATE courses
+                SET title = ?, teacher_id = ?
+                WHERE course_id = ?;
+                """;
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, course.getCourseName());
+            statement.setInt(2, course.getTeacherId());
+            statement.setInt(3, course.getCourseId());
+            return statement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Could not update course: " + e.getMessage());
+        }
 
         return false;
     }
@@ -75,7 +116,17 @@ public class CourseDao {
      * Deletes a course.
      */
     public boolean delete(int courseId) {
-        // TODO: Delete the selected course.
+        String sql = """
+                DELETE FROM courses
+                WHERE course_id = ?;
+                """;
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, courseId);
+            return statement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Could not delete course: " + e.getMessage());
+        }
 
         return false;
     }
@@ -84,8 +135,29 @@ public class CourseDao {
      * Returns all the courses.
      */
     public ArrayList<Course> getAllCourses() {
-        // TODO: Retrieve every course from database.
-        return null;
+        ArrayList<Course> courses = new ArrayList<>();
+
+        String sql = """
+                SELECT *
+                FROM courses;
+                """;
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                courses.add(
+                        new Course(
+                                result.getInt("course_id"),
+                                result.getString("title"),
+                                result.getInt("teacher_id")
+                        )
+                );
+            }
+        } catch (SQLException e) {
+            System.err.println("Could not retrieve courses: " + e.getMessage());
+        }
+        return courses;
 
     }
 }
