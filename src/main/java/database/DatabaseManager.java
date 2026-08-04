@@ -38,7 +38,7 @@ public class DatabaseManager {
     }
 
     private void createTables() {
-        String sql = """
+        String userSql = """
                 CREATE TABLE IF NOT EXISTS users (
                     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
                     username TEXT NOT NULL UNIQUE,
@@ -47,10 +47,29 @@ public class DatabaseManager {
             );
         """;
 
+        String courseSql = """
+                CREATE TABLE IF NOT EXISTS courses (
+                    course_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    title TEXT NOT NULL,
+                    teacher_id INTEGER NOT NULL
+            );
+        """;
+
+        String enrollmentSql = """
+                CREATE TABLE IF NOT EXISTS enrollments (
+                    enrollment_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    student_id INTEGER NOT NULL,
+                    course_id INTEGER NOT NULL,
+                    waitlisted BOOLEAN NOT NULL DEFAULT FALSE
+            );
+        """;
+
         try (Statement statement = connection.createStatement()){
-            statement.execute(sql);
+            statement.execute(userSql);
+            statement.execute(courseSql);
+            statement.execute(enrollmentSql);
         } catch (SQLException e) {
-            System.err.println("Could not create users table: " + e.getMessage());
+            System.err.println("Could not create database table: " + e.getMessage());
         }
     }
 

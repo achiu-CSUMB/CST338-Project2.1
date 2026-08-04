@@ -9,17 +9,16 @@ import java.util.ArrayList;
  * The class communicates with the DAOs, as opposed to letting the user interface access the database directly.
  */
 public class CourseService {
-    //TODO: Store CourseDao.
-    private CourseDao courseDao;
 
-    // TODO: Store EnrollmentDao.
-    private EnrollmentDao enrollmentDao;
+    private final CourseDao courseDao;
+    private final EnrollmentDao enrollmentDao;
 
     /**
      * Creates a CourseService object.
      */
     public CourseService() {
-        // TODO: Initialize DAO objects.
+        courseDao = new CourseDao();
+        enrollmentDao = new EnrollmentDao();
     }
 
     /**
@@ -50,40 +49,34 @@ public class CourseService {
      * Creates a new course.
      */
     public boolean createCourse(Course course) {
-        // TODO: Insert a new course.
-
-        return false;
+        return courseDao.insert(course);
     }
 
     /**
      * Updates an existing course.
      */
     public boolean updateCourse(Course course) {
-        // TODO: Update course information.
-
-        return false;
+        return courseDao.update(course);
     }
 
     /**
      * Deletes a course.
      */
     public boolean deleteCourse(int courseId) {
-        // TODO: Delete the selected course.
-        return false;
+        return courseDao.delete(courseId);
     }
+
     /**
      * Retrieves every course.
      */
     public ArrayList<Course> getAllCourses() {
-        // TODO: Return every course.
-        return null;
+        return courseDao.getAllCourses();
     }
+
     /**
      * Retrieves every enrollment for a student.
      */
     public ArrayList<Enrollment> getStudentEnrollments(int studentId) {
-        // TODO: Return every enrollment for the selected student.
-
-        return null;
+        return enrollmentDao.getStudentEnrollments(studentId);
     }
 }
