@@ -8,6 +8,15 @@ import javafx.scene.control.TextField;
 
 import java.util.ArrayList;
 
+/**
+ * @author Dominic Casoli
+ * <br>
+ * created: 8/4/2026
+ * @since '1.0-SNAPSHOT'
+ * Description: Controls the Course Management JavaFX interface.
+ * Handles the user interactions for creating courses and loading the course data from database.
+ */
+
 public class CoursesController {
 
     private CourseService courseService;
