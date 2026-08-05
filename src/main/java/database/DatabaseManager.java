@@ -67,6 +67,16 @@ public class DatabaseManager {
             );
         """;
 
+        String GradeSql = """
+                CREATE TABLE IF NOT EXISTS grades (
+                    grade_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    user_id INTEGER NOT NULL,
+                    course_id INTEGER NOT NULL,
+                    due_date TEXT NOT NULL,
+                    max_points REAL NOT NULL
+                );
+                """;
+
         try (Statement statement = connection.createStatement()){
             statement.execute(userSql);
             statement.execute(courseSql);
