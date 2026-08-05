@@ -1,0 +1,157 @@
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Author: Alvin Chiu
+ * Created: 8/4/2026
+ * Current version: V1.0 - 8/4/2026
+ * Description: Data Access Object for the Grade class. Handles CRUD
+ * operations against a "grades" table keyed on (course_id, student_id).
+ *
+ */
+public class GradeDao {
+
+    private static final String TABLE_NAME = "grades";
+
+    private Connection getConnection() {
+        return DatabaseManager.getInstance().getConnection();
+    }
+
+    /**
+     * Inserts a new grade record.
+     */
+    public void insert(Grade grade) throws SQLException {
+        String sql = "INSERT INTO " + TABLE_NAME
+                + " (course_id, student_id, score, entry_date) VALUES (?, ?, ?, ?)";
+
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, Integer.parseInt(grade.getCourseId()));
+            stmt.setInt(2, Integer.parseInt(grade.getStudentId()));
+            stmt.setDouble(3, grade.getScore());
+            stmt.setDate(4, Date.valueOf(grade.getDate()));
+            stmt.executeUpdate();
+        }
+    }
+
+    /**
+     * Returns all grade records for a given student.
+     */
+    public List<Grade> findByStudentId(String studentId) throws SQLException {
+        String sql = "SELECT course_id, student_id, score, entry_date FROM "
+                + TABLE_NAME + " WHERE student_id = ?";
+
+        List<Grade> results = new ArrayList<>();
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, Integer.parseInt(studentId));
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    results.add(mapRow(rs));
+                }
+            }
+        }
+        return results;
+    }
+
+    /**
+     * Returns all grade records for a given course.
+     */
+    public List<Grade> findByCourseId(String courseId) throws SQLException {
+        String sql = "SELECT course_id, student_id, score, entry_date FROM "
+                + TABLE_NAME + " WHERE course_id = ?";
+
+        List<Grade> results = new ArrayList<>();
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, Integer.parseInt(courseId));
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    results.add(mapRow(rs));
+                }
+            }
+        }
+        return results;
+    }
+
+    /**
+     * Returns the single grade record for a specific student in a specific
+     * course, or null if none exists.
+     */
+    public Grade find(String courseId, String studentId) throws SQLException {
+        String sql = "SELECT course_id, student_id, score, entry_date FROM "
+                + TABLE_NAME + " WHERE course_id = ? AND student_id = ?";
+
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, Integer.parseInt(courseId));
+            stmt.setInt(2, Integer.parseInt(studentId));
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapRow(rs);
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Returns every grade record in the table.
+     */
+    public List<Grade> findAll() throws SQLException {
+        String sql = "SELECT course_id, student_id, score, entry_date FROM " + TABLE_NAME;
+
+        List<Grade> results = new ArrayList<>();
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                results.add(mapRow(rs));
+            }
+        }
+        return results;
+    }
+
+    /**
+     * Updates the score and entry date for an existing grade record.
+     */
+    public void update(Grade grade) throws SQLException {
+        String sql = "UPDATE " + TABLE_NAME
+                + " SET score = ?, entry_date = ? WHERE course_id = ? AND student_id = ?";
+
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
+            stmt.setDouble(1, grade.getScore());
+            stmt.setDate(2, Date.valueOf(grade.getDate()));
+            stmt.setInt(3, Integer.parseInt(grade.getCourseId()));
+            stmt.setInt(4, Integer.parseInt(grade.getStudentId()));
+            stmt.executeUpdate();
+        }
+    }
+
+    /**
+     * Deletes a grade record for a specific student in a specific course.
+     */
+    public void delete(String courseId, String studentId) throws SQLException {
+        String sql = "DELETE FROM " + TABLE_NAME + " WHERE course_id = ? AND student_id = ?";
+
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, Integer.parseInt(courseId));
+            stmt.setInt(2, Integer.parseInt(studentId));
+            stmt.executeUpdate();
+        }
+    }
+
+    private Grade mapRow(ResultSet rs) throws SQLException {
+        Grade grade = new Grade(
+                String.valueOf(rs.getInt("course_id")),
+                String.valueOf(rs.getInt("student_id")),
+                rs.getDouble("score")
+        );
+
+        LocalDate entryDate = rs.getDate("entry_date").toLocalDate();
+        grade.setDate(entryDate);
+
+        return grade;
+    }
+}

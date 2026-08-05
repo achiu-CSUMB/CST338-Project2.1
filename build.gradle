@@ -20,31 +20,23 @@ repositories {
 }
 
 def javafxVersion = '25'
-def javafxClassifier = 'win'
+def javafxClassifier = 'win'  // x64 Windows binaries — works via emulation on ARM64
 
 dependencies {
-
-    // JavaFX modules
+    // JavaFX modules — 'win' classifier = x64, runs under Windows ARM64 emulation
     implementation "org.openjfx:javafx-base:${javafxVersion}:${javafxClassifier}"
     implementation "org.openjfx:javafx-graphics:${javafxVersion}:${javafxClassifier}"
     implementation "org.openjfx:javafx-controls:${javafxVersion}:${javafxClassifier}"
     implementation "org.openjfx:javafx-fxml:${javafxVersion}:${javafxClassifier}"
 
-
-    // SQLite JDBC driver
-    implementation 'org.xerial:sqlite-jdbc:3.50.3.0'
-
-
-    // H2 Database Engine for testing
-    testImplementation 'com.h2database:h2:2.3.232'
-
-
     // JUnit
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
 
+    //SQLite JDBC driver
+    implementation 'org.xerial:sqlite-jdbc:3.46.1.3'
+}
 
 // Pass JavaFX module-path and add-modules to the run task
 run {
@@ -55,7 +47,6 @@ run {
         ]
     }
 }
-
 
 test {
     useJUnitPlatform()

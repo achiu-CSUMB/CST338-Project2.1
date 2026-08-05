@@ -23,7 +23,7 @@ public class SceneFactory {
         //ACCOUNTS,
         COURSES,
         ENROLLMENT,
-        //GRADES,
+        GRADES,
         //STATISTICS,
         //ASSIGNMENTS
     }
@@ -41,7 +41,7 @@ public class SceneFactory {
             //case ACCOUNTS -> new Scene(new AccountsView(), SCENE_WIDTH,SCENE_HEIGHT);
             case COURSES -> new Scene(new CoursesView(), SCENE_WIDTH,SCENE_HEIGHT);
             case ENROLLMENT -> new Scene(new EnrollmentView(), SCENE_WIDTH,SCENE_HEIGHT);
-            //case GRADES -> new Scene(new GradesView(), SCENE_WIDTH,SCENE_HEIGHT);
+            case GRADES -> loadFxmlScene("/views/grades-view.fxml");
             //case STATISTICS -> new Scene(new StatisticsView(), SCENE_WIDTH,SCENE_HEIGHT);
             //case ASSIGNMENTS -> new Scene(new AssignmentsView(), SCENE_WIDTH,SCENE_HEIGHT);
         };
