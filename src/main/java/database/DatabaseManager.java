@@ -51,7 +51,8 @@ public class DatabaseManager {
                 CREATE TABLE IF NOT EXISTS courses (
                     course_id INTEGER PRIMARY KEY AUTOINCREMENT,
                     title TEXT NOT NULL,
-                    teacher_id INTEGER NOT NULL
+                    teacher_id INTEGER NOT NULL,
+                    FOREIGN KEY (teacher_id) REFERENCES users(user_id)
             );
         """;
 
@@ -60,7 +61,9 @@ public class DatabaseManager {
                     enrollment_id INTEGER PRIMARY KEY AUTOINCREMENT,
                     student_id INTEGER NOT NULL,
                     course_id INTEGER NOT NULL,
-                    waitlisted BOOLEAN NOT NULL DEFAULT FALSE
+                    waitlisted BOOLEAN NOT NULL DEFAULT FALSE,
+                    FOREIGN KEY (student_id) REFERENCES users(user_id),
+                    FOREIGN KEY (course_id) REFERENCES courses(course_id)
             );
         """;
 
