@@ -7,6 +7,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * @author Dominic Casoli
+ * <br>
+ * created: 8/4/2026
+ * @since '1.0-SNAPSHOT'
+ * Description:
+ */
+
 class CourseDaoTest {
     private Connection connection;
     private CourseDao courseDao;

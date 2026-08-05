@@ -14,7 +14,9 @@ public class Main extends Application {
         primaryStage.setTitle("Grade and Assignment Tracker");
 
         SceneFactory sceneFactory = new SceneFactory(primaryStage);
-        sceneFactory.showScene(SceneFactory.SceneType.LOGIN);
+
+        // Change name of SceneType below to access a specific scene (COURSES, LOGIN, etc.)
+        sceneFactory.showScene(SceneFactory.SceneType.COURSES);
 
         primaryStage.show();
     }

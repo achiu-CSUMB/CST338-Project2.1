@@ -20,6 +20,12 @@ public class DatabaseManager {
     private DatabaseManager() {
         try {
             connection = DriverManager.getConnection(DB_URL);
+
+            // Review together and make sure this enables foreign keys for later.
+            try (Statement statement = connection.createStatement()) {
+                statement.execute("PRAGMA foreign_keys = ON;");
+            }
+
             createTables();
         } catch (SQLException e) {
             System.err.println("Database connection failed: " + e.getMessage());
