@@ -272,7 +272,36 @@ public class EnrollmentDao {
      */
     // TODO: Note this section not required currently, will finish later.
     public ArrayList<Enrollment> getWaitlistedStudents(int courseId) {
-        // TODO: Retrieve all waitlisted students for a course.
-        return null;
+        ArrayList<Enrollment> enrollments = new ArrayList<>();
+
+        String sql = """
+                SELECT enrollment_id, student_id, course_id, waitlisted
+                FROM enrollments
+                WHERE course_id = ?
+                AND waitlisted = TRUE;
+                """;
+        try(PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, courseId);
+            try (ResultSet result = statement.executeQuery()) {
+                while (result.next()) {
+                    Enrollment enrollment = new Enrollment(
+                            result.getInt("enrollment_id"),
+                            result.getInt("student_id"),
+                            result.getInt("course_id")
+                    );
+
+                    enrollment.setWaitlisted(
+                            result.getBoolean("waitlisted")
+                    );
+
+                    enrollments.add(enrollment);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println(
+                    "Could not retrieve waitlisted students: " + e.getMessage()
+            );
+        }
+        return enrollments;
     }
 }
