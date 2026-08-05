@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * <br>
  * created: 8/4/2026
  * @since '1.0-SNAPSHOT'
- * Description:
+ * Description: Tests the CRUD operations and database functionality of CourseDao.
  */
 
 class CourseDaoTest {
