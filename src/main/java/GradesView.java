@@ -1,66 +1,151 @@
-import java.net.URL;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import java.util.Map;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 
 /**
  * Author: Alvin Chiu
- * Created: 8/1/2026
- * Current version: V2.0 - 8/4/2026
- * Description: Controller for grades-view.fxml. Displays the grades of
- * students for a given course in a TableView.
+ * Created: 8/4/2026
+ * Current version: V1.0 - 8/4/2026
+ * Description: JavaFX view showing a course/assignment
+ * header with max score, a "View Statistics" button, and a table of
+ * student grades with a graded/ungraded status indicator.
  *
- *
- */
-public class GradesView implements Initializable {
+ **/
+public class GradesView extends VBox {
 
-    @FXML
-    private TableView<Grade> gradesTable;
+    public static final double UNGRADED = -1;
 
-    @FXML
-    private TableColumn<Grade, String> courseColumn;
+    private final Label headerLabel;
+    private final Label maxScoreLabel;
+    private final Button viewStatisticsButton;
+    private final TableView<Grade> gradesTable;
 
-    @FXML
-    private TableColumn<Grade, String> assignmentColumn;
-
-    @FXML
-    private TableColumn<Grade, Double> scoreColumn;
-
-
-    private final List<Grade> grades;
+    private double maxScore = 0;
+    private Map<String, String> studentNames = new HashMap<>();
 
     public GradesView() {
-        this.grades = new ArrayList<>();
+        setSpacing(15);
+        setPadding(new Insets(20));
+
+        headerLabel = new Label();
+        headerLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+
+        maxScoreLabel = new Label();
+        maxScoreLabel.setStyle("-fx-text-fill: gray;");
+
+        VBox headerText = new VBox(2, headerLabel, maxScoreLabel);
+
+        viewStatisticsButton = new Button("View Statistics");
+
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        HBox topBar = new HBox(headerText, spacer, viewStatisticsButton);
+        topBar.setAlignment(Pos.TOP_LEFT);
+
+        gradesTable = buildGradesTable();
+        VBox.setVgrow(gradesTable, Priority.ALWAYS);
+
+        getChildren().addAll(topBar, gradesTable);
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        courseColumn.setCellValueFactory(new PropertyValueFactory<>("course"));
-        assignmentColumn.setCellValueFactory(new PropertyValueFactory<>("assignmentName"));
-        scoreColumn.setCellValueFactory(new PropertyValueFactory<>("score"));
+    private TableView<Grade> buildGradesTable() {
+        TableView<Grade> table = new TableView<>();
 
-        refreshTable();
+        TableColumn<Grade, String> studentColumn = new TableColumn<>("Student");
+        studentColumn.setCellValueFactory(data -> {
+            String id = data.getValue().getStudentId();
+            String name = studentNames.getOrDefault(id, id);
+            return new ReadOnlyStringWrapper(name);
+        });
+        studentColumn.setPrefWidth(220);
+
+        TableColumn<Grade, String> scoreColumn = new TableColumn<>("Score");
+        scoreColumn.setCellValueFactory(data -> {
+            double score = data.getValue().getScore();
+            String scoreText = (score == UNGRADED) ? "--" : formatScore(score);
+            return new ReadOnlyStringWrapper(scoreText + "/" + formatScore(maxScore));
+        });
+        scoreColumn.setPrefWidth(100);
+
+        TableColumn<Grade, Void> statusColumn = new TableColumn<>("");
+        statusColumn.setPrefWidth(40);
+        statusColumn.setSortable(false);
+        statusColumn.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                    return;
+                }
+
+                Grade grade = getTableView().getItems().get(getIndex());
+                Label icon = new Label(grade.getScore() == UNGRADED ? "\u2717" : "\u2713");
+                icon.setStyle(grade.getScore() == UNGRADED
+                        ? "-fx-text-fill: red; -fx-font-weight: bold;"
+                        : "-fx-text-fill: green; -fx-font-weight: bold;");
+                setGraphic(icon);
+            }
+        });
+
+        table.getColumns().add(studentColumn);
+        table.getColumns().add(scoreColumn);
+        table.getColumns().add(statusColumn);
+
+        return table;
+    }
+
+    private String formatScore(double score) {
+        if (score == Math.floor(score)) {
+            return String.valueOf((int) score);
+        }
+        return String.valueOf(score);
     }
 
     /**
-     * Replaces the currently displayed grades and refreshes the table.
-     * Call this after loading the FXML (e.g. loader.<GradesView>getController().setGrades(...)).
+     * Sets the header text and max score shown above the table, e.g.
+     * setHeader("CST 338 - Project 2 Part 1", 100).
      */
-    public void setGrades(List<Grade> newGrades) {
-        grades.clear();
-        grades.addAll(newGrades);
-        refreshTable();
+    public void setHeader(String courseAndAssignmentTitle, double maxScore) {
+        this.maxScore = maxScore;
+        headerLabel.setText(courseAndAssignmentTitle);
+        maxScoreLabel.setText("Max Score: " + formatScore(maxScore));
+        gradesTable.refresh();
     }
 
-    private void refreshTable() {
-        if (gradesTable != null) {
-            gradesTable.setItems(FXCollections.observableArrayList(grades));
-        }
+    /**
+     * Supplies a lookup from studentId to display name, used by the
+     * Student column. IDs without an entry fall back to showing the raw id.
+     */
+    public void setStudentNames(Map<String, String> studentNames) {
+        this.studentNames = studentNames;
+        gradesTable.refresh();
+    }
+
+    /**
+     * Populates the table with the given grades.
+     */
+    public void setGrades(List<Grade> grades) {
+        gradesTable.getItems().setAll(grades);
+    }
+
+    /**
+     * Hooks up the "View Statistics" button's action.
+     */
+    public void setOnViewStatistics(Runnable action) {
+        viewStatisticsButton.setOnAction(e -> action.run());
     }
 }
