@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class EnrollmentDaoTest {
@@ -124,6 +126,43 @@ class EnrollmentDaoTest {
         );
         assertFalse(
                 enrollmentDao.isStudentEnrolled(2, 1)
+        );
+    }
+
+    @Test
+    void getWaitlistedStudents() {
+        Enrollment normalEnrollment = new Enrollment(
+                1,
+                1
+        );
+
+        Enrollment waitlistedEnrollment = new Enrollment(
+                2,
+                1
+        );
+
+        waitlistedEnrollment.setWaitlisted(true);
+
+        enrollmentDao.insert(normalEnrollment);
+        enrollmentDao.insert(waitlistedEnrollment);
+
+        ArrayList<Enrollment> waitlisted =
+                enrollmentDao.getWaitlistedStudents(1);
+
+        assertEquals(1, waitlisted.size());
+
+        assertEquals(
+                2,
+                waitlisted.get(0).getStudentId()
+        );
+
+        assertEquals(
+                1,
+                waitlisted.get(0).getCourseId()
+        );
+
+        assertTrue(
+                waitlisted.get(0).isWaitlisted()
         );
     }
 }
