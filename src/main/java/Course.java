@@ -6,7 +6,7 @@
  * Description: Stores info about a course. A course will have an ID, name, and teacher associated with it.
  */
 
-// Note: Due to complications with merge, I had to grab the code from before merge and port it manually myself!
+// Note: Due to complications with merge, I had to grab the code from before merge and port it manually myself.
 public class Course {
 
     private int courseId;

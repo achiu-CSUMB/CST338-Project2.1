@@ -270,6 +270,7 @@ public class EnrollmentDao {
     /**
      * Retrieves every waitlisted student for a course.
      */
+    // TODO: Note this section not required currently, will finish later.
     public ArrayList<Enrollment> getWaitlistedStudents(int courseId) {
         ArrayList<Enrollment> enrollments = new ArrayList<>();
 
