@@ -18,8 +18,8 @@ Grade and Assignment Tracker that allows students and teachers to manage account
 ## Team & Slice Ownership
 | Slice | Owner | GitHub username | Issues | Branch(es) | PR(s) | Enhancement chosen | Status |
 |-------|-------|-----------------|--------|------------|-------|--------------------|--------|
-| 1 — Accounts |John Ly |6e4st |#7, #8, #9 |john/user-dao | |Admin role and password reset | planned |
-| 2 — Courses & Enrollment |Dominic Casoli |dcasoliprettyawesome|#4, #5, #6 |dominic/course-management-ui | |Waitlists | planned |
+| 1 — Accounts |John Ly |6e4st |#7, #8, #9 |john/user-dao, john/account-scene |<UserDao PR>, <Accounts scene PR> |Admin role and password reset | planned |
+| 2 — Courses & Enrollment |Dominic Casoli |dcasoliprettyawesome|#4, #5, #6 |dominic/course-management-ui, dominic/course-enrollment-database |18, 23, 25, 26 |Waitlists | planned |
 | 3 — Assignments |Oswald Perales |operalescs| | | | | planned |
 | 4 — Grades & Statistics |Alvin Chiu  |achiu-CSUMB |#1,#2,#3, #12 |alvin/grade-ui | |TableView / ListView populated with live data | planned |
 
