@@ -9,6 +9,14 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * @author Dominic Casoli
+ * <br>
+ * created: 8/4/2026
+ * @since '1.0-SNAPSHOT'
+ * Description:
+ */
+
 class EnrollmentDaoTest {
     private Connection connection;
     private EnrollmentDao enrollmentDao;

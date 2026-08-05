@@ -12,6 +12,9 @@ import javafx.scene.layout.VBox;
  * Description: Displays Course Management interface. Allows teachers to create, edit, and remove courses...
  * ...while displaying the current course list to users.
  */
+
+// TODO: No longer needed, swapping to FXML (if anything this was pretty much a placeholder file, will remove later).
+//  Near the end of the project we'll refactor all our stuff to be more in-line with Johns method.
 public class CoursesView extends VBox {
 
     private TableView<Course> courseTable;
