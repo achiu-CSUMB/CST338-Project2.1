@@ -49,4 +49,7 @@
 <Button fx:id="deleteButton"
         text="Delete Course"/>
 
+<Button fx:id="updateButton"
+        text="Update Course"/>
+
 </VBox>
