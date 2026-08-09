@@ -45,6 +45,9 @@ public class CoursesController {
     @FXML
     private Button deleteButton;
 
+    @FXML
+    private Button updateButton;
+
     /**
      * Initialize course screen.
      */
@@ -74,6 +77,24 @@ public class CoursesController {
         addButton.setOnAction(e -> addCourse());
 
         deleteButton.setOnAction(e -> deleteCourse());
+
+        updateButton.setOnAction(e -> updateCourse());
+
+        deleteButton.setOnAction(e -> deleteCourse());
+
+        courseTable.getSelectionModel().selectedItemProperty().addListener((observable, oldCourse, newCourse) -> {
+            if (newCourse != null) {
+                courseNameField.setText(
+                        newCourse.getCourseName()
+                );
+
+                teacherIdField.setText(
+                        String.valueOf(
+                                newCourse.getTeacherId()
+                        )
+                );
+            }
+        });
 
         loadCourses();
     }
@@ -133,6 +154,42 @@ public class CoursesController {
             System.out.println(
                     "Failed to delete course"
             );
+        }
+    }
+
+    /**
+     * Updates a course.
+     */
+    // When loading the project, you have to click on a pre-existing row... then alter the field information and click update to refresh the table.
+    private void updateCourse() {
+        Course selectedCourse =
+                courseTable.getSelectionModel().getSelectedItem();
+
+        if (selectedCourse == null) {
+            System.out.println(
+                    "No course selected"
+            );
+            return;
+        }
+        selectedCourse.setCourseName(
+                courseNameField.getText()
+        );
+        selectedCourse.setTeacherId(
+                Integer.parseInt(
+                        teacherIdField.getText()
+                )
+        );
+        boolean updated = courseService.updateCourse(selectedCourse);
+
+        if (updated) {
+            loadCourses();
+
+            System.out.println(
+                    "Course updated"
+            );
+        }
+        else {
+            System.out.println("Failed to update course");
         }
     }
 }
