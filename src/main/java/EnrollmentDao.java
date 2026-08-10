@@ -67,9 +67,11 @@ public class EnrollmentDao {
      */
     public Enrollment findById(int enrollmentId) {
         String sql = """
-                SELECT enrollment_id, student_id, course_id, waitlisted
+                SELECT enrollments.enrollment_id, enrollments.student_id, enrollments.course_id, courses.title, enrollments.waitlisted
                 FROM enrollments
-                WHERE enrollment_id = ?;
+                JOIN courses
+                ON enrollments.course_id = courses.course_id
+                WHERE enrollments.enrollment_id = ?;
                 """;
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -82,6 +84,10 @@ public class EnrollmentDao {
                             result.getInt("enrollment_id"),
                             result.getInt("student_id"),
                             result.getInt("course_id")
+                    );
+
+                    enrollment.setCourseName(
+                            result.getString("title")
                     );
 
                     enrollment.setWaitlisted(
@@ -145,8 +151,10 @@ public class EnrollmentDao {
         ArrayList<Enrollment> enrollments = new ArrayList<>();
 
         String sql = """
-                SELECT enrollment_id, student_id, course_id, waitlisted
-                FROM enrollments;
+                SELECT enrollments.enrollment_id, enrollments.student_id, enrollments.course_id, courses.title, enrollments.waitlisted
+                FROM enrollments
+                JOIN courses
+                ON enrollments.course_id = courses.course_id;
                 """;
 
         try (PreparedStatement statement = connection.prepareStatement(sql);
@@ -159,6 +167,10 @@ public class EnrollmentDao {
                         result.getInt("course_id")
                 );
 
+                enrollment.setCourseName(
+                        result.getString("title")
+                );
+
                 enrollment.setWaitlisted(
                         result.getBoolean("waitlisted")
                 );
@@ -166,7 +178,8 @@ public class EnrollmentDao {
                 enrollments.add(enrollment);
             }
         } catch (SQLException e) {
-            System.err.println("Could not retrieve enrollments: " + e.getMessage());
+            System.err.println("Could not retrieve enrollments: " + e.getMessage()
+            );
         }
         return enrollments;
     }
@@ -179,9 +192,11 @@ public class EnrollmentDao {
 
         String sql = """
                 
-                SELECT enrollment_id, student_id, course_id, waitlisted
+                SELECT enrollments.enrollment_id, enrollments.student_id, enrollments.course_id, courses.title, enrollments.waitlisted
                 FROM enrollments
-                WHERE student_id = ?;
+                JOIN courses
+                ON enrollments.course_id = courses.course_id
+                WHERE enrollments.student_id = ?;
                 """;
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -194,6 +209,11 @@ public class EnrollmentDao {
                             result.getInt("student_id"),
                             result.getInt("course_id")
                     );
+
+                    enrollment.setCourseName(
+                            result.getString("title")
+                    );
+
                     enrollment.setWaitlisted(
                             result.getBoolean("waitlisted")
                     );
@@ -214,9 +234,11 @@ public class EnrollmentDao {
 
         String sql = """
                 
-                SELECT enrollment_id, student_id, course_id, waitlisted
+                SELECT enrollments.enrollment_id, enrollments.student_id, enrollments.course_id, courses.title, enrollments.waitlisted
                 FROM enrollments
-                WHERE course_id = ?;
+                JOIN courses
+                ON enrollments.course_id = courses.course_id
+                WHERE enrollments.course_id = ?
                 """;
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -228,6 +250,10 @@ public class EnrollmentDao {
                             result.getInt("enrollment_id"),
                             result.getInt("student_id"),
                             result.getInt("course_id")
+                    );
+
+                    enrollment.setCourseName(
+                            result.getString("title")
                     );
 
                     enrollment.setWaitlisted(
@@ -275,10 +301,12 @@ public class EnrollmentDao {
         ArrayList<Enrollment> enrollments = new ArrayList<>();
 
         String sql = """
-                SELECT enrollment_id, student_id, course_id, waitlisted
+                SELECT enrollments.enrollment_id, enrollments.student_id, enrollments.course_id, courses.title, enrollments.waitlisted
                 FROM enrollments
-                WHERE course_id = ?
-                AND waitlisted = TRUE;
+                JOIN courses
+                ON enrollments.course_id = courses.course_id
+                WHERE enrollments.course_id = ?
+                AND enrollments.waitlisted = TRUE;
                 """;
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, courseId);
@@ -288,6 +316,10 @@ public class EnrollmentDao {
                             result.getInt("enrollment_id"),
                             result.getInt("student_id"),
                             result.getInt("course_id")
+                    );
+
+                    enrollment.setCourseName(
+                            result.getString("title")
                     );
 
                     enrollment.setWaitlisted(
