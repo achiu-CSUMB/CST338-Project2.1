@@ -43,6 +43,10 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // TestFX for JavaFX UI testing
+    testImplementation 'org.testfx:testfx-junit5:4.0.18'
+    testImplementation("org.hamcrest:hamcrest:3.0")
 }
 
 

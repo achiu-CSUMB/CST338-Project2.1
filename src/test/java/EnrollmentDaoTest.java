@@ -24,17 +24,27 @@ class EnrollmentDaoTest {
     @BeforeEach
     void setUp() throws SQLException {
         connection = DriverManager.getConnection(
-                "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1"
+                "jdbc:h2:mem:enrollmentdao;DB_CLOSE_DELAY=-1"
         );
 
         String sql = """
-                CREATE TABLE enrollments (
-                enrollment_id INT AUTO_INCREMENT PRIMARY KEY,
-                student_id INT NOT NULL,
-                course_id INT NOT NULL,
-                waitlisted BOOLEAN NOT NULL DEFAULT FALSE
+                CREATE TABLE IF NOT EXISTS courses (
+                course_id INT AUTO_INCREMENT PRIMARY KEY,
+                title VARCHAR(255),
+                teacher_id INT
                 );
+                
+                CREATE TABLE IF NOT EXISTS enrollments (
+                    enrollment_id INT AUTO_INCREMENT PRIMARY KEY,
+                    student_id INT NOT NULL,
+                    course_id INT NOT NULL,
+                    waitlisted BOOLEAN NOT NULL DEFAULT FALSE
+                );
+                
+                INSERT INTO courses(title, teacher_id)
+                VALUES ('Computer Science', 1);
                 """;
+
         try (Statement statement = connection.createStatement()) {
             statement.execute(sql);
         }
@@ -42,15 +52,16 @@ class EnrollmentDaoTest {
     }
 
     @AfterEach
-    void tearDwon() throws SQLException {
+    void tearDown() throws SQLException {
         try (Statement statement = connection.createStatement()) {
             statement.execute("DROP TABLE enrollments");
+            statement.execute("DROP TABLE courses");
         }
         connection.close();
     }
 
     @Test
-    void insert() {
+    void insert() throws SQLException {
         Enrollment enrollment = new Enrollment(
                 1,
                 1
@@ -62,7 +73,7 @@ class EnrollmentDaoTest {
     }
 
     @Test
-    void findById() {
+    void findById() throws SQLException {
         Enrollment enrollment = new Enrollment(
                 1,
                 1
@@ -84,7 +95,7 @@ class EnrollmentDaoTest {
     }
 
     @Test
-    void update() {
+    void update() throws SQLException {
         Enrollment enrollment = new Enrollment(
                 1,
                 1
@@ -103,7 +114,7 @@ class EnrollmentDaoTest {
     }
 
     @Test
-    void delete() {
+    void delete() throws SQLException {
         Enrollment enrollment = new Enrollment(
                 1,
                 1
@@ -123,7 +134,7 @@ class EnrollmentDaoTest {
     }
 
     @Test
-    void isStudentEnrolled() {
+    void isStudentEnrolled() throws SQLException {
         Enrollment enrollment = new Enrollment(
                 1,
                 1
@@ -138,7 +149,7 @@ class EnrollmentDaoTest {
     }
 
     @Test
-    void getWaitlistedStudents() {
+    void getWaitlistedStudents() throws SQLException {
         Enrollment normalEnrollment = new Enrollment(
                 1,
                 1
@@ -172,5 +183,40 @@ class EnrollmentDaoTest {
         assertTrue(
                 waitlisted.get(0).isWaitlisted()
         );
+    }
+
+    @Test
+    void getAllEnrollments() throws SQLException {
+        Enrollment enrollment = new Enrollment(
+                1,
+                1
+        );
+        enrollmentDao.insert(enrollment);
+        ArrayList<Enrollment> enrollments =
+                enrollmentDao.getAllEnrollments();
+
+        assertEquals(
+                1,
+                enrollments.size()
+        );
+        assertEquals(
+                1,
+                enrollments.get(0).getStudentId()
+        );
+    }
+
+    @Test
+    void hasCourseName() throws SQLException {
+        Enrollment enrollment =
+                new Enrollment(
+                        1,
+                        1
+                );
+        enrollmentDao.insert(enrollment);
+
+        ArrayList<Enrollment> enrollments =
+                enrollmentDao.getAllEnrollments();
+
+        assertEquals("Computer Science", enrollments.get(0).getCourseName());
     }
 }

@@ -11,6 +11,7 @@ public class Enrollment {
     private int enrollmentId;
     private int studentId;
     private int courseId;
+    private String courseName;
     // Use this field when implementing waitlist enhancement.
     private boolean waitlisted;
 
@@ -47,6 +48,10 @@ public class Enrollment {
         return courseId;
     }
 
+    public String getCourseName() {
+        return courseName;
+    }
+
     public boolean isWaitlisted() {
         return waitlisted;
     }
@@ -64,6 +69,10 @@ public class Enrollment {
 
     public void setCourseId(int courseId) {
         this.courseId = courseId;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 
     public void setWaitlisted(boolean waitlisted) {

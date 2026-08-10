@@ -40,7 +40,7 @@ public class SceneFactory {
             //case MAIN_MENU -> new Scene(new MainMenuView(), SCENE_WIDTH,SCENE_HEIGHT);
             //case ACCOUNTS -> new Scene(new AccountsView(), SCENE_WIDTH,SCENE_HEIGHT);
             case COURSES -> loadFxmlScene("/views/courses-view.fxml");
-            case ENROLLMENT -> new Scene(new EnrollmentView(), SCENE_WIDTH,SCENE_HEIGHT);
+            case ENROLLMENT -> loadFxmlScene("/views/enrollment-view.fxml");
             //case GRADES -> new Scene(new GradesView(), SCENE_WIDTH,SCENE_HEIGHT);
             //case STATISTICS -> new Scene(new StatisticsView(), SCENE_WIDTH,SCENE_HEIGHT);
             //case ASSIGNMENTS -> new Scene(new AssignmentsView(), SCENE_WIDTH,SCENE_HEIGHT);

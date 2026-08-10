@@ -1,3 +1,4 @@
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -5,7 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-
+import javafx.beans.property.SimpleIntegerProperty;
 import java.util.ArrayList;
 
 /**
@@ -55,21 +56,20 @@ public class CoursesController {
     public void initialize() {
         courseService = new CourseService();
 
-        // javafx beans fixed the issue of Table not loading the data.
         courseIdColumn.setCellValueFactory(
-                data -> new javafx.beans.property.SimpleIntegerProperty(
+                data -> new SimpleIntegerProperty(
                         data.getValue().getCourseId()
                 ).asObject()
         );
 
         courseNameColumn.setCellValueFactory(
-                data -> new javafx.beans.property.SimpleStringProperty(
+                data -> new SimpleStringProperty(
                         data.getValue().getCourseName()
                 )
         );
 
         teacherIdColumn.setCellValueFactory(
-                data -> new javafx.beans.property.SimpleIntegerProperty(
+                data -> new SimpleIntegerProperty(
                         data.getValue().getTeacherId()
                 ).asObject()
         );
