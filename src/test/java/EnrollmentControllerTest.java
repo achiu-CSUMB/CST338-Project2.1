@@ -19,7 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * <br>
  * created: 8/10/2026
  * @since '1.0-SNAPSHOT'
- * Description:
+ * Description: Tests Enrollment Management JavaFX interface using TestFX.
+ * Checks that students enter an ID, select a course, and can enroll successfully.
  */
 
 public class EnrollmentControllerTest extends ApplicationTest {
