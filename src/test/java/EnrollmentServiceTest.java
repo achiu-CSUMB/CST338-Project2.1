@@ -14,7 +14,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * <br>
  * created: 8/10/2026
  * @since '1.0-SNAPSHOT'
- * Description:
+ * Description: Tests the business logic for student enrollment.
+ * Verifies enrollment creation, prevents duplicate enrollment, dropping students from courses.
  */
 
 public class EnrollmentServiceTest {
