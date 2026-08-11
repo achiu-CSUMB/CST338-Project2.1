@@ -155,8 +155,15 @@ public class EnrollmentController {
     }
 
     public void enrollStudent() {
-        int studentId =
-                Integer.parseInt(studentIdField.getText());
+        int studentId;
+
+        try{
+            studentId = Integer.parseInt(studentIdField.getText());
+        }
+        catch(NumberFormatException e){
+            System.out.println("Student ID must be a number");
+            return;
+        }
 
         Course selectedCourse =
                 availableCoursesTable
