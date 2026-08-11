@@ -1,17 +1,20 @@
 package controller;
 
 import java.io.IOException;
+
+import dao.UserDao;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
+import model.User;
 
 
 /**
@@ -31,21 +34,46 @@ public class RegisterController {
     private PasswordField confirmPasswordField;
 
     @FXML
+    private ComboBox<String> roleComboBox;
+
+    @FXML
     private Label errorLabel;
+
+    private final UserDao userDao = new UserDao();
 
     @FXML
     private void handleCreateAccount() {
         String username = usernameField.getText();
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
+        String role = roleComboBox.getValue();
 
-        if (username.isBlank() || password.isBlank() || confirmPassword.isBlank()) {
+        if (username.isBlank() || password.isBlank() || confirmPassword.isBlank() || role == null) {
             errorLabel.setText("All fields are required.");
-        } else if (!password.equals(confirmPassword)) {
+            return;
+        }
+
+        if (!password.equals(confirmPassword)) {
             errorLabel.setText("Passwords do not match.");
+            return;
+        }
+
+        User existingUser = userDao.findByUsername(username);
+
+        if (existingUser != null) {
+            errorLabel.setText("Username already exists.");
+            return;
+        }
+
+        User user = new User(username, password, role);
+
+        boolean inserted = userDao.insert(user);
+
+        if(inserted){
+            errorLabel.setText("Account Created Successfully! Please log in.");
+
         } else {
-            errorLabel.setText("Account info is valid");
-            // Proceed with account creation logic
+            errorLabel.setText("Cannot create account.");
         }
     }
 
