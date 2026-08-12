@@ -62,17 +62,44 @@ import static org.junit.jupiter.api.Assertions.*;
 
     @Test
     void findById() {
+        User user = new User("john338", "password123", "student");
+        userDao.insert(user);
+
+        User foundUser = userDao.findById(user.getUserId());
+        assertNotNull(foundUser);
+        assertEquals(user.getUsername(), foundUser.getUsername());
     }
 
     @Test
     void findByUsername() {
+        User user = new User("john338", "password123", "student");
+        userDao.insert(user);
+
+        User foundUser = userDao.findByUsername(user.getUsername());
+        assertNotNull(foundUser);
+        assertEquals(user.getUserId(), foundUser.getUserId());
     }
 
     @Test
     void update() {
+        User user = new User("john338", "password123", "student");
+        userDao.insert(user);
+        user.setPassword("newpassword123");
+        boolean updated = userDao.update(user);
+        assertTrue(updated);
+
+        User foundUser = userDao.findById(user.getUserId());
+        assertNotNull(foundUser);
+        assertEquals("newpassword123", foundUser.getPassword());
     }
 
     @Test
     void delete() {
+        User user = new User("john338", "password123", "student");
+        userDao.insert(user);
+        boolean deleted = userDao.delete(user.getUserId());
+        assertTrue(deleted);
+        User foundUser = userDao.findById(user.getUserId());
+        assertNull(foundUser);
     }
 }
