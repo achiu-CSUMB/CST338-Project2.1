@@ -22,6 +22,12 @@ import java.io.IOException;
  */
 public class LoginController {
 
+    private UserDao userDao = new UserDao();
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
     @FXML
     private TextField usernameField;
 
@@ -75,7 +81,5 @@ public class LoginController {
             e.printStackTrace();
         }
     }
-
-    private final UserDao userDao = new UserDao();
 
 }
