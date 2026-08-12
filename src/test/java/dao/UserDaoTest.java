@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
     @BeforeEach
     void setUp() throws SQLException {
         connection = DriverManager.getConnection(
-                "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1"
+                "jdbc:h2:mem:userdaotest;DB_CLOSE_DELAY=-1"
         );
 
         String sql = """
@@ -36,6 +36,7 @@ import static org.junit.jupiter.api.Assertions.*;
                 """;
 
         try (java.sql.Statement statement = connection.createStatement()) {
+            statement.execute("DROP TABLE IF EXISTS users");
             statement.execute(sql);
         }
 

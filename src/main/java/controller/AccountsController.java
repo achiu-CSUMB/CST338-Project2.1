@@ -15,7 +15,12 @@ import model.User;
  */
 public class AccountsController {
 
-    private final UserDao userDao = new UserDao();
+    private UserDao userDao = new UserDao();
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
     private User loadedUser;
 
     @FXML
