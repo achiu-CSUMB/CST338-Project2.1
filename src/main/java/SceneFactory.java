@@ -20,7 +20,7 @@ public class SceneFactory {
         LOGIN,
         REGISTER,
         //MAIN_MENU,
-        //ACCOUNTS,
+        ACCOUNTS,
         COURSES,
         ENROLLMENT,
         //GRADES,
@@ -38,7 +38,7 @@ public class SceneFactory {
             case LOGIN -> loadFxmlScene("/views/login-view.fxml");
             case REGISTER -> loadFxmlScene("/views/register-view.fxml");
             //case MAIN_MENU -> new Scene(new MainMenuView(), SCENE_WIDTH,SCENE_HEIGHT);
-            //case ACCOUNTS -> new Scene(new AccountsView(), SCENE_WIDTH,SCENE_HEIGHT);
+            case ACCOUNTS -> loadFxmlScene("/views/accounts-view.fxml");
             case COURSES -> loadFxmlScene("/views/courses-view.fxml");
             case ENROLLMENT -> loadFxmlScene("/views/enrollment-view.fxml");
             //case GRADES -> new Scene(new GradesView(), SCENE_WIDTH,SCENE_HEIGHT);
