@@ -41,6 +41,7 @@ Issue if the team later decides to attempt it for extra credit._
 ## AI Usage Log
 - **AI-drafted tests:** <link to TESTING.md / commit> — per owner.
 - **AI code reviews:** <[PR link](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/34) + Slice 2 (Courses & Enrollment), covers EnrollmentController, Enrollment, EnrollmentControllerTest, and EnrollmentServiceTest - Dominic
+- **AI code reviews:** [PR #37 AI review](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/37#issuecomment-5270511821) + Slice 1 (Accounts), covers AccountsController, role updates, account CRUD, and password reset - John
 
 ## Extra Credit Log
 | Item | Who | Evidence (Issue/PR) |
