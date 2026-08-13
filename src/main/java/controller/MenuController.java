@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.User;
 
@@ -57,8 +58,23 @@ public class MenuController {
     }
 
     @FXML
-    private void handleLogout() {
+    private void handleLogout(ActionEvent event) {
         // Logic to handle logout
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/views/login-view.fxml")
+            );
+
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Node) event.getSource())
+                    .getScene()
+                    .getWindow();
+
+            stage.setScene(new Scene(root));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

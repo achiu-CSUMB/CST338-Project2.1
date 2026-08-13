@@ -1,11 +1,17 @@
 package controller;
 
 import dao.UserDao;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import model.User;
 
 /**
@@ -180,6 +186,26 @@ public class AccountsController {
 
         if (!currentUser.getRole().equals("Admin")) {
             roleComboBox.setDisable(true);
+        }
+    }
+
+    @FXML
+    private void handleBack(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/views/menu-view.fxml")
+            );
+
+            Parent root = loader.load();
+
+            MenuController controller = loader.getController();
+            controller.setCurrentUser(currentUser);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            stage.setScene(new Scene(root));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

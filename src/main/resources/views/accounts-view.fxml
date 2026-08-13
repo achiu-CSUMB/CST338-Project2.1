@@ -208,6 +208,13 @@
                                 onAction="#handleResetPassword"
                                 text="Reset Password" />
 
+                        <Button fx:id="backButton"
+                                layoutX="108.0"
+                                layoutY="288.0"
+                                mnemonicParsing="false"
+                                onAction="#handleBack"
+                                text="Back" />
+
                     </children>
                 </AnchorPane>
             </children>
