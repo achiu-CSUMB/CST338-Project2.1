@@ -1,16 +1,12 @@
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.stage.Stage;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import javafx.scene.control.TableView;
 import org.testfx.framework.junit5.ApplicationTest;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -37,15 +33,16 @@ public class EnrollmentControllerTest extends ApplicationTest {
 
         try (Statement statement = connection.createStatement()) {
             statement.execute("""
-                    CREATE TABLE courses (
+                    CREATE TABLE IF NOT EXISTS courses (
                         course_id INT AUTO_INCREMENT PRIMARY KEY,
                         title VARCHAR(255),
-                        teacher_id INT
+                        teacher_id INT,
+                        capacity INT NOT NULL DEFAULT 2
                     );
                     """);
 
             statement.execute("""
-                    CREATE TABLE enrollments (
+                    CREATE TABLE IF NOT EXISTS enrollments (
                         enrollment_id INT AUTO_INCREMENT PRIMARY KEY,
                         student_id INT NOT NULL,
                         course_id INT NOT NULL,
@@ -53,9 +50,12 @@ public class EnrollmentControllerTest extends ApplicationTest {
                                              );
             """);
 
+            statement.execute("DELETE FROM enrollments;");
+            statement.execute("DELETE FROM courses;");
+
             statement.execute("""
-                    INSERT INTO courses(title, teacher_id)
-                    VALUES ('Computer Science', 1);
+                    INSERT INTO courses(title, teacher_id, capacity)
+                    VALUES ('Computer Science', 1, 2);
                     """);
         }
 
@@ -70,9 +70,9 @@ public class EnrollmentControllerTest extends ApplicationTest {
 
         EnrollmentDao enrollmentDao = new EnrollmentDao(connection);
 
-        enrollmentService = new EnrollmentService(enrollmentDao);
-
         courseDao = new CourseDao(connection);
+
+        enrollmentService = new EnrollmentService(enrollmentDao, courseDao);
 
         controller.setEnrollmentService(enrollmentService);
         controller.setCourseDao(courseDao);
@@ -103,5 +103,110 @@ void enrollButtonAddsEnrollment() {
                 1,
                 enrollmentTable.getItems().size()
         );
+    }
+
+    @Test
+    void thirdStudentArrivesWaitlistedInTable() {
+        clickOn("#studentIdField").write("1");
+
+        clickOn("#availableCoursesTable");
+        clickOn("Computer Science");
+
+        clickOn("#enrollButton");
+
+        // Second
+        doubleClickOn("#studentIdField");
+        eraseText(10);
+        write("2");
+
+        clickOn("#availableCoursesTable");
+        clickOn("Computer Science");
+
+        clickOn("#enrollButton");
+
+        // Third
+        doubleClickOn("#studentIdField");
+        eraseText(10);
+        write("3");
+
+        clickOn("#availableCoursesTable");
+        clickOn("Computer Science");
+
+        clickOn("#enrollButton");
+
+        TableView<Enrollment> enrollmentTable = lookup("#enrollmentTable").query();
+
+        assertEquals(3, enrollmentTable.getItems().size());
+
+        Enrollment first = enrollmentTable.getItems().get(0);
+
+        Enrollment second = enrollmentTable.getItems().get(1);
+
+        Enrollment third = enrollmentTable.getItems().get(2);
+
+        assertEquals(1, first.getStudentId());
+
+        assertFalse(first.isWaitlisted());
+
+        assertEquals(2, second.getStudentId());
+
+        assertFalse(second.isWaitlisted());
+
+        assertEquals(3, third.getStudentId());
+
+        assertTrue(third.isWaitlisted());
+
+    }
+
+    @Test
+    void droppingStudentPromotesWaitlistedStudent() {
+        // First
+        clickOn("#studentIdField").write("1");
+        clickOn("#availableCoursesTable");
+        clickOn("Computer Science");
+        clickOn("#enrollButton");
+
+        // Second
+        doubleClickOn("#studentIdField");
+        eraseText(10);
+        write("2");
+        clickOn("#availableCoursesTable");
+        clickOn("Computer Science");
+        clickOn("#enrollButton");
+
+        // Third
+        doubleClickOn("#studentIdField");
+        eraseText(10);
+        write("3");
+        clickOn("#availableCoursesTable");
+        clickOn("Computer Science");
+        clickOn("#enrollButton");
+
+        TableView<Enrollment> enrollmentTable = lookup("#enrollmentTable").query();
+
+        assertEquals(3, enrollmentTable.getItems().size());
+
+        Enrollment third = enrollmentTable.getItems().get(2);
+
+        assertTrue(third.isWaitlisted());
+
+        enrollmentTable.getSelectionModel().select(0);
+
+        clickOn("#dropButton");
+
+        enrollmentTable = lookup("#enrollmentTable").query();
+
+        assertEquals(2, enrollmentTable.getItems().size());
+
+        Enrollment promoted = null;
+
+        for (Enrollment enrollment : enrollmentTable.getItems()) {
+            if (enrollment.getStudentId() == 3) {
+                promoted = enrollment;
+                break;
+            }
+        }
+        assertNotNull(promoted);
+        assertFalse(promoted.isWaitlisted());
     }
 }

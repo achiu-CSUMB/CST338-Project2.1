@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.geometry.Insets?>
 
+<?import javafx.scene.layout.HBox?>
 <VBox spacing="10"
       xmlns="http://javafx.com/javafx/25"
       xmlns:fx="http://javafx.com/fxml/1"
@@ -15,19 +16,29 @@
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
 
+<HBox alignment="CENTER_LEFT">
+    <Button
+        fx:id="backButton"
+        text="← Back"
+        onAction="#goBackToLogin"/>
+</HBox>
+
 <Label text ="Course Management"/>
 
 <TableView fx:id="courseTable">
 
 <columns>
     <TableColumn fx:id="courseIdColumn"
-                 text="Course ID"/>
+                 text="Course ID"
+                 prefWidth="90"/>
 
     <TableColumn fx:id="courseNameColumn"
-                 text="Course Name"/>
+                 text="Course Name"
+                 prefWidth="220"/>
 
-    <TableColumn fx:id="teacherIdColumn"
-                 text="Teacher ID"/>
+    <TableColumn fx:id="capacityColumn"
+                 text="Capacity"
+                 prefWidth="110"/>
 </columns>
 
 </TableView>
@@ -37,10 +48,9 @@
 <TextField fx:id="courseNameField"
            promptText="Enter course name"/>
 
-<Label text="Teacher ID"/>
-
-<TextField fx:id="teacherIdField"
-           promptText="Enter teacher ID"/>
+<Label text="Capacity"/>
+<TextField fx:id="capacityField"
+            promptText="Enter capacity"/>
 
 <Button fx:id="addButton"
         text="Add Course"/>

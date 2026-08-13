@@ -16,6 +16,13 @@
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
 
+    <HBox alignment="CENTER_LEFT">
+        <Button
+                fx:id="backButton"
+                text="← Back"
+                onAction="#goBackToLogin"/>
+    </HBox>
+
     <Label text ="Enrollment Management"/>
 
     <Label text="Available Courses"/>
@@ -31,8 +38,6 @@
             <TableColumn fx:id="availableCourseNameColumn"
                          text="Course Name"/>
 
-            <TableColumn fx:id="availableTeacherIdColumn"
-                         text="Teacher ID"/>
         </columns>
 
     </TableView>
@@ -40,6 +45,7 @@
     <Label text="Student ID"/>
 
     <TextField fx:id="studentIdField"
+               id="studentIdField"
                promptText="Enter student ID"/>
 
 <HBox spacing="10">
@@ -49,6 +55,7 @@
             text="Enroll"/>
 
     <Button fx:id="dropButton"
+            id="dropButton"
             text="Drop"/>
 </HBox>
 
@@ -74,9 +81,9 @@
                          text="Course Name"
                          prefWidth="90"/>
 
-            <TableColumn fx:id="waitlistedColumn"
-                         text="Waitlisted"
-                         prefWidth="90"/>
+            <TableColumn fx:id="statusColumn"
+                         text="Status"
+                         prefWidth="130"/>
 
         </columns>
 
