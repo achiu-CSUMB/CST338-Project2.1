@@ -44,9 +44,12 @@ public class MenuController {
 
     @FXML
     private void handleCourses(ActionEvent event) {
-        try {
+        if(currentUser == null) {
+            return;
+        }
+        if(!currentUser.isTeacher()) {
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/views/courses-view.fxml")
+                    getClass().getResource("/views/enrollment-view.fxml")
             );
 
             Parent root = loader.load();
@@ -55,9 +58,19 @@ public class MenuController {
 
             stage.getScene().setRoot(root);
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            return;
+
         }
+
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/views/courses-view.fxml")
+        );
+
+        Parent root = loader.load();
+
+        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+        stage.getScene().setRoot(root);
     }
 
     @FXML
