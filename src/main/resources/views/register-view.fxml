@@ -102,7 +102,7 @@
                 </Label>
                 <Label layoutX="181.0" layoutY="119.0" text="Username:" />
 
-                <Label layoutX="188.0" layoutY="146.0" text="Pasword:" />
+                <Label layoutX="188.0" layoutY="146.0" text="Password:" />
 
                 <Label layoutX="138.0" layoutY="171.0" text="Confirm Password:" />
 
@@ -113,6 +113,7 @@
                        textFill="#4dd90f" />
 
                 <Button
+                        fx:id="registerButton"
                         layoutX="290.0"
                         layoutY="234.0"
                         mnemonicParsing="false"
@@ -120,6 +121,7 @@
                         text="Register" />
 
                 <Button
+                        fx:id="backToLoginButton"
                         layoutX="276.0"
                         layoutY="273.0"
                         mnemonicParsing="false"
