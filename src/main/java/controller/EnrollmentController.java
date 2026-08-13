@@ -1,3 +1,7 @@
+package controller;
+
+import dao.CourseDao;
+import factory.SceneFactory;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,6 +13,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
+import model.Course;
+import model.Enrollment;
+import service.EnrollmentService;
 import java.util.ArrayList;
 
 /**
@@ -16,7 +23,7 @@ import java.util.ArrayList;
  * <br>
  * created: 8/9/2026
  * @since '1.0-SNAPSHOT'
- * Description: Controls the Enrollment Management JavaFX interface.
+ * Description: Controls the model.Enrollment Management JavaFX interface.
  * Handles enrollments for students, dropping courses, and displaying the enrollment data.
  */
 
@@ -215,7 +222,7 @@ public class EnrollmentController {
             }
         }
         else {
-            System.out.println("Enrollment failed or student already enrolled");
+            System.out.println("model.Enrollment failed or student already enrolled");
         }
     }
 
@@ -251,7 +258,7 @@ public class EnrollmentController {
                 selected.getEnrollmentId()
         )) {
             loadEnrollments();
-            System.out.println("Enrollment removed");
+            System.out.println("model.Enrollment removed");
         }
         else {
             System.out.println("Delete failed");

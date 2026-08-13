@@ -1,3 +1,6 @@
+package controller;
+
+import factory.SceneFactory;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.collections.FXCollections;
@@ -10,13 +13,15 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import java.util.ArrayList;
+import model.Course;
+import service.CourseService;
 
 /**
  * @author Dominic Casoli
  * <br>
  * created: 8/4/2026
  * @since '1.0-SNAPSHOT'
- * Description: Controls the Course Management JavaFX interface.
+ * Description: Controls the model.Course Management JavaFX interface.
  * Handles the user interactions for creating courses and loading the course data from database.
  */
 
@@ -167,7 +172,7 @@ public class CoursesController {
 
             if (created) {
                 loadCourses();
-                System.out.println("Course added successfully");
+                System.out.println("model.Course added successfully");
             }
             else {
                 System.out.println("Failed to add course.");
@@ -197,7 +202,7 @@ public class CoursesController {
         if (deleted) {
             loadCourses();
             System.out.println(
-                    "Course deleted"
+                    "model.Course deleted"
             );
         } else {
             System.out.println(
@@ -239,7 +244,7 @@ public class CoursesController {
             loadCourses();
 
             System.out.println(
-                    "Course updated"
+                    "model.Course updated"
             );
         }
         else {

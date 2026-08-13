@@ -1,3 +1,8 @@
+package service;
+
+import dao.CourseDao;
+import model.Course;
+
 import java.util.ArrayList;
 
 /**
@@ -13,14 +18,14 @@ public class CourseService {
     private CourseDao courseDao;
 
     /**
-     * Creates a CourseService object.
+     * Creates a service.CourseService object.
      */
     public CourseService() {
         courseDao = new CourseDao();
     }
 
     /**
-     * Creates CourseService using provided DAO.
+     * Creates service.CourseService using provided DAO.
      * Testing.
      */
     public CourseService(CourseDao courseDao) {

@@ -1,3 +1,10 @@
+package service;
+
+import dao.CourseDao;
+import dao.EnrollmentDao;
+import model.Course;
+import model.Enrollment;
+
 import java.util.ArrayList;
 
 /**
@@ -5,7 +12,7 @@ import java.util.ArrayList;
  * <br>
  * created: 8/9/2026
  * @since '1.0-SNAPSHOT'
- * Description: Provides the enrollment business logic between EnrollmentController and EnrollmentDao.
+ * Description: Provides the enrollment business logic between controller.EnrollmentController and dao.EnrollmentDao.
  * Handles enrolling students, dropping enrollments, preventing duplicate enrollments, managing waitlist, automatically promote waitlist students when spot available.
  */
 
@@ -15,7 +22,7 @@ public class EnrollmentService {
     private CourseDao courseDao;
 
     /**
-     * Creates an EnrollmentService object.
+     * Creates an service.EnrollmentService object.
      */
     public EnrollmentService() {
         enrollmentDao = new EnrollmentDao();
@@ -23,7 +30,7 @@ public class EnrollmentService {
     }
 
     /**
-     * Creates an EnrollmentService object using a provided DAO, used for testing.
+     * Creates an service.EnrollmentService object using a provided DAO, used for testing.
      */
     public EnrollmentService(EnrollmentDao enrollmentDao, CourseDao courseDao) {
         this.enrollmentDao = enrollmentDao;

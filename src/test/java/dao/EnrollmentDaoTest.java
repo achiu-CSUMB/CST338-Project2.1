@@ -1,4 +1,8 @@
+package dao;
+
+import model.Enrollment;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.sql.Connection;
@@ -14,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * <br>
  * created: 8/4/2026
  * @since '1.0-SNAPSHOT'
- * Description: Tests the CRUD operations and database functionality of EnrollmentDao.
+ * Description: Tests the CRUD operations and database functionality of dao.EnrollmentDao.
  */
 
 class EnrollmentDaoTest {
@@ -86,11 +90,11 @@ class EnrollmentDaoTest {
         );
         assertNotNull(found);
 
-        assertEquals(
+        Assertions.assertEquals(
                 1,
                 found.getStudentId()
         );
-        assertEquals(
+        Assertions.assertEquals(
                 1,
                 found.getCourseId()
         );
@@ -110,7 +114,7 @@ class EnrollmentDaoTest {
         Enrollment updateEnrollment = enrollmentDao.findById(
                 enrollment.getEnrollmentId()
         );
-        assertTrue(
+        Assertions.assertTrue(
                 updateEnrollment.isWaitlisted()
         );
     }
@@ -142,10 +146,10 @@ class EnrollmentDaoTest {
                 1
         );
         enrollmentDao.insert(enrollment);
-        assertTrue(
+        Assertions.assertTrue(
                 enrollmentDao.isStudentEnrolled(1, 1)
         );
-        assertFalse(
+        Assertions.assertFalse(
                 enrollmentDao.isStudentEnrolled(2, 1)
         );
     }
@@ -172,17 +176,17 @@ class EnrollmentDaoTest {
 
         assertEquals(1, waitlisted.size());
 
-        assertEquals(
+        Assertions.assertEquals(
                 2,
                 waitlisted.get(0).getStudentId()
         );
 
-        assertEquals(
+        Assertions.assertEquals(
                 1,
                 waitlisted.get(0).getCourseId()
         );
 
-        assertTrue(
+        Assertions.assertTrue(
                 waitlisted.get(0).isWaitlisted()
         );
     }
@@ -201,7 +205,7 @@ class EnrollmentDaoTest {
                 1,
                 enrollments.size()
         );
-        assertEquals(
+        Assertions.assertEquals(
                 1,
                 enrollments.get(0).getStudentId()
         );
@@ -219,7 +223,7 @@ class EnrollmentDaoTest {
         ArrayList<Enrollment> enrollments =
                 enrollmentDao.getAllEnrollments();
 
-        assertEquals("Computer Science", enrollments.get(0).getCourseName());
+        Assertions.assertEquals("Computer Science", enrollments.get(0).getCourseName());
     }
 
     @Test
@@ -250,9 +254,9 @@ class EnrollmentDaoTest {
 
         assertNotNull(waitlisted);
 
-        assertEquals(2, waitlisted.getStudentId());
+        Assertions.assertEquals(2, waitlisted.getStudentId());
 
-        assertTrue(waitlisted.isWaitlisted());
+        Assertions.assertTrue(waitlisted.isWaitlisted());
     }
 
     @Test

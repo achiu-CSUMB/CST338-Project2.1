@@ -82,7 +82,6 @@ public class MenuController {
                 e.printStackTrace();
             }
         }
-    }
 
     @FXML
     private void handleAssignments() {
@@ -113,3 +112,4 @@ public class MenuController {
             e.printStackTrace();
         }
     }
+}

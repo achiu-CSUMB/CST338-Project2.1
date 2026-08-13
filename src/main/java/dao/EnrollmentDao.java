@@ -1,4 +1,8 @@
+package dao;
+
 import database.DatabaseManager;
+import model.Enrollment;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,14 +21,14 @@ public class EnrollmentDao {
     private Connection connection;
 
     /**
-     * Creates an EnrollmentDao object.
+     * Creates an dao.EnrollmentDao object.
      */
     public EnrollmentDao() {
         connection = DatabaseManager.getInstance().getConnection();
     }
 
     /**
-     * Creates a EnrollmentDao object using the connection.
+     * Creates a dao.EnrollmentDao object using the connection.
      * Used for testing database.
      */
     public EnrollmentDao(Connection connection) {

@@ -10,7 +10,7 @@
 <VBox spacing="10"
       xmlns="http://javafx.com/javafx/25"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="CoursesController">
+      fx:controller="controller.CoursesController">
 
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
@@ -23,7 +23,7 @@
         onAction="#goBackToLogin"/>
 </HBox>
 
-<Label text ="Course Management"/>
+<Label text ="model.Course Management"/>
 
 <TableView fx:id="courseTable">
 
@@ -34,11 +34,11 @@
         prefWidth="170"/>
 
     <TableColumn fx:id="courseIdColumn"
-                 text="Course ID"
+                 text="model.Course ID"
                  prefWidth="90"/>
 
     <TableColumn fx:id="courseNameColumn"
-                 text="Course Name"
+                 text="model.Course Name"
                  prefWidth="150"/>
 
     <TableColumn fx:id="capacityColumn"
@@ -48,7 +48,7 @@
 
 </TableView>
 
-<Label text="Course Name"/>
+<Label text="model.Course Name"/>
 
 <TextField fx:id="courseNameField"
            promptText="Enter course name"/>
@@ -70,12 +70,12 @@
     promptText="John Smith"/>
 
 <Button fx:id="addButton"
-        text="Add Course"/>
+        text="Add model.Course"/>
 
 <Button fx:id="deleteButton"
-        text="Delete Course"/>
+        text="Delete model.Course"/>
 
 <Button fx:id="updateButton"
-        text="Update Course"/>
+        text="Update model.Course"/>
 
 </VBox>

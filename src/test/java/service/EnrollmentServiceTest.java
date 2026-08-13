@@ -1,4 +1,10 @@
+package service;
+
+import dao.CourseDao;
+import dao.EnrollmentDao;
+import model.Enrollment;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -86,19 +92,19 @@ public class EnrollmentServiceTest {
         boolean result = enrollmentService.enrollStudent(5,1);
         assertTrue(result);
 
-    assertEquals(
+    Assertions.assertEquals(
             1,
             enrollmentService.getAllEnrollments().size()
     );
 
-    assertEquals(
+    Assertions.assertEquals(
             5,
             enrollmentService.getAllEnrollments()
                     .get(0)
                     .getStudentId()
     );
 
-    assertFalse(enrollmentService.getAllEnrollments().get(0).isWaitlisted());
+    Assertions.assertFalse(enrollmentService.getAllEnrollments().get(0).isWaitlisted());
 
     }
 
@@ -114,7 +120,7 @@ public class EnrollmentServiceTest {
 
         assertTrue(deleted);
 
-        assertEquals(
+        Assertions.assertEquals(
                 0,
                 enrollmentService.getAllEnrollments().size()
         );
@@ -130,13 +136,13 @@ public class EnrollmentServiceTest {
         Enrollment second = enrollmentService.getAllEnrollments().get(1);
         Enrollment third = enrollmentService.getAllEnrollments().get(2);
 
-        assertFalse(first.isWaitlisted());
+        Assertions.assertFalse(first.isWaitlisted());
 
-        assertFalse(second.isWaitlisted());
+        Assertions.assertFalse(second.isWaitlisted());
 
-        assertEquals(3, third.getStudentId());
+        Assertions.assertEquals(3, third.getStudentId());
 
-        assertTrue(third.isWaitlisted());
+        Assertions.assertTrue(third.isWaitlisted());
     }
 
     @Test
@@ -159,9 +165,9 @@ public class EnrollmentServiceTest {
         }
         assertNotNull(promoted);
 
-        assertEquals(3, promoted.getStudentId());
+        Assertions.assertEquals(3, promoted.getStudentId());
 
-        assertFalse(promoted.isWaitlisted());
+        Assertions.assertFalse(promoted.isWaitlisted());
     }
 
     // Was having a spot promotion error before.
@@ -185,12 +191,12 @@ public class EnrollmentServiceTest {
             }
         }
         assertNotNull(fourth);
-        assertTrue(fourth.isWaitlisted());
+        Assertions.assertTrue(fourth.isWaitlisted());
     }
 
     @Test
     void dropForNonexistingEnrollmentReturnsFalse() {
-        assertFalse(enrollmentService.dropStudent(999));
+        Assertions.assertFalse(enrollmentService.dropStudent(999));
     }
 
     @Test
@@ -202,14 +208,14 @@ public class EnrollmentServiceTest {
                             WHERE course_id = 1;
                             """);
         }
-        assertTrue(enrollmentService.enrollStudent(1,1));
-        assertTrue(enrollmentService.enrollStudent(2,1));
+        Assertions.assertTrue(enrollmentService.enrollStudent(1,1));
+        Assertions.assertTrue(enrollmentService.enrollStudent(2,1));
 
         Enrollment first = enrollmentService.getAllEnrollments().get(0);
 
         Enrollment second = enrollmentService.getAllEnrollments().get(1);
 
-        assertFalse(first.isWaitlisted());
-        assertTrue(second.isWaitlisted());
+        Assertions.assertFalse(first.isWaitlisted());
+        Assertions.assertTrue(second.isWaitlisted());
     }
 }

@@ -1,4 +1,8 @@
+package dao;
+
 import database.DatabaseManager;
+import model.Course;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,7 +13,7 @@ import java.util.ArrayList;
  * <br>
  * created: 8/2/2026
  * @since '1.0-SNAPSHOT'
- * Description: Handles CRUD operations for the Course objects in the SQLite database.
+ * Description: Handles CRUD operations for the model.Course objects in the SQLite database.
  * Provides methods to create, retrieve, update, delete, and list courses.
  */
 public class CourseDao {
@@ -18,14 +22,14 @@ public class CourseDao {
     private Connection connection;
 
     /**
-     * Creates a CourseDao object.
+     * Creates a dao.CourseDao object.
      */
     public CourseDao() {
         connection = DatabaseManager.getInstance().getConnection();
     }
 
     /**
-     * Creates a CourseDao object using the connection.
+     * Creates a dao.CourseDao object using the connection.
      * Used for testing database.
      */
     public CourseDao(Connection connection) {

@@ -1,4 +1,9 @@
+package service;
+
+import dao.CourseDao;
+import model.Course;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -66,11 +71,11 @@ public class CourseServiceTest {
 
         courseService.createCourse(course);
 
-        assertEquals(1,courseService.getAllCourses().size());
+        Assertions.assertEquals(1,courseService.getAllCourses().size());
 
-        assertEquals("Dr.", courseService.getAllCourses().get(0).getPrefix());
+        Assertions.assertEquals("Dr.", courseService.getAllCourses().get(0).getPrefix());
 
-        assertEquals("Smith", courseService.getAllCourses().get(0).getTeacherName());
+        Assertions.assertEquals("Smith", courseService.getAllCourses().get(0).getTeacherName());
     }
 
     @Test
@@ -91,10 +96,10 @@ public class CourseServiceTest {
 
         Course updatedCourse = courseService.getAllCourses().get(0);
 
-        assertEquals(4, updatedCourse.getCapacity());
+        Assertions.assertEquals(4, updatedCourse.getCapacity());
 
-        assertEquals("Prof.", updatedCourse.getPrefix());
-        assertEquals("Jones", updatedCourse.getTeacherName());
+        Assertions.assertEquals("Prof.", updatedCourse.getPrefix());
+        Assertions.assertEquals("Jones", updatedCourse.getTeacherName());
     }
 
     @Test
@@ -107,6 +112,6 @@ public class CourseServiceTest {
 
         assertTrue(deleted);
 
-        assertEquals(0, courseService.getAllCourses().size());
+        Assertions.assertEquals(0, courseService.getAllCourses().size());
     }
 }
