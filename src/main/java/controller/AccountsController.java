@@ -16,12 +16,12 @@ import model.User;
 public class AccountsController {
 
     private UserDao userDao = new UserDao();
+    private User loadedUser;
+    private User currentUser;
 
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
     }
-
-    private User loadedUser;
 
     @FXML
     private TextField usernameField;
@@ -65,6 +65,11 @@ public class AccountsController {
     private void handleUpdateUser() {
         if (loadedUser == null) {
             statusLabel.setText("Load a user first.");
+            return;
+        }
+
+        if (currentUser != null && !currentUser.getRole().equals("Admin")) {
+            statusLabel.setText("Only admins can change roles.");
             return;
         }
 
@@ -140,7 +145,7 @@ public class AccountsController {
             return;
         }
 
-        String newUsername = usernameField.getText().trim();
+        String newUsername = newUsernameField.getText().trim();
 
         if (newUsername.isBlank()) {
         statusLabel.setText("Enter a username.");
@@ -166,4 +171,15 @@ public class AccountsController {
         }
     }
 
+    public void setCurrentUser(User user) {
+        currentUser = user;
+        loadedUser = user;
+
+        usernameField.setText(user.getUsername());
+        roleComboBox.setValue(user.getRole());
+
+        if (!currentUser.getRole().equals("Admin")) {
+            roleComboBox.setDisable(true);
+        }
+    }
 }

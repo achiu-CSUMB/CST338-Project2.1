@@ -45,6 +45,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <VBox prefHeight="400.0"
       prefWidth="640.0"
       xmlns="http://javafx.com/javafx/25"
@@ -156,45 +158,50 @@
                                   layoutX="50.0"
                                   layoutY="56.0"
                                   prefWidth="150.0"
-                                  promptText="Student" />
+                                  promptText="Select Role" >
+
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Student" />
+                                <String fx:value="Teacher" />
+                                <String fx:value="Admin" />
+                            </FXCollections>
+                        </items>
+                    </ComboBox>
 
                         <PasswordField fx:id="passwordField"
                                        layoutX="126.0"
                                        layoutY="154.0" />
 
-                        <Button
-                                fx:id="changeUsernameButton"
+                        <Button fx:id="changeUsernameButton"
                                 layoutX="140.0"
                                 layoutY="130.0"
                                 mnemonicParsing="false"
                                 onAction="#handleChangeUsername"
                                 text="Change Username" />
 
-                        <Button
+                        <Button fx:id="loadUserButton"
                                 layoutX="249.0"
                                 layoutY="29.0"
                                 mnemonicParsing="false"
                                 onAction="#handleLoadUser"
                                 text="Load User" />
 
-                        <Button
-                                fx:id="updateUserButton"
+                        <Button fx:id="updateUserButton"
                                 layoutX="54.0"
                                 layoutY="188.0"
                                 mnemonicParsing="false"
                                 onAction="#handleUpdateUser"
                                 text="Update User" />
 
-                        <Button
-                                fx:id="deleteUserButton"
+                        <Button fx:id="deleteUserButton"
                                 layoutX="168.0"
                                 layoutY="188.0"
                                 mnemonicParsing="false"
                                 onAction="#handleDeleteUser"
                                 text="Delete User" textFill="#ee0909" />
 
-                        <Button
-                                fx:id="resetPasswordButton"
+                        <Button fx:id="resetPasswordButton"
                                 layoutX="108.0"
                                 layoutY="243.0"
                                 mnemonicParsing="false"
