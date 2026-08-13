@@ -28,8 +28,8 @@ public class UserDao {
     //Creates and insert users
     public boolean insert(User user) {
         String sql = """
-                INSERT INTO users (username, password, role)
-                VALUES (?, ?, ?);
+                INSERT INTO users (username, password, role, prefix, teacher_name)
+                VALUES (?, ?, ?, ?, ?);
                 """;
         try (PreparedStatement statement = connection.prepareStatement(
                 sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -37,6 +37,8 @@ public class UserDao {
             statement.setString(1, user.getUsername());
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getRole());
+            statement.setString(4, user.getPrefix());
+            statement.setString(5, user.getTeacherName());
 
             int rowsInserted = statement.executeUpdate();
 
@@ -60,7 +62,7 @@ public class UserDao {
     // returns existing users or null if user ID doesnt exist
     public User findById(int userId) {
         String sql = """
-                SELECT user_id, username, password, role
+                SELECT user_id, username, password, role, prefix, teacher_name
                 FROM users
                 WHERE user_id = ?;
                 """;
@@ -74,7 +76,9 @@ public class UserDao {
                             resultSet.getInt("user_id"),
                             resultSet.getString("username"),
                             resultSet.getString("password"),
-                            resultSet.getString("role")
+                            resultSet.getString("role"),
+                            resultSet.getString("prefix"),
+                            resultSet.getString("teacher_name")
                     );
                 }
 
@@ -89,7 +93,7 @@ public class UserDao {
     //Same as above but for usernames
     public User findByUsername(String username) {
         String sql = """
-                SELECT user_id, username, password, role
+                SELECT user_id, username, password, role,  prefix, teacher_name
                 FROM users
                 WHERE username = ?;
                 """;
@@ -103,7 +107,9 @@ public class UserDao {
                             resultSet.getInt("user_id"),
                             resultSet.getString("username"),
                             resultSet.getString("password"),
-                            resultSet.getString("role")
+                            resultSet.getString("role"),
+                            resultSet.getString("prefix"),
+                            resultSet.getString("teacher_name")
                     );
                 }
 
@@ -119,7 +125,7 @@ public class UserDao {
     public boolean update(User user) {
         String sql = """
                 UPDATE users
-                SET username = ?, password = ?, role = ?
+                SET username = ?, password = ?, role = ?, prefix = ?, teacher_name = ?
                 WHERE user_id = ?;
                 """;
 
@@ -127,7 +133,9 @@ public class UserDao {
             statement.setString(1, user.getUsername());
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getRole());
-            statement.setInt(4, user.getUserId());
+            statement.setString(4, user.getPrefix());
+            statement.setString(5, user.getTeacherName());
+            statement.setInt(6, user.getUserId());
 
             int rowsUpdated = statement.executeUpdate();
 

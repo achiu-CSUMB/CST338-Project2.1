@@ -39,6 +39,12 @@ public class RegisterController {
     @FXML
     private Label errorLabel;
 
+    @FXML
+    private ComboBox<String> prefixComboBox;
+
+    @FXML
+    private TextField teacherNameField;
+
     private UserDao userDao = new UserDao();
 
     public void  setUserDao(UserDao userDao) {
@@ -51,10 +57,19 @@ public class RegisterController {
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
         String role = roleComboBox.getValue();
+        String prefix = prefixComboBox.getValue();
+        String teacherName = teacherNameField.getText().trim();
 
         if (username.isBlank() || password.isBlank() || confirmPassword.isBlank() || role == null) {
             errorLabel.setText("All fields are required.");
             return;
+        }
+
+        if (role.equals("Teacher")) {
+            if (prefix == null || teacherName.isBlank()) {
+                errorLabel.setText("Teacher prefix and name are required.");
+                return;
+            }
         }
 
         if (!password.equals(confirmPassword)) {
@@ -69,7 +84,7 @@ public class RegisterController {
             return;
         }
 
-        User user = new User(username, password, role);
+        User user = new User(username, password, role, prefix, teacherName);
 
         boolean inserted = userDao.insert(user);
 
@@ -79,6 +94,7 @@ public class RegisterController {
         } else {
             errorLabel.setText("Cannot create account.");
         }
+
     }
 
     @FXML
