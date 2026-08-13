@@ -48,7 +48,8 @@
 <?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
 
-<VBox prefHeight="400.0"
+<?import javafx.scene.text.Text?>
+<VBox prefHeight="450.0"
       prefWidth="640.0"
       xmlns="http://javafx.com/javafx/25"
       xmlns:fx="http://javafx.com/fxml/1"
@@ -95,6 +96,36 @@
         </MenuBar>
         <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
             <children>
+
+                <Label layoutX="205.0"
+                       layoutY="225.0"
+                       text="Prefix:" />
+
+                <ComboBox fx:id="prefixComboBox"
+                            layoutX="237.0"
+                            layoutY="221.0"
+                            prefWidth="150.0"
+                            promptText="Select prefix">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Mr." />
+                                <String fx:value="Mrs." />
+                                <String fx:value="Ms." />
+                                <String fx:value="Dr." />
+                                <String fx:value="Prof." />
+                            </FXCollections>
+                        </items>
+                </ComboBox>
+
+                <Label layoutX="158.0"
+                       layoutY="260.0"
+                       text="Teacher Name:" />
+
+                <TextField fx:id="teacherNameField"
+                           layoutX="237.0"
+                           layoutY="256.0"
+                           promptText="Enter teacher name"/>
+
                 <Label layoutX="230.0" layoutY="63.0" text="Create Account">
                     <font>
                         <Font size="24.0" />
@@ -102,20 +133,20 @@
                 </Label>
                 <Label layoutX="181.0" layoutY="119.0" text="Username:" />
 
-                <Label layoutX="188.0" layoutY="146.0" text="Password:" />
+                <Label layoutX="182.0" layoutY="146.0" text="Password:" />
 
                 <Label layoutX="138.0" layoutY="171.0" text="Confirm Password:" />
 
                 <Label fx:id="errorLabel"
-                       layoutX="241.0"
-                       layoutY="308.0"
+                       layoutX="200.0"
+                       layoutY="380.0"
                        text=""
                        textFill="#4dd90f" />
 
                 <Button
                         fx:id="registerButton"
                         layoutX="290.0"
-                        layoutY="234.0"
+                        layoutY="305.0"
                         mnemonicParsing="false"
                         onAction="#handleCreateAccount"
                         text="Register" />
@@ -123,7 +154,7 @@
                 <Button
                         fx:id="backToLoginButton"
                         layoutX="276.0"
-                        layoutY="273.0"
+                        layoutY="340.0"
                         mnemonicParsing="false"
                         onAction="#handleBackToLogin"
                         text="Back to Login" />

@@ -11,12 +11,24 @@ public class User {
     private String username;
     private String password;
     private String role;
+    private String prefix;
+    private String teacherName;
 
-    public User(int userId, String username, String password, String role) {
+    public User(int userId, String username, String password, String role, String prefix, String teacherName) {
         this.userId = userId;
         this.username = username;
         this.password = password;
         this.role = role;
+        this.prefix = prefix;
+        this.teacherName = teacherName;
+    }
+
+    public User(String username, String password, String role, String prefix, String teacherName) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.prefix = prefix;
+        this.teacherName = teacherName;
     }
 
     public User(String username, String password, String role) {
@@ -55,5 +67,21 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
     }
 }
