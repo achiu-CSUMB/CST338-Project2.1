@@ -32,6 +32,9 @@ public class MenuController {
 
             Parent root = loader.load();
 
+            AccountsController controller = loader.getController();
+            controller.setCurrentUser(currentUser);
+
             Stage stage = (Stage) ((Node) event.getSource())
                     .getScene()
                     .getWindow();
@@ -43,6 +46,8 @@ public class MenuController {
     }
 
     @FXML
+    private void handleCourses() {
+        // Logic to navigate to the Courses scene
     private void handleCourses(ActionEvent event) {
         if (currentUser == null) {
             return;
@@ -113,3 +118,5 @@ public class MenuController {
             e.printStackTrace();
         }
     }
+
+}
