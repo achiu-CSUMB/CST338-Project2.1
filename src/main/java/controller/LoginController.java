@@ -1,5 +1,6 @@
 package controller;
 
+import dao.UserDao;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.User;
 
 import java.io.IOException;
 
@@ -36,9 +38,22 @@ public class LoginController {
 
         if (username.isBlank() || password.isBlank()) {
             errorLabel.setText("Username and password required.");
-        } else {
-            errorLabel.setText("");
+            return;
         }
+
+        User user = userDao.findByUsername(username);
+
+        if (user == null) {
+            errorLabel.setText("User not found");
+            return;
+        }
+
+        if (!password.equals(user.getPassword())) {
+            errorLabel.setText("Incorrect password.");
+            return;
+        }
+
+        errorLabel.setText("Login successful.");
     }
 
     @FXML
@@ -60,5 +75,7 @@ public class LoginController {
             e.printStackTrace();
         }
     }
+
+    private final UserDao userDao = new UserDao();
 
 }
