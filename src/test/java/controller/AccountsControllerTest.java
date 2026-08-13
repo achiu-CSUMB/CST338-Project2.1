@@ -128,4 +128,27 @@ class AccountsControllerTest extends ApplicationTest {
         Label statusLabel = lookup("#statusLabel").query();
         assertEquals("Load a user first.", statusLabel.getText());
     }
+
+    @Test
+    void changeUsername() {
+        userDao.insert(new User("john338", "password123", "student"));
+
+        //Load existing user
+        clickOn("#usernameField").write("john338");
+        clickOn("#loadUserButton");
+
+        clickOn("#newUsernameField").write("newUser");
+
+        clickOn("#changeUsernameButton");
+
+        Label statusLabel = lookup("#statusLabel").query();
+        assertEquals("Username changed successfully.", statusLabel.getText());
+
+        User oldUser = userDao.findByUsername("john338");
+        assertEquals(oldUser);
+
+        User updatedUser = userDao.findByUsername("newUser");
+        assertEquals(updatedUser);
+        assertEquals("newUser", updatedUser.getUsername());
+    }
 }
