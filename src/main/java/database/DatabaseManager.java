@@ -101,6 +101,19 @@ public class DatabaseManager {
         }
     }
 
+    private void createDefaultAdminUser() {
+        String sql = """
+                INSERT OR IGNORE INTO users (username, password, role, prefix, teacher_name)
+                VALUES ('admin', 'admin123', 'Admin', NULL, NULL);
+                """;
+
+        try (Statement statement = connection.createStatement()) {
+            statement.execute(sql);
+        } catch (SQLException e) {
+            System.err.println("Could not create default admin user: " + e.getMessage());
+        }
+    }
+
     private  void addTeacherColumns() {
         try (Statement statement= connection.createStatement()) {
             statement.execute("ALTER TABLE users ADD COLUMN prefix TEXT;");
