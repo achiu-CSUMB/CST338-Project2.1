@@ -145,10 +145,10 @@ class AccountsControllerTest extends ApplicationTest {
         assertEquals("Username changed successfully.", statusLabel.getText());
 
         User oldUser = userDao.findByUsername("john338");
-        assertEquals(oldUser);
+        assertNull(oldUser);
 
         User updatedUser = userDao.findByUsername("newUser");
-        assertEquals(updatedUser);
+        assertNotNull(updatedUser);
         assertEquals("newUser", updatedUser.getUsername());
     }
 }

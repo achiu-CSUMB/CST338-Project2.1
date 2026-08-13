@@ -171,6 +171,7 @@
                                 text="Change Username" />
 
                         <Button
+                                fx:id="loadUserButton"
                                 layoutX="249.0"
                                 layoutY="29.0"
                                 mnemonicParsing="false"
@@ -178,6 +179,7 @@
                                 text="Load User" />
 
                         <Button
+                                fx:id="updateUserButton"
                                 layoutX="54.0"
                                 layoutY="188.0"
                                 mnemonicParsing="false"
@@ -185,6 +187,7 @@
                                 text="Update User" />
 
                         <Button
+                                fx:id="deleteUserButton"
                                 layoutX="168.0"
                                 layoutY="188.0"
                                 mnemonicParsing="false"
@@ -192,6 +195,7 @@
                                 text="Delete User" textFill="#ee0909" />
 
                         <Button
+                                fx:id="resetPasswordButton"
                                 layoutX="108.0"
                                 layoutY="243.0"
                                 mnemonicParsing="false"

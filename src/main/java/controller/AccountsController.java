@@ -140,7 +140,7 @@ public class AccountsController {
             return;
         }
 
-        String newUsername = usernameField.getText().trim();
+        String newUsername = newUsernameField.getText().trim();
 
         if (newUsername.isBlank()) {
         statusLabel.setText("Enter a username.");
