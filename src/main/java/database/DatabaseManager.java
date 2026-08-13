@@ -89,7 +89,7 @@ public class DatabaseManager {
         try (Statement statement = connection.createStatement()) {
             statement.execute(userSql);
 
-            addTeacherColumn();
+            addTeacherColumns();
 
             statement.execute(courseSql);
             statement.execute(enrollmentSql);
@@ -99,7 +99,7 @@ public class DatabaseManager {
         }
     }
 
-    private  void addTeacherColumn() {
+    private  void addTeacherColumns() {
         try (Statement statement= connection.createStatement()) {
             statement.execute("ALTER TABLE users ADD COLUMN prefix TEXT;");
         } catch (SQLException e) {
