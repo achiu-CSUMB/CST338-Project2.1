@@ -171,7 +171,10 @@
                                 text="Change Username" />
 
                         <Button
+<<<<<<< HEAD
                                 fx:id="loadUserButton"
+=======
+>>>>>>> e170839631adf0adbb45374ef1f22633767435e6
                                 layoutX="249.0"
                                 layoutY="29.0"
                                 mnemonicParsing="false"
