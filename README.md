@@ -61,7 +61,7 @@ macOS / Linux
 - SQLite for application data
 - H2 in-memory database for automated tests
   
-Setup
+### Setup
 1.Clone the repository.
 2.Open the project in IntelliJ IDEA.
 3.Set the project SDK to JDK 25.
