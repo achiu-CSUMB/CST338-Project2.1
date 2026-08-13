@@ -2,18 +2,21 @@ package controller;
 
 import dao.UserDao;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import model.User;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
+import org.testfx.matcher.base.NodeMatchers;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.testfx.api.FxAssert.verifyThat;
 
 /**
  * Author: John Ly
@@ -69,8 +72,7 @@ class LoginControllerTest extends ApplicationTest {
         clickOn("#passwordField").write("password123");
         clickOn("#loginButton").clickOn();
 
-        Label errorLabel = lookup("#errorLabel").query();
-        assertEquals("Login successful.", errorLabel.getText());
+        verifyThat("#accountsButton", NodeMatchers.isVisible());
     }
 
     @Test
