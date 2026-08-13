@@ -87,7 +87,6 @@ public class MenuController {
                 e.printStackTrace();
             }
         }
-    }
 
     @FXML
     private void handleAssignments() {
