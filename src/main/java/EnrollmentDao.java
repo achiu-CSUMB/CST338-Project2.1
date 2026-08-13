@@ -294,6 +294,71 @@ public class EnrollmentDao {
     }
 
     /**
+     * Retrieves number of enrolled (non-waitlisted) students for a course.
+     */
+    public int getEnrollmentCount(int courseId) {
+        String sql = """
+                SELECT COUNT(*)
+                FROM enrollments
+                WHERE course_id = ?
+                AND waitlisted = FALSE;
+                """;
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, courseId);
+
+            try (ResultSet result = statement.executeQuery()) {
+                if(result.next()) {
+                    return result.getInt(1);
+                }
+            }
+        }
+        catch(SQLException e) {
+            System.err.println("Could not count enrollments: " +  e.getMessage());
+        }
+        return 0;
+    }
+
+    /**
+     * Retrieves first waitlisted student for a course.
+     */
+    public Enrollment getFirstWaitlistedStudent(int courseId) {
+        String sql = """
+                SELECT enrollments.enrollment_id, enrollments.student_id, enrollments.course_id, courses.title, enrollments.waitlisted
+                FROM enrollments
+                JOIN courses
+                ON enrollments.course_id = courses.course_id
+                WHERE enrollments.course_id = ?
+                AND enrollments.waitlisted = TRUE
+                ORDER BY enrollments.enrollment_id
+                LIMIT 1;
+                """;
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, courseId);
+
+            try (ResultSet result = statement.executeQuery()) {
+                if(result.next()) {
+                    Enrollment enrollment = new Enrollment(
+                            result.getInt("enrollment_id"),
+                            result.getInt("student_id"),
+                            result.getInt("course_id")
+                    );
+                    enrollment.setCourseName(result.getString("title"));
+                    enrollment.setWaitlisted(result.getBoolean("waitlisted"));
+
+                    return enrollment;
+                }
+            }
+        }
+        catch(SQLException e) {
+            System.err.println("Could not retrieve first waitlisted student: " +  e.getMessage());
+        }
+        return null;
+    }
+
+
+    /**
      * Retrieves every waitlisted student for a course.
      */
     // TODO: Note this section not required currently, will finish later.

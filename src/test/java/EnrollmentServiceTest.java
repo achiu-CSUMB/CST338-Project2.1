@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * created: 8/10/2026
  * @since '1.0-SNAPSHOT'
  * Description: Tests the business logic for student enrollment.
- * Verifies enrollment creation, prevents duplicate enrollment, dropping students from courses.
+ * Verifies enrollment creation, prevents duplicate enrollment, waitlist behavior, promotion when student drops a course, dropping students from courses.
  */
 
 public class EnrollmentServiceTest {
@@ -32,7 +32,8 @@ public class EnrollmentServiceTest {
                     CREATE TABLE courses (
                         course_id INT AUTO_INCREMENT PRIMARY KEY,
                         title VARCHAR(255),
-                        teacher_id INT
+                        teacher_id INT,
+                        capacity INT NOT NULL DEFAULT 2
                     );
                     """);
 
@@ -53,7 +54,9 @@ public class EnrollmentServiceTest {
 
             EnrollmentDao enrollmentDao = new EnrollmentDao(connection);
 
-            enrollmentService = new EnrollmentService(enrollmentDao);
+            CourseDao courseDao = new CourseDao(connection);
+
+            enrollmentService = new EnrollmentService(enrollmentDao, courseDao);
         }
     }
 
@@ -80,7 +83,7 @@ public class EnrollmentServiceTest {
     @Test
     void enrollStudentSuccessfully() {
         boolean result = enrollmentService.enrollStudent(5,1);
-    assertTrue(result);
+        assertTrue(result);
 
     assertEquals(
             1,
@@ -93,6 +96,8 @@ public class EnrollmentServiceTest {
                     .get(0)
                     .getStudentId()
     );
+
+    assertFalse(enrollmentService.getAllEnrollments().get(0).isWaitlisted());
 
     }
 
@@ -112,5 +117,98 @@ public class EnrollmentServiceTest {
                 0,
                 enrollmentService.getAllEnrollments().size()
         );
+    }
+
+    @Test
+    void thirdStudentIsWaitlisted() {
+        enrollmentService.enrollStudent(1,1);
+        enrollmentService.enrollStudent(2,1);
+        enrollmentService.enrollStudent(3,1);
+
+        Enrollment first = enrollmentService.getAllEnrollments().get(0);
+        Enrollment second = enrollmentService.getAllEnrollments().get(1);
+        Enrollment third = enrollmentService.getAllEnrollments().get(2);
+
+        assertFalse(first.isWaitlisted());
+
+        assertFalse(second.isWaitlisted());
+
+        assertEquals(3, third.getStudentId());
+
+        assertTrue(third.isWaitlisted());
+    }
+
+    @Test
+    void waitlistSpotPromotedAfterDropping() {
+        enrollmentService.enrollStudent(1,1);
+        enrollmentService.enrollStudent(2,1);
+        enrollmentService.enrollStudent(3,1);
+
+        Enrollment firstEnrollment = enrollmentService.getAllEnrollments().get(0);
+
+        enrollmentService.dropStudent(firstEnrollment.getEnrollmentId());
+
+        Enrollment promoted = null;
+
+        for (Enrollment enrollment : enrollmentService.getAllEnrollments()) {
+            if (enrollment.getStudentId() == 3) {
+                promoted = enrollment;
+                break;
+            }
+        }
+        assertNotNull(promoted);
+
+        assertEquals(3, promoted.getStudentId());
+
+        assertFalse(promoted.isWaitlisted());
+    }
+
+    // Was having a spot promotion error before.
+    @Test
+    void droppingWaitlistedStudentDoesNotPromoteOthers() {
+        enrollmentService.enrollStudent(1,1);
+        enrollmentService.enrollStudent(2,1);
+        enrollmentService.enrollStudent(3,1);
+        enrollmentService.enrollStudent(4,1);
+
+        Enrollment waitlisted = enrollmentService.getAllEnrollments().get(2);
+
+        enrollmentService.dropStudent(waitlisted.getEnrollmentId());
+
+        Enrollment fourth = null;
+
+        for (Enrollment enrollment : enrollmentService.getAllEnrollments()) {
+            if (enrollment.getStudentId() == 4) {
+                fourth = enrollment;
+                break;
+            }
+        }
+        assertNotNull(fourth);
+        assertTrue(fourth.isWaitlisted());
+    }
+
+    @Test
+    void dropForNonexistingEnrollmentReturnsFalse() {
+        assertFalse(enrollmentService.dropStudent(999));
+    }
+
+    @Test
+    void capacityControlWaitlist() throws SQLException {
+        try (Statement statement = connection.createStatement()) {
+            statement.execute("""
+                            UPDATE courses
+                            SET capacity = 1
+                            WHERE course_id = 1;
+                            """);
+        }
+        assertTrue(enrollmentService.enrollStudent(1,1));
+        assertTrue(enrollmentService.enrollStudent(2,1));
+
+        Enrollment first = enrollmentService.getAllEnrollments().get(0);
+
+        Enrollment second = enrollmentService.getAllEnrollments().get(1);
+
+        assertFalse(first.isWaitlisted());
+        assertTrue(second.isWaitlisted());
     }
 }

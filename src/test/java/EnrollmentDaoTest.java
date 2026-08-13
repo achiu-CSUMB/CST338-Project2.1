@@ -219,4 +219,48 @@ class EnrollmentDaoTest {
 
         assertEquals("Computer Science", enrollments.get(0).getCourseName());
     }
+
+    @Test
+    void getEnrollmentCount() throws SQLException {
+        enrollmentDao.insert(new Enrollment(1,1));
+        enrollmentDao.insert(new Enrollment(2,1));
+        enrollmentDao.insert(new Enrollment(3,1));
+
+        int count = enrollmentDao.getEnrollmentCount(1);
+
+        assertEquals(3, count);
+    }
+
+    @Test
+    void getFirstWaitlistedStudent() throws SQLException {
+        Enrollment first = new Enrollment(1,1);
+        Enrollment second = new Enrollment(2,1);
+        second.setWaitlisted(true);
+
+        Enrollment third = new Enrollment(3,1);
+        third.setWaitlisted(true);
+
+        enrollmentDao.insert(first);
+        enrollmentDao.insert(second);
+        enrollmentDao.insert(third);
+
+        Enrollment waitlisted = enrollmentDao.getFirstWaitlistedStudent(1);
+
+        assertNotNull(waitlisted);
+
+        assertEquals(2, waitlisted.getStudentId());
+
+        assertTrue(waitlisted.isWaitlisted());
+    }
+
+    @Test
+    void getFirstWaitlistedStudentReturnsNull() throws SQLException {
+        enrollmentDao.insert(new Enrollment(1,1));
+        enrollmentDao.insert(new Enrollment(2,1));
+
+        Enrollment waitlisted = enrollmentDao.getFirstWaitlistedStudent(1);
+
+        assertNull(waitlisted);
+    }
+
 }

@@ -10,39 +10,21 @@ import java.util.ArrayList;
  */
 public class CourseService {
 
-    private final CourseDao courseDao;
-    private final EnrollmentDao enrollmentDao;
+    private CourseDao courseDao;
 
     /**
      * Creates a CourseService object.
      */
     public CourseService() {
         courseDao = new CourseDao();
-        enrollmentDao = new EnrollmentDao();
     }
 
     /**
-     * Enrolls a student into a course.
+     * Creates CourseService using provided DAO.
+     * Testing.
      */
-    public boolean enrollStudent(int studentId, int courseId) {
-        // TODO: Prevent duplicate enrollments.
-
-        // TODO: Add student to the course.
-
-        // TODO: Add student to the waitlist if necessary.
-
-        return false;
-    }
-
-    /**
-     * Removes a student from a course.
-     */
-    public boolean dropStudent(int studentId, int courseId) {
-        // TODO: Remove the student.
-
-        // TODO: Move the first waitlisted student into the course if one exists.
-
-        return false;
+    public CourseService(CourseDao courseDao) {
+        this.courseDao = courseDao;
     }
 
     /**
@@ -71,12 +53,5 @@ public class CourseService {
      */
     public ArrayList<Course> getAllCourses() {
         return courseDao.getAllCourses();
-    }
-
-    /**
-     * Retrieves every enrollment for a student.
-     */
-    public ArrayList<Enrollment> getStudentEnrollments(int studentId) {
-        return enrollmentDao.getStudentEnrollments(studentId);
     }
 }

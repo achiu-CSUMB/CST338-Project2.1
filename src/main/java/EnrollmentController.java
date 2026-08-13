@@ -1,4 +1,3 @@
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -8,6 +7,8 @@ import javafx.scene.control.TextField;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.stage.Stage;
+import javafx.event.ActionEvent;
 import java.util.ArrayList;
 
 /**
@@ -63,10 +64,7 @@ public class EnrollmentController {
     private TableColumn<Course, String> availableCourseNameColumn;
 
     @FXML
-    private TableColumn<Course, Integer> availableTeacherIdColumn;
-
-    @FXML
-    private TableColumn<Enrollment, Boolean> waitlistedColumn;
+    private TableColumn<Enrollment, String> statusColumn;
 
     @FXML
     private TextField studentIdField;
@@ -112,10 +110,23 @@ public class EnrollmentController {
                 )
         );
 
-        waitlistedColumn.setCellValueFactory(
-                data -> new SimpleBooleanProperty(
-                        data.getValue().isWaitlisted()
-                ).asObject()
+        statusColumn.setCellValueFactory(
+                data -> {
+                    Enrollment enrollment = data.getValue();
+
+                    int position = enrollmentService.getWaitlistPosition(enrollment);
+
+                    if (position == -1) {
+                        return new SimpleStringProperty("Enrolled");
+                    }
+
+                    if (position == 0) {
+                        return new SimpleStringProperty("Next on Waitlist");
+                    }
+
+                    return new SimpleStringProperty("Waitlisted (" + position + " ahead)"
+                    );
+                }
         );
 
         availableCourseIdColumn.setCellValueFactory(
@@ -130,18 +141,21 @@ public class EnrollmentController {
                 )
         );
 
-        availableTeacherIdColumn.setCellValueFactory(
-                data -> new SimpleIntegerProperty(
-                        data.getValue().getTeacherId()
-                ).asObject()
-        );
-
         enrollButton.setOnAction(e -> enrollStudent());
 
         dropButton.setOnAction(e -> dropStudent());
 
         loadEnrollments();
         loadCourses();
+    }
+
+    @FXML
+    private void goBackToLogin(ActionEvent event) {
+        Stage stage = (Stage) enrollButton.getScene().getWindow();
+
+        SceneFactory sceneFactory = new SceneFactory(stage);
+
+        sceneFactory.showScene(SceneFactory.SceneType.LOGIN);
     }
 
     public void loadEnrollments() {
@@ -157,10 +171,10 @@ public class EnrollmentController {
     public void enrollStudent() {
         int studentId;
 
-        try{
+        try {
             studentId = Integer.parseInt(studentIdField.getText());
         }
-        catch(NumberFormatException e){
+        catch (NumberFormatException e) {
             System.out.println("Student ID must be a number");
             return;
         }
@@ -170,7 +184,7 @@ public class EnrollmentController {
                         .getSelectionModel()
                         .getSelectedItem();
 
-        if(selectedCourse == null) {
+        if (selectedCourse == null) {
             System.out.println("No course selected");
             return;
         }
@@ -179,9 +193,26 @@ public class EnrollmentController {
                 selectedCourse.getCourseId();
 
 
-        if(enrollmentService.enrollStudent(studentId, courseId)) {
-        loadEnrollments();
-        System.out.println("Student enrolled");
+        if (enrollmentService.enrollStudent(studentId, courseId)) {
+            loadEnrollments();
+
+            Enrollment newestEnrollment = null;
+
+            for (Enrollment enrollment : enrollmentService.getAllEnrollments()) {
+                if (enrollment.getStudentId() == studentId
+                        && enrollment.getCourseId() == courseId) {
+                    newestEnrollment = enrollment;
+                    break;
+                }
+            }
+
+            if (newestEnrollment != null) {
+                if (newestEnrollment.isWaitlisted()) {
+                    System.out.println("Student added to waitlist");
+                } else {
+                    System.out.println("Student enrolled");
+                }
+            }
         }
         else {
             System.out.println("Enrollment failed or student already enrolled");
