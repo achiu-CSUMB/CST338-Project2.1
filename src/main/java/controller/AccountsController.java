@@ -23,6 +23,13 @@ public class AccountsController {
 
     private User loadedUser;
 
+    public void setUser(User user) {
+        loadedUser = user;
+
+        usernameField.setText(user.getUsername());
+        roleComboBox.setValue(user.getRole());
+    }
+
     @FXML
     private TextField usernameField;
 
