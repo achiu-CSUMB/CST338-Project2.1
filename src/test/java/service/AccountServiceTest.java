@@ -47,11 +47,11 @@ class AccountServiceTest {
     void resetPassword() {
         userDao.insert(new User("john338", "password123", "student"));
 
-        boolean result = accountService.resetPassword("john338", "password123");
+        boolean result = accountService.resetPassword("john338", "newpassword123");
         assertTrue(result);
 
         User user = userDao.findByUsername("john338");
-        assertEquals("password123", user.getPassword());
+        assertEquals("newpassword123", user.getPassword());
     }
 
     @Test
