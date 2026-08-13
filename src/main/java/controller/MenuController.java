@@ -44,33 +44,44 @@ public class MenuController {
 
     @FXML
     private void handleCourses(ActionEvent event) {
-        if(currentUser == null) {
+        if (currentUser == null) {
             return;
         }
-        if(!currentUser.isTeacher()) {
+        if (!currentUser.getRole().equals("TEACHER")) {
+            return;
+        }
+        try {
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/views/enrollment-view.fxml")
+                    getClass().getResource("/views/courses-view.fxml")
             );
 
             Parent root = loader.load();
 
-            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
             stage.getScene().setRoot(root);
 
-            return;
-
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
 
-        FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/views/courses-view.fxml")
-        );
+    @FXML
+    private void handleEnrollment(ActionEvent event) {
+            try {
+                FXMLLoader loader = new FXMLLoader(
+                        getClass().getResource("/views/enrollment-view.fxml")
+                );
 
-        Parent root = loader.load();
+                Parent root = loader.load();
 
-        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-        stage.getScene().setRoot(root);
+                stage.getScene().setRoot(root);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @FXML
@@ -102,5 +113,3 @@ public class MenuController {
             e.printStackTrace();
         }
     }
-
-}
