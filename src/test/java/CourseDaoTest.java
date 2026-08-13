@@ -29,7 +29,7 @@ class CourseDaoTest {
                 CREATE TABLE courses (
                 course_id INT AUTO_INCREMENT PRIMARY KEY,
                 title VARCHAR(255) NOT NULL,
-                teacher_id INT NOT NULL
+                capacity INT NOT NULL DEFAULT 2
                 );
                 """;
 
@@ -51,7 +51,7 @@ class CourseDaoTest {
     void insert() {
         Course course = new Course(
                 "Computer Science",
-                1
+                2
         );
         boolean inserted = courseDao.insert(course);
         assertTrue(inserted);
@@ -62,7 +62,7 @@ class CourseDaoTest {
     void findById() {
         Course course = new Course(
                 "Computer Science",
-                1
+                2
         );
         courseDao.insert(course);
         Course found = courseDao.findById(
@@ -81,7 +81,7 @@ class CourseDaoTest {
     void update() {
         Course course = new Course(
                 "Computer Science",
-                1
+                2
         );
 
         courseDao.insert(course);
@@ -103,7 +103,7 @@ class CourseDaoTest {
     void delete() {
         Course course = new Course(
                 "Computer Science",
-                1
+                2
         );
 
         courseDao.insert(course);

@@ -37,13 +37,13 @@ public class CourseDao {
      */
     public boolean insert(Course course) {
         String sql = """
-                INSERT INTO courses (title, teacher_id)
+                INSERT INTO courses (title, capacity)
                 VALUES (?, ?);
                 """;
 
         try (PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, course.getCourseName());
-            statement.setInt(2, course.getTeacherId());
+            statement.setInt(2, course.getCapacity());
 
             int rowsInserted = statement.executeUpdate();
 
@@ -66,7 +66,7 @@ public class CourseDao {
      */
     public Course findById(int courseId) {
         String sql = """
-                SELECT course_id, title, teacher_id
+                SELECT course_id, title, capacity
                 FROM courses
                 WHERE course_id = ?;
                 """;
@@ -79,7 +79,7 @@ public class CourseDao {
                     return new Course(
                             resultSet.getInt("course_id"),
                             resultSet.getString("title"),
-                            resultSet.getInt("teacher_id")
+                            resultSet.getInt("capacity")
                     );
                 }
             }
@@ -96,13 +96,13 @@ public class CourseDao {
     public boolean update(Course course) {
         String sql = """
                 UPDATE courses
-                SET title = ?, teacher_id = ?
+                SET title = ?, capacity = ?
                 WHERE course_id = ?;
                 """;
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, course.getCourseName());
-            statement.setInt(2, course.getTeacherId());
+            statement.setInt(2, course.getCapacity());
             statement.setInt(3, course.getCourseId());
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -150,7 +150,7 @@ public class CourseDao {
                         new Course(
                                 result.getInt("course_id"),
                                 result.getString("title"),
-                                result.getInt("teacher_id")
+                                result.getInt("capacity")
                         )
                 );
             }

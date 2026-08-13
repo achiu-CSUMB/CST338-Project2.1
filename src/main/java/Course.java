@@ -3,7 +3,7 @@
  * <br>
  * created: 8/2/2026
  * @since '1.0-SNAPSHOT'
- * Description: Stores info about a course. A course will have an ID, name, and teacher associated with it.
+ * Description: Stores info about a course. A course will have an ID, class name.
  */
 
 // Note: Due to complications with merge, I had to grab the code from before merge and port it manually myself.
@@ -11,31 +11,29 @@ public class Course {
 
     private int courseId;
     private String courseName;
-    private int teacherId;
+    private int capacity;
 
 
     /**
      * Creates a new course.
      */
-    public Course(String courseName, int teacherId) {
+    public Course(String courseName,  int capacity) {
 
         this.courseName = courseName;
-        this.teacherId = teacherId;
+        this.capacity = capacity;
 
     }
 
     /**
      * Creates a course with all the information.
      */
-    public Course(int courseId, String courseName, int teacherId) {
+    public Course(int courseId, String courseName, int capacity) {
 
         this.courseId = courseId;
         this.courseName = courseName;
-        this.teacherId = teacherId;
+        this.capacity = capacity;
 
     }
-
-    // Getters
 
     /**
      * @return the course ID.
@@ -52,10 +50,10 @@ public class Course {
     }
 
     /**
-     * @return the teacher ID.
+     * @return The max number of enrolled students.
      */
-    public int getTeacherId() {
-        return teacherId;
+    public int getCapacity() {
+        return capacity;
     }
 
     // Setters
@@ -68,10 +66,11 @@ public class Course {
     }
 
     /**
-     * Updates the teacher ID.
+     * Updates course capacity.
+     * @param capacity student size for a course.
      */
-    public void setTeacherId(int teacherId) {
-        this.teacherId = teacherId;
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
     }
 
     /**
@@ -81,6 +80,5 @@ public class Course {
         this.courseId = courseId;
     }
 
-    // TODO: Add any validation for course info.
 
 }

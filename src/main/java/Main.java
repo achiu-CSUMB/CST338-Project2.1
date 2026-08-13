@@ -18,7 +18,7 @@ public class Main extends Application {
         // Change name of SceneType below to access a specific scene (COURSES, LOGIN, etc.)
 
         // Note: Make sure to run the file with Gradle.
-        sceneFactory.showScene(SceneFactory.SceneType.ENROLLMENT);
+        sceneFactory.showScene(SceneFactory.SceneType.COURSES);
 
         primaryStage.show();
     }
