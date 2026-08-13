@@ -35,9 +35,10 @@ public class EnrollmentControllerTest extends ApplicationTest {
             statement.execute("""
                     CREATE TABLE IF NOT EXISTS courses (
                         course_id INT AUTO_INCREMENT PRIMARY KEY,
-                        title VARCHAR(255),
-                        teacher_id INT,
-                        capacity INT NOT NULL DEFAULT 2
+                        title VARCHAR(255),                 
+                        capacity INT NOT NULL DEFAULT 2,
+                        prefix VARCHAR(255),
+                        teacher_name VARCHAR(255)
                     );
                     """);
 
@@ -54,8 +55,8 @@ public class EnrollmentControllerTest extends ApplicationTest {
             statement.execute("DELETE FROM courses;");
 
             statement.execute("""
-                    INSERT INTO courses(title, teacher_id, capacity)
-                    VALUES ('Computer Science', 1, 2);
+                    INSERT INTO courses(title, capacity, prefix, teacher_name)
+                    VALUES ('Computer Science', 2, 'CST', 'John Ly');
                     """);
         }
 

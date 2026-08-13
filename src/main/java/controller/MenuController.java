@@ -43,8 +43,45 @@ public class MenuController {
     }
 
     @FXML
-    private void handleCourses() {
-        // Logic to navigate to the Courses scene
+    private void handleCourses(ActionEvent event) {
+        if (currentUser == null) {
+            return;
+        }
+        if (!currentUser.getRole().equals("TEACHER")) {
+            return;
+        }
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/views/courses-view.fxml")
+            );
+
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            stage.getScene().setRoot(root);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleEnrollment(ActionEvent event) {
+            try {
+                FXMLLoader loader = new FXMLLoader(
+                        getClass().getResource("/views/enrollment-view.fxml")
+                );
+
+                Parent root = loader.load();
+
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+                stage.getScene().setRoot(root);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @FXML
@@ -76,5 +113,3 @@ public class MenuController {
             e.printStackTrace();
         }
     }
-
-}

@@ -37,10 +37,19 @@ public class CoursesController {
     private TableColumn<Course, Integer> capacityColumn;
 
     @FXML
+    private TableColumn<Course, String> instructorColumn;
+
+    @FXML
     private TextField courseNameField;
 
     @FXML
     private TextField capacityField;
+
+    @FXML
+    private TextField prefixField;
+
+    @FXML
+    private TextField teacherNameField;
 
     @FXML
     private Button addButton;
@@ -72,6 +81,13 @@ public class CoursesController {
                 )
         );
 
+        instructorColumn.setCellValueFactory(
+                data -> new SimpleStringProperty(
+                        data.getValue().getPrefix() + " " +
+                                data.getValue().getTeacherName()
+                )
+        );
+
         capacityColumn.setCellValueFactory(
                 data -> new SimpleIntegerProperty(
                         data.getValue().getCapacity()
@@ -95,6 +111,14 @@ public class CoursesController {
                                 newCourse.getCapacity()
                         )
                 );
+
+                prefixField.setText(
+                        newCourse.getPrefix()
+                );
+
+                teacherNameField.setText(
+                        newCourse.getTeacherName()
+                );
             }
         });
 
@@ -108,7 +132,7 @@ public class CoursesController {
 
         SceneFactory sceneFactory = new SceneFactory(stage);
 
-        sceneFactory.showScene(SceneFactory.SceneType.LOGIN);
+        sceneFactory.showScene(SceneFactory.SceneType.MAIN_MENU);
     }
 
     private void loadCourses() {
@@ -134,6 +158,10 @@ public class CoursesController {
                     courseNameField.getText(),
                     Integer.parseInt(capacityField.getText())
             );
+
+            course.setPrefix(prefixField.getText());
+
+            course.setTeacherName(teacherNameField.getText());
 
             boolean created = courseService.createCourse(course);
 
@@ -198,6 +226,12 @@ public class CoursesController {
                 Integer.parseInt(
                         capacityField.getText()
                 )
+        );
+        selectedCourse.setPrefix(
+                prefixField.getText()
+        );
+        selectedCourse.setTeacherName(
+                teacherNameField.getText()
         );
         boolean updated = courseService.updateCourse(selectedCourse);
 
