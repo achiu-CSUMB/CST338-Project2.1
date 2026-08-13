@@ -138,9 +138,11 @@
                 <Label layoutX="138.0" layoutY="171.0" text="Confirm Password:" />
 
                 <Label fx:id="errorLabel"
-                       layoutX="200.0"
+                       layoutX="220.0"
                        layoutY="380.0"
+                       prefWidth="400.0"
                        text=""
+                       textAlignment="CENTER"
                        textFill="#4dd90f" />
 
                 <Button

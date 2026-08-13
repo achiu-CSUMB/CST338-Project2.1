@@ -131,4 +131,34 @@ class RegisterControllerTest extends ApplicationTest {
 
         assertEquals("Username already exists.", errorLabel.getText());
     }
+
+    @Test
+    void successfulTeacherRegistration() {
+        clickOn("#usernameField").write("teacher1");
+        clickOn("#passwordField").write("password123");
+        clickOn("#confirmPasswordField").write("password123");
+
+        ComboBox<String> roleComboBox = lookup("#roleComboBox").query();
+        interact(() -> roleComboBox.setValue("Teacher"));
+
+        ComboBox<String> prefixComboBox = lookup("#prefixComboBox").query();
+        interact(() -> prefixComboBox.setValue("Prof."));
+
+        clickOn("#teacherNameField").write("Test Teacher");
+
+        clickOn("#registerButton");
+
+        Label errorLabel = lookup("#errorLabel").query();
+
+        assertEquals("Account Created Successfully! Please log in.",
+                errorLabel.getText()
+        );
+
+        User createdUser = userDao.findByUsername("teacher1");
+        assertNotNull(createdUser);
+        assertEquals("teacher1", createdUser.getUsername());
+        assertEquals("Teacher", createdUser.getRole());
+        assertEquals("Prof.", createdUser.getPrefix());
+        assertEquals("Test Teacher", createdUser.getTeacherName());
+    }
 }
