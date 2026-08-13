@@ -175,7 +175,7 @@
 
                         <Button fx:id="changeUsernameButton"
                                 layoutX="140.0"
-                                layoutY="130.0"
+                                layoutY="128.0"
                                 mnemonicParsing="false"
                                 onAction="#handleChangeUsername"
                                 text="Change Username" />
