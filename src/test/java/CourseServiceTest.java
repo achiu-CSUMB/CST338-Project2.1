@@ -31,7 +31,9 @@ public class CourseServiceTest {
                         CREATE TABLE courses (
                             course_id INT AUTO_INCREMENT PRIMARY KEY,
                             title VARCHAR(255) NOT NULL,          
-                            capacity INT NOT NULL DEFAULT 2
+                            capacity INT NOT NULL DEFAULT 2,
+                            prefix VARCHAR(20),
+                            teacher_name VARCHAR(255)
                         );
                         """);
         }
@@ -49,7 +51,7 @@ public class CourseServiceTest {
     }
     @Test
     void createsCourse() {
-        Course course = new Course("Computer Science", 2);
+        Course course = new Course(0, "Computer Science", 2, "Dr.", "Smith");
 
         boolean created = courseService.createCourse(course);
 
@@ -60,20 +62,28 @@ public class CourseServiceTest {
 
     @Test
     void retrieveCourses() {
-        Course course = new Course("Computer Science", 2);
+        Course course = new Course(0, "Computer Science", 2, "Dr.", "Smith");
 
         courseService.createCourse(course);
 
         assertEquals(1,courseService.getAllCourses().size());
+
+        assertEquals("Dr.", courseService.getAllCourses().get(0).getPrefix());
+
+        assertEquals("Smith", courseService.getAllCourses().get(0).getTeacherName());
     }
 
     @Test
     void updateCourse() {
-        Course course = new Course("Computer Science", 2);
+        Course course = new Course(0, "Computer Science", 2, "Dr.", "Smith");
 
         courseService.createCourse(course);
 
         course.setCapacity(4);
+
+        course.setPrefix("Prof.");
+
+        course.setTeacherName("Jones");
 
         boolean updated = courseService.updateCourse(course);
 
@@ -82,11 +92,14 @@ public class CourseServiceTest {
         Course updatedCourse = courseService.getAllCourses().get(0);
 
         assertEquals(4, updatedCourse.getCapacity());
+
+        assertEquals("Prof.", updatedCourse.getPrefix());
+        assertEquals("Jones", updatedCourse.getTeacherName());
     }
 
     @Test
     void deleteCourse() {
-        Course course = new Course("Computer Science", 2);
+        Course course = new Course(0, "Computer Science", 2, "Dr.", "Smith");
 
         courseService.createCourse(course);
 

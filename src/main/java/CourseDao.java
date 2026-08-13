@@ -37,13 +37,15 @@ public class CourseDao {
      */
     public boolean insert(Course course) {
         String sql = """
-                INSERT INTO courses (title, capacity)
-                VALUES (?, ?);
+                INSERT INTO courses (title, capacity, prefix, teacher_name)
+                VALUES (?, ?, ?, ?);
                 """;
 
         try (PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, course.getCourseName());
             statement.setInt(2, course.getCapacity());
+            statement.setString(3, course.getPrefix());
+            statement.setString(4, course.getTeacherName());
 
             int rowsInserted = statement.executeUpdate();
 
@@ -66,7 +68,7 @@ public class CourseDao {
      */
     public Course findById(int courseId) {
         String sql = """
-                SELECT course_id, title, capacity
+                SELECT course_id, title, capacity, prefix, teacher_name
                 FROM courses
                 WHERE course_id = ?;
                 """;
@@ -79,7 +81,9 @@ public class CourseDao {
                     return new Course(
                             resultSet.getInt("course_id"),
                             resultSet.getString("title"),
-                            resultSet.getInt("capacity")
+                            resultSet.getInt("capacity"),
+                            resultSet.getString("prefix"),
+                            resultSet.getString("teacher_name")
                     );
                 }
             }
@@ -96,14 +100,16 @@ public class CourseDao {
     public boolean update(Course course) {
         String sql = """
                 UPDATE courses
-                SET title = ?, capacity = ?
+                SET title = ?, capacity = ?, prefix = ?, teacher_name = ?
                 WHERE course_id = ?;
                 """;
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, course.getCourseName());
             statement.setInt(2, course.getCapacity());
-            statement.setInt(3, course.getCourseId());
+            statement.setString(3, course.getPrefix());
+            statement.setString(4, course.getTeacherName());
+            statement.setInt(5, course.getCourseId());
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("Could not update course: " + e.getMessage());
@@ -150,7 +156,9 @@ public class CourseDao {
                         new Course(
                                 result.getInt("course_id"),
                                 result.getString("title"),
-                                result.getInt("capacity")
+                                result.getInt("capacity"),
+                                result.getString("prefix"),
+                                result.getString("teacher_name")
                         )
                 );
             }

@@ -33,7 +33,9 @@ public class CoursesControllerTest extends ApplicationTest {
                             CREATE TABLE courses(
                                 course_id INT AUTO_INCREMENT PRIMARY KEY,
                                 title VARCHAR(255),
-                                capacity INT NOT NULL DEFAULT 2
+                                capacity INT NOT NULL DEFAULT 2,
+                                prefix VARCHAR(20),
+                                teacher_name VARCHAR(255)
                             );
                             """);
         }
@@ -60,6 +62,9 @@ public class CoursesControllerTest extends ApplicationTest {
 
         clickOn("#capacityField").write("2");
 
+        clickOn("#prefixField").write("Dr.");
+        clickOn("#teacherNameField").write("Smith");
+
         clickOn("#addButton");
 
         TableView<Course> table = lookup("#courseTable").query();
@@ -67,5 +72,9 @@ public class CoursesControllerTest extends ApplicationTest {
         assertEquals(1,table.getItems().size());
 
         assertEquals("Computer Science", table.getItems().get(0).getCourseName());
+
+        assertEquals("Dr.", table.getItems().get(0).getPrefix());
+
+        assertEquals("Smith", table.getItems().get(0).getTeacherName());
     }
 }

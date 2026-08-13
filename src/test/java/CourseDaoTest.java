@@ -29,7 +29,9 @@ class CourseDaoTest {
                 CREATE TABLE courses (
                 course_id INT AUTO_INCREMENT PRIMARY KEY,
                 title VARCHAR(255) NOT NULL,
-                capacity INT NOT NULL DEFAULT 2
+                capacity INT NOT NULL DEFAULT 2,
+                prefix VARCHAR(20),
+                teacher_name VARCHAR(255)
                 );
                 """;
 
@@ -49,9 +51,11 @@ class CourseDaoTest {
 
     @Test
     void insert() {
-        Course course = new Course(
+        Course course = new Course(0,
                 "Computer Science",
-                2
+                2,
+                "Dr.",
+                "Smith"
         );
         boolean inserted = courseDao.insert(course);
         assertTrue(inserted);
@@ -60,9 +64,11 @@ class CourseDaoTest {
 
     @Test
     void findById() {
-        Course course = new Course(
+        Course course = new Course(0,
                 "Computer Science",
-                2
+                2,
+                "Dr.",
+                "Smith"
         );
         courseDao.insert(course);
         Course found = courseDao.findById(
@@ -75,19 +81,25 @@ class CourseDaoTest {
                 "Computer Science",
                 found.getCourseName()
         );
+        assertEquals("Dr.", found.getPrefix());
+        assertEquals("Smith", found.getTeacherName());
     }
 
     @Test
     void update() {
-        Course course = new Course(
+        Course course = new Course(0,
                 "Computer Science",
-                2
+                2,
+                "Dr.",
+                "Smith"
         );
 
         courseDao.insert(course);
         course.setCourseName(
                 "Software Engineering"
         );
+        course.setPrefix("Prof.");
+        course.setTeacherName("Jones");
         boolean updated = courseDao.update(course);
         assertTrue(updated);
         Course updatedCourse = courseDao.findById(
@@ -97,13 +109,17 @@ class CourseDaoTest {
                 "Software Engineering",
                 updatedCourse.getCourseName()
         );
+        assertEquals("Prof.", updatedCourse.getPrefix());
+        assertEquals("Jones", updatedCourse.getTeacherName());
     }
 
     @Test
     void delete() {
-        Course course = new Course(
+        Course course = new Course(0,
                 "Computer Science",
-                2
+                2,
+                "Dr.",
+                "Smith"
         );
 
         courseDao.insert(course);

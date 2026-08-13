@@ -59,7 +59,9 @@ public class DatabaseManager {
                 CREATE TABLE IF NOT EXISTS courses (
                     course_id INTEGER PRIMARY KEY AUTOINCREMENT,
                     title TEXT NOT NULL,
-                    capacity INTEGER NOT NULL DEFAULT 2
+                    capacity INTEGER NOT NULL DEFAULT 2,
+                    prefix TEXT,
+                    teacher_name TEXT
             );
         """;
 
