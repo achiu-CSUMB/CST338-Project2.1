@@ -60,11 +60,11 @@ macOS / Linux
 - Gradle wrapper included
 - SQLite for application data
 - H2 in-memory database for automated tests
-- 
+  
 Setup
-Clone the repository.
-Open the project in IntelliJ IDEA.
-Set the project SDK to JDK 25.
-Allow Gradle to download the required dependencies.
-Run the application using the Gradle wrapper.
-Run the full automated test suite before submission.
+1.Clone the repository.
+2.Open the project in IntelliJ IDEA.
+3.Set the project SDK to JDK 25.
+4.Allow Gradle to download the required dependencies.
+5.Run the application using the Gradle wrapper.
+6.Run the full automated test suite before submission.
