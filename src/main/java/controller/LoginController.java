@@ -59,7 +59,22 @@ public class LoginController {
             return;
         }
 
-        errorLabel.setText("Login successful.");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/menu-view.fxml"));
+
+            Parent root = loader.load();
+
+            MenuController controller = loader.getController();
+            controller.setCurrentUser(user);
+
+            Stage stage = (Stage) usernameField.getScene().getWindow();
+
+            stage.setScene(new Scene(root));
+
+        } catch (IOException e) {
+            errorLabel.setText("Error loading menu screen.");
+            e.printStackTrace();
+        }
     }
 
     @FXML

@@ -85,13 +85,31 @@ public class DatabaseManager {
                 );
                 """;
 
+
         try (Statement statement = connection.createStatement()) {
             statement.execute(userSql);
+
+            addTeacherColumn();
+
             statement.execute(courseSql);
             statement.execute(enrollmentSql);
             statement.execute(assignmentSql);
         } catch (SQLException e) {
             System.err.println("Could not create database table: " + e.getMessage());
+        }
+    }
+
+    private  void addTeacherColumn() {
+        try (Statement statement= connection.createStatement()) {
+            statement.execute("ALTER TABLE users ADD COLUMN prefix TEXT;");
+        } catch (SQLException e) {
+            // Ignore if the column already exists
+        }
+
+        try (Statement statement= connection.createStatement()) {
+            statement.execute("ALTER TABLE users ADD COLUMN teacher_name TEXT;");
+        } catch (SQLException e) {
+            // Ignore if the column already exists
         }
     }
 
