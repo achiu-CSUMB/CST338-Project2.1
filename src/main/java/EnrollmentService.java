@@ -6,44 +6,102 @@ import java.util.ArrayList;
  * created: 8/9/2026
  * @since '1.0-SNAPSHOT'
  * Description: Provides the enrollment business logic between EnrollmentController and EnrollmentDao.
- * Handles enrolling students, dropping enrollments, preventing duplicate enrollments.
+ * Handles enrolling students, dropping enrollments, preventing duplicate enrollments, managing waitlist, automatically promote waitlist students when spot available.
  */
 
 public class EnrollmentService {
 
     private EnrollmentDao enrollmentDao;
+    private CourseDao courseDao;
 
     /**
      * Creates an EnrollmentService object.
      */
     public EnrollmentService() {
         enrollmentDao = new EnrollmentDao();
+        courseDao = new CourseDao();
     }
 
     /**
      * Creates an EnrollmentService object using a provided DAO, used for testing.
      */
-    public EnrollmentService(EnrollmentDao enrollmentDao) {
+    public EnrollmentService(EnrollmentDao enrollmentDao, CourseDao courseDao) {
         this.enrollmentDao = enrollmentDao;
+        this.courseDao = courseDao;
     }
 
     /**
      * Enrolls a student into a course.
      * Prevents duplicate enrollments.
+     * Puts students on the waitlist when course reaches capacity.
      */
     public boolean enrollStudent(int studentId, int courseId) {
         if(enrollmentDao.isStudentEnrolled(studentId, courseId)) {
             return false;
         }
+
+        Course course = courseDao.findById(courseId);
+
+        if (course == null) {
+            return false;
+        }
+
         Enrollment enrollment = new Enrollment(studentId, courseId);
+
+        if (enrollmentDao.getEnrollmentCount(courseId) >= course.getCapacity()) {
+            enrollment.setWaitlisted(true);
+        }
         return enrollmentDao.insert(enrollment);
     }
 
     /**
      * Drops a student from a course.
+     * Auto promotes first waitlisted if one exists.
      */
     public boolean dropStudent(int enrollmentId) {
-        return enrollmentDao.delete(enrollmentId);
+        Enrollment enrollment = enrollmentDao.findById(enrollmentId);
+
+        if (enrollment == null) {
+            return false;
+        }
+
+        boolean deleted = enrollmentDao.delete(enrollmentId);
+
+        if (!deleted) {
+            return false;
+        }
+
+        // Promotes only if ENROLLED student dropped.
+        Enrollment promoted = null;
+        if (!enrollment.isWaitlisted()) {
+            promoted = enrollmentDao.getFirstWaitlistedStudent(enrollment.getCourseId()
+            );
+        }
+
+        if (promoted != null) {
+            promoted.setWaitlisted(false);
+            enrollmentDao.update(promoted);
+        }
+        return true;
+    }
+
+    /**
+     * Return student position in waitlist.
+     * 0 - Will be next on the waitlist.
+     * -1 - Is not waitlisted.
+     */
+    public int getWaitlistPosition(Enrollment enrollment) {
+        if(!enrollment.isWaitlisted()) {
+            return -1;
+        }
+        ArrayList<Enrollment> waitlisted = enrollmentDao.getWaitlistedStudents(enrollment.getCourseId());
+
+        for (int i = 0; i < waitlisted.size(); i++) {
+            if (waitlisted.get(i).getEnrollmentId() == enrollment.getEnrollmentId()) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     /**

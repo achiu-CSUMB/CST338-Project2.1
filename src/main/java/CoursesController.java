@@ -7,6 +7,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.stage.Stage;
+import javafx.event.ActionEvent;
 import java.util.ArrayList;
 
 /**
@@ -32,13 +34,13 @@ public class CoursesController {
     private TableColumn<Course, String> courseNameColumn;
 
     @FXML
-    private TableColumn<Course, Integer> teacherIdColumn;
+    private TableColumn<Course, Integer> capacityColumn;
 
     @FXML
     private TextField courseNameField;
 
     @FXML
-    private TextField teacherIdField;
+    private TextField capacityField;
 
     @FXML
     private Button addButton;
@@ -54,7 +56,9 @@ public class CoursesController {
      */
     @FXML
     public void initialize() {
-        courseService = new CourseService();
+        if (courseService == null) {
+            courseService = new CourseService();
+        }
 
         courseIdColumn.setCellValueFactory(
                 data -> new SimpleIntegerProperty(
@@ -68,15 +72,13 @@ public class CoursesController {
                 )
         );
 
-        teacherIdColumn.setCellValueFactory(
+        capacityColumn.setCellValueFactory(
                 data -> new SimpleIntegerProperty(
-                        data.getValue().getTeacherId()
+                        data.getValue().getCapacity()
                 ).asObject()
         );
 
         addButton.setOnAction(e -> addCourse());
-
-        deleteButton.setOnAction(e -> deleteCourse());
 
         updateButton.setOnAction(e -> updateCourse());
 
@@ -88,15 +90,25 @@ public class CoursesController {
                         newCourse.getCourseName()
                 );
 
-                teacherIdField.setText(
+                capacityField.setText(
                         String.valueOf(
-                                newCourse.getTeacherId()
+                                newCourse.getCapacity()
                         )
                 );
             }
         });
 
         loadCourses();
+    }
+
+
+    @FXML
+    private void goBackToLogin(ActionEvent event) {
+        Stage stage = (Stage) addButton.getScene().getWindow();
+
+        SceneFactory sceneFactory = new SceneFactory(stage);
+
+        sceneFactory.showScene(SceneFactory.SceneType.LOGIN);
     }
 
     private void loadCourses() {
@@ -112,19 +124,28 @@ public class CoursesController {
      * Adds a course.
      */
     private void addCourse() {
-        Course course = new Course(
-                courseNameField.getText(),
-                Integer.parseInt(teacherIdField.getText())
-        );
-
-        boolean created = courseService.createCourse(course);
-
-        if (created) {
-            loadCourses();
-            System.out.println("Course added");
+        if (courseNameField.getText().isBlank() || capacityField.getText().isBlank()) {
+            System.out.println("All fields are required");
+            return;
         }
-        else {
-            System.out.println("Failed to add course");
+
+        try {
+            Course course = new Course(
+                    courseNameField.getText(),
+                    Integer.parseInt(capacityField.getText())
+            );
+
+            boolean created = courseService.createCourse(course);
+
+            if (created) {
+                loadCourses();
+                System.out.println("Course added successfully");
+            }
+            else {
+                System.out.println("Failed to add course.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Capacity must use numbers.");
         }
     }
 
@@ -160,7 +181,6 @@ public class CoursesController {
     /**
      * Updates a course.
      */
-    // When loading the project, you have to click on a pre-existing row... then alter the field information and click update to refresh the table.
     private void updateCourse() {
         Course selectedCourse =
                 courseTable.getSelectionModel().getSelectedItem();
@@ -174,9 +194,9 @@ public class CoursesController {
         selectedCourse.setCourseName(
                 courseNameField.getText()
         );
-        selectedCourse.setTeacherId(
+        selectedCourse.setCapacity(
                 Integer.parseInt(
-                        teacherIdField.getText()
+                        capacityField.getText()
                 )
         );
         boolean updated = courseService.updateCourse(selectedCourse);
@@ -191,5 +211,12 @@ public class CoursesController {
         else {
             System.out.println("Failed to update course");
         }
+    }
+
+    /**
+     * Used for testing.
+     */
+    public void setCourseService(CourseService courseService) {
+        this.courseService = courseService;
     }
 }
