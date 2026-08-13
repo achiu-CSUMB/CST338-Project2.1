@@ -92,6 +92,7 @@ public class DatabaseManager {
             statement.execute(userSql);
 
             addTeacherColumns();
+            createDefaultAdmin();
 
             statement.execute(courseSql);
             statement.execute(enrollmentSql);
@@ -101,7 +102,7 @@ public class DatabaseManager {
         }
     }
 
-    private void createDefaultAdminUser() {
+    private void createDefaultAdmin() {
         String sql = """
                 INSERT OR IGNORE INTO users (username, password, role, prefix, teacher_name)
                 VALUES ('admin', 'admin123', 'Admin', NULL, NULL);
