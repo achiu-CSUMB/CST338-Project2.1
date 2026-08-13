@@ -39,7 +39,11 @@ public class RegisterController {
     @FXML
     private Label errorLabel;
 
-    private final UserDao userDao = new UserDao();
+    private UserDao userDao = new UserDao();
+
+    public void  setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     @FXML
     private void handleCreateAccount() {
