@@ -43,7 +43,7 @@ ChatGPT
 
 ### Prompt
 
-> Help me draft TestFX tests for my JavaFX `RegisterController`. The controller should be tested for successful registration, duplicate username, password mismatch, and blank required fields. Use an in-memory H2 database with `UserDao`, keep the tests beginner-friendly, and match the existing controller behavior and UI IDs.
+> Help me draft TestFX tests for my JavaFX `RegisterController`. The controller should be tested for successful registration, duplicate username, password mismatch, and blank required fields. Use an in-memory H2 database with `UserDao`and match the existing controller behavior and UI IDs.
 
 ### What the AI Produced
 
