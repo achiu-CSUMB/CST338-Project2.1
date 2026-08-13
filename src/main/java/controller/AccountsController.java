@@ -36,6 +36,9 @@ public class AccountsController {
     private Label statusLabel;
 
     @FXML
+    private TextField newUsernameField;
+
+    @FXML
     private void handleLoadUser() {
         String username = usernameField.getText().trim();
 
@@ -127,6 +130,39 @@ public class AccountsController {
             statusLabel.setText("Password reset successfully.");
         } else {
             statusLabel.setText("Could not reset password.");
+        }
+    }
+
+    @FXML
+    private void handleChangeUsername() {
+        if (loadedUser == null) {
+            statusLabel.setText("Load a user first.");
+            return;
+        }
+
+        String newUsername = usernameField.getText().trim();
+
+        if (newUsername.isBlank()) {
+        statusLabel.setText("Enter a username.");
+        return;
+        }
+
+        User existingUser = userDao.findByUsername(newUsername);
+
+        if (existingUser != null) {
+            statusLabel.setText("Username already exists.");
+            return;
+        }
+
+        loadedUser.setUsername(newUsername);
+        boolean updated = userDao.update(loadedUser);
+
+        if (updated) {
+            usernameField.setText(newUsername);
+            newUsernameField.clear();
+            statusLabel.setText("Username changed successfully.");
+        } else  {
+            statusLabel.setText("Could not change username.");
         }
     }
 
