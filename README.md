@@ -19,7 +19,7 @@ Grade and Assignment Tracker that allows students and teachers to manage account
 | Slice | Owner | GitHub username | Issues | Branch(es) | PR(s) | Enhancement chosen | Status |
 |-------|-------|-----------------|--------|------------|-------|--------------------|--------|
 | 1 — Accounts |John Ly |6e4st |#7, #8, #9, #36 |john/user-dao, john/account-scene |#15, #19, #35, #37 |Admin role and password reset | planned |
-| 2 — Courses & Enrollment |Dominic Casoli |dcasoliprettyawesome|#4, #5, #6, #30, #32 |dominic/course-management-ui, dominic/course-enrollment-database |18(Reviewed by Alvin), 23(Reviewed by John), 25(Reviewed by John), 26(Reviewed by Alvin), 33(Reviewed by ___), 34 (Reviewed by ___) |Waitlists | planned |
+| 2 — Courses & Enrollment |Dominic Casoli |dcasoliprettyawesome|#4, #5, #6, #30, #32 |dominic/course-management-ui, dominic/course-enrollment-database |18(Reviewed by Alvin), 23(Reviewed by John), 25(Reviewed by John), 26(Reviewed by Alvin), 33(Reviewed by ___), 34 (Reviewed by ___) |Waitlists, Capacity Limits | planned |
 | 3 – Assignments | Oswald Perales | operalescs | #20, #21, #22 | oswald/assignments-skeleton | #24 (Reviewed by Alvin) | Assignment table and DAO test | in-progress |
 | 4 — Grades & Statistics |Alvin Chiu  |achiu-CSUMB |#1,#2,#3, #12 |alvin/FXskeleton, alvin/grade-ui, alvin/grade-and-DB, alvin/Grade-Skeleton |#14,#17, #31 |TableView / ListView populated with live data | in-progress |
 
@@ -30,7 +30,7 @@ _Slices and beyond-scope items we are consciously NOT building. Move an item to 
 Issue if the team later decides to attempt it for extra credit._
 
 - Slice 5 — Attendance and Reports: not building because of team size.
-- Slice 2 — Sections, waitlists, and capacity limits: out of scope.
+- Slice 2 — Sections: out of scope + time constraints.
 - Slice 3 — Due-date reminders, attachments, and weighted categories: out of scope.
 
 ## Code Review Log
