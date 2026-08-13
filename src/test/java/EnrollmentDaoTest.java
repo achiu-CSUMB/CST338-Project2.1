@@ -31,7 +31,9 @@ class EnrollmentDaoTest {
                 CREATE TABLE IF NOT EXISTS courses (
                 course_id INT AUTO_INCREMENT PRIMARY KEY,
                 title VARCHAR(255),
-                teacher_id INT
+                capacity INT NOT NULL DEFAULT 2,
+                prefix VARCHAR(255),
+                teacher_name VARCHAR(255)
                 );
                 
                 CREATE TABLE IF NOT EXISTS enrollments (
@@ -41,8 +43,8 @@ class EnrollmentDaoTest {
                     waitlisted BOOLEAN NOT NULL DEFAULT FALSE
                 );
                 
-                INSERT INTO courses(title, teacher_id)
-                VALUES ('Computer Science', 1);
+                INSERT INTO courses(title, capacity, prefix, teacher_name)
+                VALUES ('Computer Science', 2, 'CST', 'John Ly');
                 """;
 
         try (Statement statement = connection.createStatement()) {

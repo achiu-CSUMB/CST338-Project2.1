@@ -155,7 +155,7 @@ public class EnrollmentController {
 
         SceneFactory sceneFactory = new SceneFactory(stage);
 
-        sceneFactory.showScene(SceneFactory.SceneType.LOGIN);
+        sceneFactory.showScene(SceneFactory.SceneType.MAIN_MENU);
     }
 
     public void loadEnrollments() {

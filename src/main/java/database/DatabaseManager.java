@@ -59,7 +59,9 @@ public class DatabaseManager {
                 CREATE TABLE IF NOT EXISTS courses (
                     course_id INTEGER PRIMARY KEY AUTOINCREMENT,
                     title TEXT NOT NULL,
-                    capacity INTEGER NOT NULL DEFAULT 2
+                    capacity INTEGER NOT NULL DEFAULT 2,
+                    prefix TEXT,
+                    teacher_name TEXT
             );
         """;
 
@@ -85,13 +87,31 @@ public class DatabaseManager {
                 );
                 """;
 
+
         try (Statement statement = connection.createStatement()) {
             statement.execute(userSql);
+
+            addTeacherColumns();
+
             statement.execute(courseSql);
             statement.execute(enrollmentSql);
             statement.execute(assignmentSql);
         } catch (SQLException e) {
             System.err.println("Could not create database table: " + e.getMessage());
+        }
+    }
+
+    private  void addTeacherColumns() {
+        try (Statement statement= connection.createStatement()) {
+            statement.execute("ALTER TABLE users ADD COLUMN prefix TEXT;");
+        } catch (SQLException e) {
+            // Ignore if the column already exists
+        }
+
+        try (Statement statement= connection.createStatement()) {
+            statement.execute("ALTER TABLE users ADD COLUMN teacher_name TEXT;");
+        } catch (SQLException e) {
+            // Ignore if the column already exists
         }
     }
 

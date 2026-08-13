@@ -28,13 +28,18 @@
 <TableView fx:id="courseTable">
 
 <columns>
+    <TableColumn
+        fx:id="instructorColumn"
+        text="Instructor"
+        prefWidth="170"/>
+
     <TableColumn fx:id="courseIdColumn"
                  text="Course ID"
                  prefWidth="90"/>
 
     <TableColumn fx:id="courseNameColumn"
                  text="Course Name"
-                 prefWidth="220"/>
+                 prefWidth="150"/>
 
     <TableColumn fx:id="capacityColumn"
                  text="Capacity"
@@ -51,6 +56,18 @@
 <Label text="Capacity"/>
 <TextField fx:id="capacityField"
             promptText="Enter capacity"/>
+
+<Label text="Instructor Prefix"/>
+
+<TextField
+    fx:id="prefixField"
+    promptText="Dr., Prof., Mr., Ms."/>
+
+<Label text="Instructor Name"/>
+
+<TextField
+    fx:id="teacherNameField"
+    promptText="John Smith"/>
 
 <Button fx:id="addButton"
         text="Add Course"/>

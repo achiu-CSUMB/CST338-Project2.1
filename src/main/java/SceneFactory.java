@@ -19,7 +19,7 @@ public class SceneFactory {
     public enum SceneType {
         LOGIN,
         REGISTER,
-        //MAIN_MENU,
+        MAIN_MENU,
         ACCOUNTS,
         COURSES,
         ENROLLMENT,
@@ -37,7 +37,7 @@ public class SceneFactory {
         return switch (type) {
             case LOGIN -> loadFxmlScene("/views/login-view.fxml");
             case REGISTER -> loadFxmlScene("/views/register-view.fxml");
-            //case MAIN_MENU -> new Scene(new MainMenuView(), SCENE_WIDTH,SCENE_HEIGHT);
+            case MAIN_MENU -> loadFxmlScene("/views/menu-view.fxml");
             case ACCOUNTS -> loadFxmlScene("/views/accounts-view.fxml");
             case COURSES -> loadFxmlScene("/views/courses-view.fxml");
             case ENROLLMENT -> loadFxmlScene("/views/enrollment-view.fxml");

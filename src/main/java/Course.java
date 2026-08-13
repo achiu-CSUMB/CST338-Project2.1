@@ -12,6 +12,8 @@ public class Course {
     private int courseId;
     private String courseName;
     private int capacity;
+    private String prefix;
+    private String teacherName;
 
 
     /**
@@ -27,11 +29,13 @@ public class Course {
     /**
      * Creates a course with all the information.
      */
-    public Course(int courseId, String courseName, int capacity) {
+    public Course(int courseId, String courseName, int capacity, String prefix, String teacherName) {
 
         this.courseId = courseId;
         this.courseName = courseName;
         this.capacity = capacity;
+        this.prefix = prefix;
+        this.teacherName = teacherName;
 
     }
 
@@ -56,6 +60,15 @@ public class Course {
         return capacity;
     }
 
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public String getTeacherName() {
+        return teacherName;
+    }
+
     // Setters
 
     /**
@@ -78,6 +91,14 @@ public class Course {
      */
     public void setCourseId(int courseId) {
         this.courseId = courseId;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
     }
 
 
