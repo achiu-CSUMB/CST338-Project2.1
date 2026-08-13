@@ -28,6 +28,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class RegisterControllerTest extends ApplicationTest {
 
     private Connection connection;
+    private UserDao userDao;
+
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -56,7 +58,7 @@ class RegisterControllerTest extends ApplicationTest {
 
         RegisterController controller = fxmlLoader.getController();
 
-        UserDao userDao = new UserDao(connection);
+        userDao = new UserDao(connection);
         controller.setUserDao(userDao);
 
         stage.setScene(scene);
@@ -76,7 +78,13 @@ class RegisterControllerTest extends ApplicationTest {
         Label errorLabel = lookup("#errorLabel").query();
 
         assertEquals("Account Created Successfully! Please log in.",
-                errorLabel.getText());
+                errorLabel.getText()
+        );
+
+        User createduser = userDao.findByUsername("newuser");
+        assertNotNull(createduser);
+        assertEquals("newuser", createduser.getUsername());
+        assertEquals("Student", createduser.getRole());
     }
     @Test
     void passwordMismatch() {
@@ -105,7 +113,7 @@ class RegisterControllerTest extends ApplicationTest {
 
     @Test
     void duplicateUsername() {
-        UserDao userDao = new UserDao(connection);
+        userDao = new UserDao(connection);
         userDao.insert(new User("john338", "password123", "Student"));
 
         clickOn("#usernameField").write("john338");
