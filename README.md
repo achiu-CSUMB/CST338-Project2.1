@@ -51,7 +51,7 @@ Issue if the team later decides to attempt it for extra credit._
 |[#17](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/17)  |Alvin  |Dominic |——— |Merged  |
 |[#31](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/31)  |Alvin  |Dominic |——— |Merged  |
 |[#55](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/55)  |Alvin  |Dominic |——— |Merged  |
-|[#57](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/57)  |Alvin  |NA |——— |PENDING  |
+|[#57](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/57)  |Alvin  |John |——— |Merged  |
 
 ## AI Usage Log
 | John Ly | ChatGPT | Drafted TestFX registration tests; reviewed and corrected ComboBox interaction, expected messages, User import, and H2 test isolation | [Curated Tests / TESTING.md](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/38/changes/1ae9a6030faeae71aa938898ee4a80f08e3f3e82) | [Testing Commit](https://github.com/achiu-CSUMB/CST338-Project2.1/commit/bc1ad70eb5561c33fc37b3d63705eb4d30f3c16f) |
