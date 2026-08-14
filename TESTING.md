@@ -206,6 +206,10 @@ Tests service/domain logic for the Accounts slice, including:
 
 The blank-password test provides a negative/edge-case test for the service layer.
 
+### AssignmentsControllerTest - Oswald Perales
+
+AI was used to help draft a TestFX test for the Assignments screen. The first version did not reliably trigger the button action, so I changed the test to fire the button directly and wait for JavaFX to finish before checking the validation message. The updated test passed.
+
 ---
 
 ## Manual Integration Verification
