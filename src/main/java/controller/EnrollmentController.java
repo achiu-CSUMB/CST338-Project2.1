@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,6 +14,7 @@ import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import model.Course;
 import model.Enrollment;
+import model.User;
 import service.EnrollmentService;
 import java.util.ArrayList;
 
@@ -31,6 +31,7 @@ public class EnrollmentController {
 
     private EnrollmentService enrollmentService;
     private CourseDao courseDao;
+    private User currentUser;
 
     /**
      * Default constructor FX/FXML.
@@ -50,31 +51,22 @@ public class EnrollmentController {
     private TableView<Enrollment> enrollmentTable;
 
     @FXML
-    private TableColumn<Enrollment, Integer> enrollmentIdColumn;
-
-    @FXML
-    private TableColumn<Enrollment, Integer> studentIdColumn;
-
-    @FXML
-    private TableColumn<Enrollment, Integer> courseIdColumn;
-
-    @FXML
     private TableColumn<Enrollment, String> courseNameColumn;
 
     @FXML
     private TableView<Course> availableCoursesTable;
 
     @FXML
-    private TableColumn<Course, Integer> availableCourseIdColumn;
-
-    @FXML
     private TableColumn<Course, String> availableCourseNameColumn;
 
     @FXML
-    private TableColumn<Enrollment, String> statusColumn;
+    private TableColumn<Course, String> availableCourseInstructorColumn;
 
     @FXML
-    private TextField studentIdField;
+    private TableColumn<Course, Integer> availableCourseCapacityColumn;
+
+    @FXML
+    private TableColumn<Enrollment, String> statusColumn;
 
     @FXML
     private Button enrollButton;
@@ -92,24 +84,6 @@ public class EnrollmentController {
         if(courseDao == null) {
             courseDao = new CourseDao();
         }
-
-        enrollmentIdColumn.setCellValueFactory(
-                data -> new SimpleIntegerProperty(
-                        data.getValue().getEnrollmentId()
-                ).asObject()
-        );
-
-        studentIdColumn.setCellValueFactory(
-                data -> new SimpleIntegerProperty(
-                        data.getValue().getStudentId()
-                ).asObject()
-                );
-
-        courseIdColumn.setCellValueFactory(
-                data -> new SimpleIntegerProperty(
-                        data.getValue().getCourseId()
-                ).asObject()
-        );
 
         courseNameColumn.setCellValueFactory(
                 data -> new SimpleStringProperty(
@@ -136,15 +110,21 @@ public class EnrollmentController {
                 }
         );
 
-        availableCourseIdColumn.setCellValueFactory(
-                data -> new SimpleIntegerProperty(
-                        data.getValue().getCourseId()
-                ).asObject()
-        );
-
         availableCourseNameColumn.setCellValueFactory(
                 data -> new SimpleStringProperty(
                         data.getValue().getCourseName()
+                )
+        );
+
+        availableCourseCapacityColumn.setCellValueFactory(
+                data -> new SimpleIntegerProperty(
+                        data.getValue().getCapacity()
+                ).asObject()
+        );
+
+        availableCourseInstructorColumn.setCellValueFactory(
+                data -> new SimpleStringProperty(
+                        data.getValue().getPrefix() + " " + data.getValue().getTeacherName()
                 )
         );
 
@@ -160,44 +140,37 @@ public class EnrollmentController {
     private void goBackToLogin(ActionEvent event) {
         Stage stage = (Stage) enrollButton.getScene().getWindow();
 
-        SceneFactory sceneFactory = new SceneFactory(stage);
+        SceneFactory sceneFactory = new SceneFactory(stage, currentUser);
 
         sceneFactory.showScene(SceneFactory.SceneType.MAIN_MENU);
     }
 
     public void loadEnrollments() {
-        ArrayList<Enrollment> enrollments =
-                enrollmentService.getAllEnrollments();
+        if (currentUser == null) {
+            System.out.println("No logged in user.");
+            return;
+        }
+        ArrayList<Enrollment> enrollments = enrollmentService.getStudentEnrollments(currentUser.getUserId());
 
-        ObservableList<Enrollment> enrollmentList =
-                FXCollections.observableArrayList(enrollments);
+        ObservableList<Enrollment> enrollmentList = FXCollections.observableArrayList(enrollments);
 
         enrollmentTable.setItems(enrollmentList);
     }
 
     public void enrollStudent() {
-        int studentId;
-
-        try {
-            studentId = Integer.parseInt(studentIdField.getText());
-        }
-        catch (NumberFormatException e) {
-            System.out.println("Student ID must be a number");
+        if (currentUser == null) {
+            System.out.println("No logged in user.");
             return;
         }
+        int studentId = currentUser.getUserId();
 
-        Course selectedCourse =
-                availableCoursesTable
-                        .getSelectionModel()
-                        .getSelectedItem();
+        Course selectedCourse = availableCoursesTable.getSelectionModel().getSelectedItem();
 
         if (selectedCourse == null) {
-            System.out.println("No course selected");
-            return;
+            System.out.println("No course selected.");
         }
 
-        int courseId =
-                selectedCourse.getCourseId();
+        int courseId = selectedCourse.getCourseId();
 
 
         if (enrollmentService.enrollStudent(studentId, courseId)) {
@@ -222,7 +195,7 @@ public class EnrollmentController {
             }
         }
         else {
-            System.out.println("model.Enrollment failed or student already enrolled");
+            System.out.println("Enrollment failed or student already enrolled");
         }
     }
 
@@ -232,6 +205,10 @@ public class EnrollmentController {
 
     public void setCourseDao(CourseDao courseDao) {
         this.courseDao = courseDao;
+    }
+
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
     }
 
     public void loadCourses() {
@@ -254,11 +231,14 @@ public class EnrollmentController {
             return;
         }
 
-        if(enrollmentService.dropStudent(
-                selected.getEnrollmentId()
-        )) {
+        if(selected.getStudentId() != currentUser.getUserId()) {
+            System.out.println("Cannot drop another student's enrollment.");
+            return;
+        }
+
+        if(enrollmentService.dropStudent(selected.getStudentId())) {
             loadEnrollments();
-            System.out.println("model.Enrollment removed");
+            System.out.println("Enrollment removed");
         }
         else {
             System.out.println("Delete failed");

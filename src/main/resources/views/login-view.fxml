@@ -96,7 +96,7 @@
                         <Font size="18.0" />
                     </font>
                 </Label>
-                <Label layoutX="67.0" layoutY="43.0" text="model.Grade and Assignment Tracker" textAlignment="CENTER">
+                <Label layoutX="67.0" layoutY="43.0" text="Grade and Assignment Tracker" textAlignment="CENTER">
                     <font>
                         <Font size="36.0" />
                     </font>

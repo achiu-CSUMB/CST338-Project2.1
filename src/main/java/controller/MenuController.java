@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import model.User;
 
@@ -48,17 +49,33 @@ public class MenuController {
     @FXML
     private void handleCourses(ActionEvent event) {
         if (currentUser == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("No User");
+            alert.setHeaderText(null);
+            alert.setContentText("Current user was lost.");
+            alert.showAndWait();
             return;
         }
-        if (!currentUser.getRole().equals("TEACHER")) {
+
+        if (!currentUser.getRole().equalsIgnoreCase("TEACHER")) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Access Denied.");
+            alert.setHeaderText(null);
+            alert.setContentText("Only teachers can create courses.");
+            alert.showAndWait();
             return;
         }
+
         try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/views/courses-view.fxml")
             );
 
             Parent root = loader.load();
+
+            CoursesController controller = loader.getController();
+
+            controller.setCurrentUser(currentUser);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
@@ -71,12 +88,33 @@ public class MenuController {
 
     @FXML
     private void handleEnrollment(ActionEvent event) {
+            if (currentUser == null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("No User");
+                alert.setHeaderText(null);
+                alert.setContentText("Current user was lost.");
+                alert.showAndWait();
+                return;
+            }
+
+            if (!currentUser.getRole().equalsIgnoreCase("STUDENT")) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Access Denied.");
+                alert.setHeaderText(null);
+                alert.setContentText("Only students can enroll in classes.");
+                alert.showAndWait();
+                return;
+            }
+
             try {
                 FXMLLoader loader = new FXMLLoader(
                         getClass().getResource("/views/enrollment-view.fxml")
                 );
-
                 Parent root = loader.load();
+
+                EnrollmentController controller = loader.getController();
+
+                controller.setCurrentUser(currentUser);
 
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 

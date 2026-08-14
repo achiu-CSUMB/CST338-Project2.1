@@ -112,6 +112,15 @@ public class EnrollmentService {
     }
 
     /**
+     * Fixes issue of Enrollments of all students showing up on same account.
+     * @param studentId of the students account.
+     * @return a list of course enrollments for the specified student.
+     */
+    public ArrayList<Enrollment> getStudentEnrollments(int studentId) {
+        return enrollmentDao.getStudentEnrollments(studentId);
+    }
+
+    /**
      * Retrieves all enrollments.
      */
     public ArrayList<Enrollment> getAllEnrollments() {

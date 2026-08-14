@@ -2,11 +2,11 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.geometry.Insets?>
 
+<?import javafx.scene.text.Font?>
 <VBox spacing="10"
       xmlns="http://javafx.com/javafx/25"
       xmlns:fx="http://javafx.com/fxml/1"
@@ -23,7 +23,11 @@
                 onAction="#goBackToLogin"/>
     </HBox>
 
-    <Label text ="model.Enrollment Management"/>
+    <Label text ="Enrollment Management">
+    <font>
+        <Font name="System Bold" size="16"/>
+    </font>
+</Label>
 
     <Label text="Available Courses"/>
 
@@ -32,21 +36,21 @@
                prefHeight="200">
 
         <columns>
-            <TableColumn fx:id="availableCourseIdColumn"
-                         text="model.Course ID"/>
-
             <TableColumn fx:id="availableCourseNameColumn"
-                         text="model.Course Name"/>
+                         text="Course Name"
+                         prefWidth="200"/>
+
+            <TableColumn fx:id="availableCourseInstructorColumn"
+                         text="Instructor"
+                         prefWidth="200"/>
+
+            <TableColumn fx:id="availableCourseCapacityColumn"
+                         text="Capacity"
+                         prefWidth="90"/>
 
         </columns>
 
     </TableView>
-
-    <Label text="Student ID"/>
-
-    <TextField fx:id="studentIdField"
-               id="studentIdField"
-               promptText="Enter student ID"/>
 
 <HBox spacing="10">
 
@@ -59,31 +63,25 @@
             text="Drop"/>
 </HBox>
 
+<Label text="Your Enrollments">
+    <font>
+        <Font name="System Bold" size="16"/>
+    </font>
+</Label>
+
     <TableView fx:id="enrollmentTable"
                id="enrollmentTable"
                 prefHeight="200">
 
 
         <columns>
-            <TableColumn fx:id="enrollmentIdColumn"
-                         text="model.Enrollment ID"
-                         prefWidth="90"/>
-
-            <TableColumn fx:id="studentIdColumn"
-                         text="Student ID"
-                         prefWidth="90"/>
-
-            <TableColumn fx:id="courseIdColumn"
-                         text="model.Course ID"
-                         prefWidth="90"/>
-
             <TableColumn fx:id="courseNameColumn"
-                         text="model.Course Name"
-                         prefWidth="90"/>
+            text="Course Name"
+            prefWidth="200"/>
 
             <TableColumn fx:id="statusColumn"
                          text="Status"
-                         prefWidth="130"/>
+                         prefWidth="150"/>
 
         </columns>
 

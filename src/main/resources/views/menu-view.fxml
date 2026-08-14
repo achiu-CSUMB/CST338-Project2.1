@@ -108,7 +108,7 @@
                      layoutY="230.0"
                      mnemonicParsing="false"
                      onAction="#handleEnrollment"
-                     text="model.Enrollment" />
+                     text="Enrollment" />
 
             <Button fx:id="assignmentsButton"
                     layoutX="260.0"
@@ -131,7 +131,7 @@
                     onAction="#handleLogout"
                     text="Logout" />
 
-            <Label layoutX="116.0" layoutY="14.0" text="model.Grade &amp; Assignment" textAlignment="CENTER">
+            <Label layoutX="116.0" layoutY="14.0" text="Grade &amp; Assignment" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="40.0" />
                </font>
