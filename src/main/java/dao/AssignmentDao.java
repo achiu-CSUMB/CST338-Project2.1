@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Author: Oswald Perales
@@ -93,6 +95,38 @@ public class AssignmentDao {
         }
 
         return null;
+    }
+
+    // Finds all assignments
+    public List<Assignment> findAll() {
+        List<Assignment> assignments = new ArrayList<>();
+
+        String sql = """
+                SELECT assignment_id, course_id, title,
+                       description, due_date, max_points
+                FROM assignments;
+                """;
+
+        try (PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                assignments.add(new Assignment(
+                        resultSet.getInt("assignment_id"),
+                        resultSet.getInt("course_id"),
+                        resultSet.getString("title"),
+                        resultSet.getString("description"),
+                        resultSet.getString("due_date"),
+                        resultSet.getDouble("max_points")
+                ));
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Could not load assignments: "
+                    + e.getMessage());
+        }
+
+        return assignments;
     }
 
     // Updates an assignment
