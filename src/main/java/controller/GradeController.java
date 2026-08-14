@@ -37,11 +37,10 @@ public class GradeController implements Initializable {
     @FXML private Button viewStatisticsButton;
     @FXML private TableColumn<Grade, String> studentColumn;
     @FXML private TableColumn<Grade, String> statusColumn;
-    @FXML private Button backButton;
     @FXML private TableColumn<Grade, Double> scoreColumn;
     @FXML
     private void goBackToLogin(ActionEvent event) {
-        Stage stage = (Stage) backButton.getScene().getWindow();
+        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
 
         SceneFactory sceneFactory = new SceneFactory(stage, currentUser);
 

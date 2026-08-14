@@ -59,7 +59,6 @@ public class StatisticsController {
     }
 
     private void populateBreakdown(List<Grade> grades) {
-        breakdownGrid.getChildren().clear();
         Map<String, Long> letterCounts = grades.stream()
                 .map(g -> calculateLetterGrade(g.getScore()))
                 .collect(Collectors.groupingBy(letter -> letter, Collectors.counting()));

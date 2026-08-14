@@ -144,6 +144,7 @@ public class MenuController {
         }
     }
 
+
     @FXML
     private void handleGrades(ActionEvent event) {
         // Logic to navigate to the Grades scene
@@ -154,6 +155,9 @@ public class MenuController {
                 );
 
                 Parent root = loader.load();
+
+                GradeController controller = loader.getController();
+                controller.setCurrentUser(currentUser);
 
                 Stage stage = (Stage) ((Node) event.getSource())
                         .getScene()
@@ -172,6 +176,9 @@ public class MenuController {
                 );
 
                 Parent root = loader.load();
+
+                GradeController controller = loader.getController();
+                controller.setCurrentUser(currentUser);
 
                 Stage stage = (Stage) ((Node) event.getSource())
                         .getScene()

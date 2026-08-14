@@ -1,3 +1,5 @@
+package controller;
+
 import dao.AssignmentDao;
 import factory.SceneFactory;
 import javafx.beans.property.SimpleDoubleProperty;
