@@ -92,12 +92,26 @@ public class DatabaseManager {
             statement.execute(userSql);
 
             addTeacherColumns();
+            createDefaultAdmin();
 
             statement.execute(courseSql);
             statement.execute(enrollmentSql);
             statement.execute(assignmentSql);
         } catch (SQLException e) {
             System.err.println("Could not create database table: " + e.getMessage());
+        }
+    }
+
+    private void createDefaultAdmin() {
+        String sql = """
+                INSERT OR IGNORE INTO users (username, password, role, prefix, teacher_name)
+                VALUES ('admin', 'admin123', 'Admin', NULL, NULL);
+                """;
+
+        try (Statement statement = connection.createStatement()) {
+            statement.execute(sql);
+        } catch (SQLException e) {
+            System.err.println("Could not create default admin user: " + e.getMessage());
         }
     }
 
