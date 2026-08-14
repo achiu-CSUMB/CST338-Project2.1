@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.Enrollment;
 import model.User;
-import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.Test;
 import javafx.scene.control.TableView;
 import org.testfx.framework.junit5.ApplicationTest;
