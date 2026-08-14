@@ -91,42 +91,48 @@
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
          <children>
             <Button fx:id="accountsButton"
-                    layoutX="274.0"
+                    layoutX="245.0"
                     layoutY="150.0"
+                    prefWidth="150.0"
                     mnemonicParsing="false" onAction="#handleAccounts"
                     text="Accounts" />
 
             <Button fx:id="coursesButton"
-                    layoutX="270.0"
+                    layoutX="245.0"
                     layoutY="190.0"
+                    prefWidth="150.0"
                     mnemonicParsing="false"
                     onAction="#handleCourses"
                     text="Courses" />
 
              <Button fx:id="enrollmentButton"
-                     layoutX="255.0"
+                     layoutX="245.0"
                      layoutY="230.0"
+                     prefWidth="150.0"
                      mnemonicParsing="false"
                      onAction="#handleEnrollment"
                      text="Enrollment" />
 
             <Button fx:id="assignmentsButton"
-                    layoutX="260.0"
+                    layoutX="245.0"
                     layoutY="270.0"
+                    prefWidth="150.0"
                     mnemonicParsing="false"
                     onAction="#handleAssignments"
                     text="Assignments" />
 
             <Button fx:id="gradesButton"
-                    layoutX="275.0"
+                    layoutX="245.0"
                     layoutY="310.0"
+                    prefWidth="150.0"
                     mnemonicParsing="false"
                     onAction="#handleGrades"
                     text="Grades" />
 
             <Button fx:id="logoutButton"
-                    layoutX="280.0"
-                    layoutY="360.0"
+                    layoutX="245.0"
+                    layoutY="350.0"
+                    prefWidth="150.0"
                     mnemonicParsing="false"
                     onAction="#handleLogout"
                     text="Logout" />
@@ -136,7 +142,9 @@
                   <Font name="System Bold" size="40.0" />
                </font>
             </Label>
-            <Label layoutX="282.0" layoutY="130.0" text="Menu">
+            <Label layoutX="295.0"
+                   layoutY="120.0"
+                   text="Menu">
                <font>
                   <Font size="18.0" />
                </font>

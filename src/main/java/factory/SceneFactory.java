@@ -31,7 +31,7 @@ public class SceneFactory {
         ENROLLMENT,
         //GRADES,
         //STATISTICS,
-        //ASSIGNMENTS
+        ASSIGNMENTS
     }
 
     public SceneFactory (Stage stage) {
@@ -54,7 +54,7 @@ public class SceneFactory {
             case ENROLLMENT -> loadFxmlScene("/views/enrollment-view.fxml");
             //case GRADES -> new Scene(new GradesView(), SCENE_WIDTH,SCENE_HEIGHT);
             //case STATISTICS -> new Scene(new StatisticsView(), SCENE_WIDTH,SCENE_HEIGHT);
-            //case ASSIGNMENTS -> new Scene(new AssignmentsView(), SCENE_WIDTH,SCENE_HEIGHT);
+            case ASSIGNMENTS -> loadFxmlScene("/views/assignments-view.fxml");
         };
     }
 

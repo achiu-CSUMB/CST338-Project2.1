@@ -90,4 +90,11 @@ class AssignmentDaoTest {
         assertTrue(assignmentDao.delete(assignment.getAssignmentId()));
         assertNull(assignmentDao.findById(assignment.getAssignmentId()));
     }
+
+    @Test
+    void findMissingAssignmentReturnsNull() {
+        Assignment assignment = assignmentDao.findById(999);
+
+        assertNull(assignment);
+    }
 }

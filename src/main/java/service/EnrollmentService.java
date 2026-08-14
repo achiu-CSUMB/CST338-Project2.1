@@ -22,7 +22,7 @@ public class EnrollmentService {
     private CourseDao courseDao;
 
     /**
-     * Creates an EnrollmentService object.
+     * Creates an service.EnrollmentService object.
      */
     public EnrollmentService() {
         enrollmentDao = new EnrollmentDao();
@@ -30,7 +30,7 @@ public class EnrollmentService {
     }
 
     /**
-     * Creates an EnrollmentService object using a provided DAO, used for testing.
+     * Creates an service.EnrollmentService object using a provided DAO, used for testing.
      */
     public EnrollmentService(EnrollmentDao enrollmentDao, CourseDao courseDao) {
         this.enrollmentDao = enrollmentDao;
