@@ -1,3 +1,6 @@
+package controller;
+
+import factory.SceneFactory;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.collections.FXCollections;
@@ -10,18 +13,21 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import java.util.ArrayList;
+import model.Course;
+import model.User;
+import service.CourseService;
 
 /**
  * @author Dominic Casoli
  * <br>
  * created: 8/4/2026
  * @since '1.0-SNAPSHOT'
- * Description: Controls the Course Management JavaFX interface.
+ * Description: Controls the model.Course Management JavaFX interface.
  * Handles the user interactions for creating courses and loading the course data from database.
  */
 
 public class CoursesController {
-
+    private User currentUser;
     private CourseService courseService;
 
     @FXML
@@ -44,12 +50,6 @@ public class CoursesController {
 
     @FXML
     private TextField capacityField;
-
-    @FXML
-    private TextField prefixField;
-
-    @FXML
-    private TextField teacherNameField;
 
     @FXML
     private Button addButton;
@@ -111,14 +111,6 @@ public class CoursesController {
                                 newCourse.getCapacity()
                         )
                 );
-
-                prefixField.setText(
-                        newCourse.getPrefix()
-                );
-
-                teacherNameField.setText(
-                        newCourse.getTeacherName()
-                );
             }
         });
 
@@ -128,9 +120,9 @@ public class CoursesController {
 
     @FXML
     private void goBackToLogin(ActionEvent event) {
-        Stage stage = (Stage) addButton.getScene().getWindow();
+        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
 
-        SceneFactory sceneFactory = new SceneFactory(stage);
+        SceneFactory sceneFactory = new SceneFactory(stage, currentUser);
 
         sceneFactory.showScene(SceneFactory.SceneType.MAIN_MENU);
     }
@@ -148,6 +140,11 @@ public class CoursesController {
      * Adds a course.
      */
     private void addCourse() {
+        if(currentUser == null){
+            System.out.println("No logged in user.");
+                    return;
+        }
+
         if (courseNameField.getText().isBlank() || capacityField.getText().isBlank()) {
             System.out.println("All fields are required");
             return;
@@ -159,9 +156,9 @@ public class CoursesController {
                     Integer.parseInt(capacityField.getText())
             );
 
-            course.setPrefix(prefixField.getText());
+            course.setPrefix(currentUser.getPrefix());
 
-            course.setTeacherName(teacherNameField.getText());
+            course.setTeacherName(currentUser.getTeacherName());
 
             boolean created = courseService.createCourse(course);
 
@@ -228,10 +225,10 @@ public class CoursesController {
                 )
         );
         selectedCourse.setPrefix(
-                prefixField.getText()
+                currentUser.getPrefix()
         );
         selectedCourse.setTeacherName(
-                teacherNameField.getText()
+                currentUser.getTeacherName()
         );
         boolean updated = courseService.updateCourse(selectedCourse);
 
@@ -252,5 +249,13 @@ public class CoursesController {
      */
     public void setCourseService(CourseService courseService) {
         this.courseService = courseService;
+    }
+
+    /**
+     *
+     * @param user the user object to set as current.
+     */
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
     }
 }

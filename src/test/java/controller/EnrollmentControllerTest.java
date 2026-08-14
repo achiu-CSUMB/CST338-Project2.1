@@ -1,9 +1,17 @@
+package controller;
+
+import dao.CourseDao;
+import dao.EnrollmentDao;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import model.Enrollment;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import javafx.scene.control.TableView;
 import org.testfx.framework.junit5.ApplicationTest;
+import service.EnrollmentService;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -15,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * <br>
  * created: 8/10/2026
  * @since '1.0-SNAPSHOT'
- * Description: Tests Enrollment Management JavaFX interface using TestFX.
+ * Description: Tests model.Enrollment Management JavaFX interface using TestFX.
  * Checks that students enter an ID, select a course, and can enroll successfully.
  */
 
@@ -145,17 +153,17 @@ void enrollButtonAddsEnrollment() {
 
         Enrollment third = enrollmentTable.getItems().get(2);
 
-        assertEquals(1, first.getStudentId());
+        Assertions.assertEquals(1, first.getStudentId());
 
-        assertFalse(first.isWaitlisted());
+        Assertions.assertFalse(first.isWaitlisted());
 
-        assertEquals(2, second.getStudentId());
+        Assertions.assertEquals(2, second.getStudentId());
 
-        assertFalse(second.isWaitlisted());
+        Assertions.assertFalse(second.isWaitlisted());
 
-        assertEquals(3, third.getStudentId());
+        Assertions.assertEquals(3, third.getStudentId());
 
-        assertTrue(third.isWaitlisted());
+        Assertions.assertTrue(third.isWaitlisted());
 
     }
 
@@ -189,7 +197,7 @@ void enrollButtonAddsEnrollment() {
 
         Enrollment third = enrollmentTable.getItems().get(2);
 
-        assertTrue(third.isWaitlisted());
+        Assertions.assertTrue(third.isWaitlisted());
 
         enrollmentTable.getSelectionModel().select(0);
 
@@ -208,6 +216,6 @@ void enrollButtonAddsEnrollment() {
             }
         }
         assertNotNull(promoted);
-        assertFalse(promoted.isWaitlisted());
+        Assertions.assertFalse(promoted.isWaitlisted());
     }
 }

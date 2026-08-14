@@ -7,10 +7,11 @@
 <?import javafx.geometry.Insets?>
 
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
 <VBox spacing="10"
       xmlns="http://javafx.com/javafx/25"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="CoursesController">
+      fx:controller="controller.CoursesController">
 
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
@@ -23,7 +24,11 @@
         onAction="#goBackToLogin"/>
 </HBox>
 
-<Label text ="Course Management"/>
+<Label text ="Course Management">
+    <font>
+        <Font name="System Bold" size="16"/>
+    </font>
+</Label>
 
 <TableView fx:id="courseTable">
 
@@ -56,18 +61,6 @@
 <Label text="Capacity"/>
 <TextField fx:id="capacityField"
             promptText="Enter capacity"/>
-
-<Label text="Instructor Prefix"/>
-
-<TextField
-    fx:id="prefixField"
-    promptText="Dr., Prof., Mr., Ms."/>
-
-<Label text="Instructor Name"/>
-
-<TextField
-    fx:id="teacherNameField"
-    promptText="John Smith"/>
 
 <Button fx:id="addButton"
         text="Add Course"/>
