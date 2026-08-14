@@ -36,16 +36,16 @@ Issue if the team later decides to attempt it for extra credit._
 ## Code Review Log
 | PR | Author | Human reviewer(s) | AI review (link) | Outcome |
 |----|--------|-------------------|------------------|---------|
-|#18  |Dominic |None |——— |Merged  |
-|#23  |Dominic |John |——— |Merged  |
-|#25  |Dominic |John |——— |Merged  |
-|#26  |Dominic |Alvin |——— |Merged  |
-|#33  |Dominic |None |——— |Merged  |
-|#34  |Dominic |None |(https://github.com/achiu-CSUMB/CST338-Project2.1/pull/34) |Merged  |
-|#41  |Dominic |None |——— |Merged  |
-|#44  |Dominic |None |——— |Merged  |
-|#47  |Dominic |None |——— |Merged  |
-|#54  |Dominic |None |——— |Merged  |
+|[#18](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/18)  |Dominic |None |——— |Merged  |
+|[#23](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/23)  |Dominic |John |——— |Merged  |
+|[#25](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/25)  |Dominic |John |——— |Merged  |
+|[#26](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/26)  |Dominic |Alvin |——— |Merged  |
+|[#33](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/33)  |Dominic |None |——— |Merged  |
+|[#34](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/34)  |Dominic |None |(https://github.com/achiu-CSUMB/CST338-Project2.1/pull/34) |Merged  |
+|[#41](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/41)  |Dominic |None |——— |Merged  |
+|[#44](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/44)  |Dominic |None |——— |Merged  |
+|[#47](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/47)  |Dominic |None |——— |Merged  |
+|[#54](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/54)  |Dominic |None |——— |Merged  |
 
 ## AI Usage Log
 | John Ly | ChatGPT | Drafted TestFX registration tests; reviewed and corrected ComboBox interaction, expected messages, User import, and H2 test isolation | [Curated Tests / TESTING.md](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/38/changes/1ae9a6030faeae71aa938898ee4a80f08e3f3e82) | [Testing Commit](https://github.com/achiu-CSUMB/CST338-Project2.1/commit/bc1ad70eb5561c33fc37b3d63705eb4d30f3c16f) |
