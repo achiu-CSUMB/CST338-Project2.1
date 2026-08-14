@@ -132,7 +132,6 @@ public class EnrollmentController {
 
         dropButton.setOnAction(e -> dropStudent());
 
-        loadEnrollments();
         loadCourses();
     }
 
@@ -168,6 +167,7 @@ public class EnrollmentController {
 
         if (selectedCourse == null) {
             System.out.println("No course selected.");
+            return;
         }
 
         int courseId = selectedCourse.getCourseId();
@@ -209,6 +209,7 @@ public class EnrollmentController {
 
     public void setCurrentUser(User user) {
         this.currentUser = user;
+        loadEnrollments();
     }
 
     public void loadCourses() {
@@ -236,7 +237,7 @@ public class EnrollmentController {
             return;
         }
 
-        if(enrollmentService.dropStudent(selected.getStudentId())) {
+        if(enrollmentService.dropStudent(selected.getEnrollmentId())) {
             loadEnrollments();
             System.out.println("Enrollment removed");
         }

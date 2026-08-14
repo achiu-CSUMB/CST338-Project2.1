@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import model.Course;
+import model.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
@@ -29,10 +30,11 @@ public class CoursesControllerTest extends ApplicationTest {
 
     private Connection connection;
     private CoursesController controller;
+    private User testTeacher;
 
     @Override
     public void start(Stage stage) throws Exception {
-        connection = DriverManager.getConnection("jdbc:h2:mem:coursescontroller;DB_CLOSE_DELAY=-1");
+        connection = DriverManager.getConnection("jdbc:h2:mem:coursescontroller;DB_CLOSE_DELAY=1");
 
         try(Statement statement = connection.createStatement()) {
             statement.execute("""
@@ -44,12 +46,24 @@ public class CoursesControllerTest extends ApplicationTest {
                                 teacher_name VARCHAR(255)
                             );
                             """);
+            statement.execute("DELETE FROM courses;");
         }
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/courses-view.fxml"));
 
         Scene scene = new Scene(loader.load());
 
         controller = loader.getController();
+
+        testTeacher = new User(
+                1,
+                "teacher1",
+                "password",
+                "TEACHER",
+                "Dr.",
+                "Smith"
+        );
+
+        controller.setCurrentUser(testTeacher);
 
         CourseDao dao = new CourseDao(connection);
 
@@ -68,9 +82,6 @@ public class CoursesControllerTest extends ApplicationTest {
 
         clickOn("#capacityField").write("2");
 
-        clickOn("#prefixField").write("Dr.");
-        clickOn("#teacherNameField").write("Smith");
-
         clickOn("#addButton");
 
         TableView<Course> table = lookup("#courseTable").query();
@@ -79,8 +90,10 @@ public class CoursesControllerTest extends ApplicationTest {
 
         Assertions.assertEquals("Computer Science", table.getItems().get(0).getCourseName());
 
-        Assertions.assertEquals("Dr.", table.getItems().get(0).getPrefix());
+        Assertions.assertEquals(2,table.getItems().get(0).getCapacity());
 
-        Assertions.assertEquals("Smith", table.getItems().get(0).getTeacherName());
+        Assertions.assertEquals("Dr.",table.getItems().get(0).getPrefix());
+
+        Assertions.assertEquals("Smith",table.getItems().get(0).getTeacherName());
     }
 }
