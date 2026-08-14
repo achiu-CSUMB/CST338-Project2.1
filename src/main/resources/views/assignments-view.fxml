@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="10"
+      prefWidth="700"
+      prefHeight="600"
+      xmlns="http://javafx.com/javafx/25"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="AssignmentsController">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <HBox alignment="CENTER_LEFT">
+        <Button fx:id="backButton"
+                text="← Back"
+                onAction="#goBackToMenu"/>
+    </HBox>
+
+    <Label text="Assignment Management"/>
+
+    <TableView fx:id="assignmentTable"
+               prefHeight="250">
+
+        <columns>
+            <TableColumn fx:id="assignmentIdColumn"
+                         text="ID"
+                         prefWidth="50"/>
+
+            <TableColumn fx:id="courseIdColumn"
+                         text="Course ID"
+                         prefWidth="80"/>
+
+            <TableColumn fx:id="titleColumn"
+                         text="Title"
+                         prefWidth="120"/>
+
+            <TableColumn fx:id="descriptionColumn"
+                         text="Description"
+                         prefWidth="170"/>
+
+            <TableColumn fx:id="dueDateColumn"
+                         text="Due Date"
+                         prefWidth="110"/>
+
+            <TableColumn fx:id="maxPointsColumn"
+                         text="Points"
+                         prefWidth="80"/>
+        </columns>
+
+    </TableView>
+
+    <Label text="Course ID"/>
+    <TextField fx:id="courseIdField"
+               promptText="Enter course ID"/>
+
+    <Label text="Title"/>
+    <TextField fx:id="titleField"
+               promptText="Enter assignment title"/>
+
+    <Label text="Description"/>
+    <TextField fx:id="descriptionField"
+               promptText="Enter description"/>
+
+    <Label text="Due Date"/>
+    <TextField fx:id="dueDateField"
+               promptText="YYYY-MM-DD"/>
+
+    <Label text="Maximum Points"/>
+    <TextField fx:id="maxPointsField"
+               promptText="Enter maximum points"/>
+
+    <HBox spacing="10">
+        <Button fx:id="addButton"
+                text="Add Assignment"/>
+
+        <Button fx:id="updateButton"
+                text="Update Assignment"/>
+
+        <Button fx:id="deleteButton"
+                text="Delete Assignment"/>
+    </HBox>
+
+    <Label fx:id="statusLabel"/>
+
+</VBox>
