@@ -20,7 +20,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * <br>
  * created: 8/12/2026
  * @since '1.0-SNAPSHOT'
- * Description:
+ * Description: Tests the business logic of CourseService.
+ * Verifies courses can be created, retrieved, updated, and deleted successfully via service layer.
+ * Uses in-memory H2 database and CourseDao to confirm course management operations are correctly interacting with the database.
  */
 
 public class CourseServiceTest {
