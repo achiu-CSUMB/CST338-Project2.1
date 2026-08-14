@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -247,9 +248,10 @@ public class AssignmentsController {
     }
 
     @FXML
-    private void goBackToMenu() {
-        Stage stage =
-                (Stage) assignmentTable.getScene().getWindow();
+    private void goBackToMenu(ActionEvent event) {
+        Stage stage = (Stage) ((Button) event.getSource())
+                .getScene()
+                .getWindow();
 
         SceneFactory sceneFactory =
                 new SceneFactory(stage);
