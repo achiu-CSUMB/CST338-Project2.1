@@ -1,19 +1,18 @@
 package controller;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import factory.SceneFactory;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.Parent;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Grade;
@@ -64,14 +63,56 @@ public class GradeController implements Initializable {
         }
         scoreColumn.setCellValueFactory(new PropertyValueFactory<>("score"));
 
-        // No "status" field on Grade, so this needs a computed value, not PropertyValueFactory
         statusColumn.setCellValueFactory(cellData -> {
             double score = cellData.getValue().getScore();
-            return new javafx.beans.property.SimpleStringProperty(score >= 60 ? "Pass" : "Fail");
+            return new SimpleStringProperty(calculateLetterGrade(score));
         });
 
+        if (viewStatisticsButton != null) {
+            viewStatisticsButton.setOnAction(e -> openStatisticsView());
+        }
 
         refreshTable();
+    }
+    private void openStatisticsView() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/statistics-view.fxml"));
+            Parent root = loader.load();
+
+            StatisticsController controller = loader.getController();
+            controller.setCurrentUser(currentUser);
+            controller.setGrades(grades);
+
+            Stage stage = (Stage) viewStatisticsButton.getScene().getWindow();
+            stage.getScene().setRoot(root);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
+    private String calculateLetterGrade(double score) {
+        if (score >= 90) return "A";
+        if (score >= 80) return "B";
+        if (score >= 70) return "C";
+        if (score >= 60) return "D";
+        return "F";
+    }
+
+    private double calculateMedian(List<Grade> gradeList) {
+        List<Double> scores = gradeList.stream()
+                .map(Grade::getScore)
+                .sorted()
+                .collect(Collectors.toList());
+
+        int size = scores.size();
+        int mid = size / 2;
+
+        if (size % 2 == 0) {
+            return (scores.get(mid - 1) + scores.get(mid)) / 2.0;
+        } else {
+            return scores.get(mid);
+        }
     }
 
     private void applyRoleView() {
