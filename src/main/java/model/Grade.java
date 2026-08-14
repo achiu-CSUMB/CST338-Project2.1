@@ -15,8 +15,8 @@ import java.time.LocalDate;
  */
 
 public class Grade {
-    private final int MAX_GRADE = 100;
-    private final int MIN_GRADE = 0;
+    public static final int MAX_GRADE = 100;
+    public static final int MIN_GRADE = 0;
 
     private double score;
     private LocalDate entryDate;

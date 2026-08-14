@@ -1,5 +1,6 @@
 package controller;
 
+
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -17,7 +18,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Grade;
 import model.User;
-
+import dao.CourseDao;
+import model.Course;
 /**
  * Author: Alvin Chiu
  * Created: 8/1/2026
@@ -29,21 +31,25 @@ import model.User;
  */
 public class GradeController implements Initializable {
 
-    @FXML
-    private TableView<Grade> gradesTable;
-    private User currentUser;
-
+    @FXML private TableView<Grade> gradesTable;
     @FXML private Label headerLabel;
     @FXML private Label maxScoreLabel;
     @FXML private Button viewStatisticsButton;
     @FXML private TableColumn<Grade, String> studentColumn;
     @FXML private TableColumn<Grade, String> statusColumn;
     @FXML private Button backButton;
-
+    @FXML private TableColumn<Grade, Double> scoreColumn;
     @FXML
-    private TableColumn<Grade, Double> scoreColumn;
+    private void goBackToLogin(ActionEvent event) {
+        Stage stage = (Stage) backButton.getScene().getWindow();
 
+        SceneFactory sceneFactory = new SceneFactory(stage, currentUser);
 
+        sceneFactory.showScene(SceneFactory.SceneType.MAIN_MENU);
+    }
+
+    private final CourseDao courseDao = new CourseDao();
+    private User currentUser;
     private final List<Grade> grades;
 
     public GradeController() {
@@ -125,28 +131,42 @@ public class GradeController implements Initializable {
         }
     }
 
-    @FXML
-    private void goBackToLogin(ActionEvent event) {
-        Stage stage = (Stage) backButton.getScene().getWindow();
 
-        SceneFactory sceneFactory = new SceneFactory(stage, currentUser);
-
-        sceneFactory.showScene(SceneFactory.SceneType.MAIN_MENU);
-    }
 
     /**
      * Replaces the currently displayed grades and refreshes the table.
      * Call this after loading the FXML (e.g. loader.<GradesView>getController().setGrades(...)).
      */
-    public void setGrades(List<Grade> newGrades) {
-        grades.clear();
-        grades.addAll(newGrades);
-        refreshTable();
-    }
 
     private void refreshTable() {
         if (gradesTable != null) {
             gradesTable.setItems(FXCollections.observableArrayList(grades));
         }
+    }
+
+    public void setGrades(List<Grade> newGrades) {
+        grades.clear();
+        grades.addAll(newGrades);
+        refreshTable();
+        updateHeader();
+    }
+
+    private void updateHeader() {
+        if (maxScoreLabel != null) {
+            maxScoreLabel.setText("Max Score: " + Grade.MAX_GRADE);
+        }
+
+        if (headerLabel == null) {
+            return;
+        }
+
+        if (grades.isEmpty()) {
+            headerLabel.setText("No Grades");
+            return;
+        }
+
+        String courseId = grades.get(0).getCourseId();
+        Course course = courseDao.findById(Integer.parseInt(courseId));
+        headerLabel.setText(course != null ? course.getCourseName() : "Course " + courseId);
     }
 }
