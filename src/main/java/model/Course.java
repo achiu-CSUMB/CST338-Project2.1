@@ -8,7 +8,6 @@ package model;
  * Description: Stores info about a course. A course will have an ID, class name.
  */
 
-// Note: Due to complications with merge, I had to grab the code from before merge and port it manually myself.
 public class Course {
 
     private int courseId;

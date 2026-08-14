@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.Enrollment;
+import model.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import javafx.scene.control.TableView;
@@ -15,8 +16,11 @@ import service.EnrollmentService;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.testfx.util.WaitForAsyncUtils.waitForFxEvents;
 
 /**
  * @author Dominic Casoli
@@ -31,8 +35,10 @@ public class EnrollmentControllerTest extends ApplicationTest {
     private EnrollmentController controller;
     private EnrollmentService enrollmentService;
     private CourseDao courseDao;
-    private Stage stage;
     private Connection connection;
+    private User studentOne;
+    private User studentTwo;
+    private User studentThree;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -64,7 +70,7 @@ public class EnrollmentControllerTest extends ApplicationTest {
 
             statement.execute("""
                     INSERT INTO courses(title, capacity, prefix, teacher_name)
-                    VALUES ('Computer Science', 2, 'CST', 'John Ly');
+                    VALUES ('Computer Science', 2, 'Dr.', 'John Ly');
                     """);
         }
 
@@ -77,6 +83,14 @@ public class EnrollmentControllerTest extends ApplicationTest {
 
         controller = loader.getController();
 
+        studentOne = new User(1, "student1", "password","STUDENT", null, null);
+
+        studentTwo = new User(2, "student2", "password","STUDENT", null, null);
+
+        studentThree = new User(3, "student3", "password","STUDENT", null, null);
+
+        controller.setCurrentUser(studentOne);
+
         EnrollmentDao enrollmentDao = new EnrollmentDao(connection);
 
         courseDao = new CourseDao(connection);
@@ -86,8 +100,8 @@ public class EnrollmentControllerTest extends ApplicationTest {
         controller.setEnrollmentService(enrollmentService);
         controller.setCourseDao(courseDao);
 
-        controller.loadEnrollments();
         controller.loadCourses();
+        controller.loadEnrollments();
 
         stage.setScene(scene);
         stage.show();
@@ -95,9 +109,6 @@ public class EnrollmentControllerTest extends ApplicationTest {
 
 @Test
 void enrollButtonAddsEnrollment() {
-        clickOn("#studentIdField")
-                .write("1");
-
         clickOn("#availableCoursesTable");
 
         clickOn("Computer Science");
@@ -112,110 +123,149 @@ void enrollButtonAddsEnrollment() {
                 1,
                 enrollmentTable.getItems().size()
         );
+
+        Enrollment enrollment = enrollmentTable.getItems().get(0);
+
+        assertEquals(1, enrollment.getStudentId());
+
+        assertEquals(1, enrollment.getCourseId());
     }
+
+    // AI Drafted Test (I didn't know we could just make tests with the AI, so I guess I'm only doing two)
+    // Model: ChatGPT
+    // Prompt: Based on these rubrics, guidelines, and specific slice... and my current tests, what would be some good JUnit or TextFX tests for this application.
+    // Accepted (confirms UI filtering works + proves Student 1 cannot see Student 2's enrollments; I have no issue with the generated test)
+    @Test
+    void studentOnlySeesTheirOwnEnrollments() {
+
+        // Student one enrolls
+        controller.setCurrentUser(studentOne);
+
+        clickOn("#availableCoursesTable");
+        clickOn("Computer Science");
+        clickOn("#enrollButton");
+
+
+        // Student two enrolls
+        controller.setCurrentUser(studentTwo);
+
+        clickOn("#availableCoursesTable");
+        clickOn("Computer Science");
+        clickOn("#enrollButton");
+
+
+        // Reload table as student one
+        controller.setCurrentUser(studentOne);
+        controller.loadEnrollments();
+
+
+        TableView<Enrollment> table =
+                lookup("#enrollmentTable").query();
+
+
+        assertEquals(1, table.getItems().size());
+
+        assertEquals(
+                1,
+                table.getItems().get(0).getStudentId()
+        );
+    }
+
 
     @Test
     void thirdStudentArrivesWaitlistedInTable() {
-        clickOn("#studentIdField").write("1");
+        controller.setCurrentUser(studentOne);
 
         clickOn("#availableCoursesTable");
         clickOn("Computer Science");
-
         clickOn("#enrollButton");
 
         // Second
-        doubleClickOn("#studentIdField");
-        eraseText(10);
-        write("2");
-
+        controller.setCurrentUser(studentTwo);
         clickOn("#availableCoursesTable");
         clickOn("Computer Science");
-
         clickOn("#enrollButton");
 
         // Third
-        doubleClickOn("#studentIdField");
-        eraseText(10);
-        write("3");
-
+        controller.setCurrentUser(studentThree);
         clickOn("#availableCoursesTable");
         clickOn("Computer Science");
-
         clickOn("#enrollButton");
 
-        TableView<Enrollment> enrollmentTable = lookup("#enrollmentTable").query();
+        // Switches back to see all database enrollments.
+        ArrayList<Enrollment> enrollments = enrollmentService.getAllEnrollments();
 
-        assertEquals(3, enrollmentTable.getItems().size());
+        assertEquals(3, enrollments.size());
 
-        Enrollment first = enrollmentTable.getItems().get(0);
+        Enrollment first = enrollments.get(0);
+        Enrollment second = enrollments.get(1);
+        Enrollment third = enrollments.get(2);
 
-        Enrollment second = enrollmentTable.getItems().get(1);
+        assertEquals(1, first.getStudentId());
+        assertFalse(first.isWaitlisted());
 
-        Enrollment third = enrollmentTable.getItems().get(2);
+        assertEquals(2, second.getStudentId());
+        assertFalse(second.isWaitlisted());
 
-        Assertions.assertEquals(1, first.getStudentId());
-
-        Assertions.assertFalse(first.isWaitlisted());
-
-        Assertions.assertEquals(2, second.getStudentId());
-
-        Assertions.assertFalse(second.isWaitlisted());
-
-        Assertions.assertEquals(3, third.getStudentId());
-
-        Assertions.assertTrue(third.isWaitlisted());
+        assertEquals(3, third.getStudentId());
+        assertTrue(third.isWaitlisted());
 
     }
 
     @Test
     void droppingStudentPromotesWaitlistedStudent() {
-        // First
-        clickOn("#studentIdField").write("1");
+        controller.setCurrentUser(studentOne);
+
         clickOn("#availableCoursesTable");
         clickOn("Computer Science");
         clickOn("#enrollButton");
 
         // Second
-        doubleClickOn("#studentIdField");
-        eraseText(10);
-        write("2");
+        controller.setCurrentUser(studentTwo);
         clickOn("#availableCoursesTable");
         clickOn("Computer Science");
         clickOn("#enrollButton");
 
         // Third
-        doubleClickOn("#studentIdField");
-        eraseText(10);
-        write("3");
+        controller.setCurrentUser(studentThree);
         clickOn("#availableCoursesTable");
         clickOn("Computer Science");
         clickOn("#enrollButton");
 
+        ArrayList<Enrollment> enrollments = enrollmentService.getAllEnrollments();
+
+        assertEquals(3, enrollments.size());
+
         TableView<Enrollment> enrollmentTable = lookup("#enrollmentTable").query();
 
-        assertEquals(3, enrollmentTable.getItems().size());
+        Enrollment third = enrollmentTable.getItems().get(0);
 
-        Enrollment third = enrollmentTable.getItems().get(2);
+        assertTrue(third.isWaitlisted());
 
-        Assertions.assertTrue(third.isWaitlisted());
+        // Drop first student enrollment
+        controller.setCurrentUser(studentOne);
+
+        waitForFxEvents();
+
+        enrollmentTable = lookup("#enrollmentTable").query();
 
         enrollmentTable.getSelectionModel().select(0);
 
         clickOn("#dropButton");
 
-        enrollmentTable = lookup("#enrollmentTable").query();
+        ArrayList<Enrollment> updatedEnrollments = enrollmentService.getAllEnrollments();
 
-        assertEquals(2, enrollmentTable.getItems().size());
+        assertEquals(2, updatedEnrollments.size());
 
         Enrollment promoted = null;
 
-        for (Enrollment enrollment : enrollmentTable.getItems()) {
+        for (Enrollment enrollment : updatedEnrollments) {
             if (enrollment.getStudentId() == 3) {
                 promoted = enrollment;
                 break;
             }
         }
         assertNotNull(promoted);
-        Assertions.assertFalse(promoted.isWaitlisted());
+        assertFalse(promoted.isWaitlisted());
     }
 }
