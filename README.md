@@ -21,7 +21,7 @@ CST 338 Project 2 — Team **Quintate**
 | 1 — Accounts |John Ly |6e4st |#7, #8, #9, #36, #39 |john/user-dao, john/account-scene |#15, #19, #35, #37, #38, #40 |Admin role and password reset | planned |
 | 2 — Courses & Enrollment |Dominic Casoli |dcasoliprettyawesome|#4, #5, #6, #30, #32, #53 |dominic/course-management-ui, dominic/course-enrollment-database, dominic/enrollment-ui, dominic/enrollment-waitlist, dominic/final-project-polish |#18, #23, #25, #26, #33, #34, #41, #44, #47, #54 |Waitlists, Capacity Limits | finished |
 | 3 – Assignments | Oswald Perales | operalescs | #20, #21, #22 | oswald/assignments-skeleton | #24 (Reviewed by Alvin) | Assignment table and DAO test | in-progress |
-| 4 — Grades & Statistics |Alvin Chiu  |achiu-CSUMB |#1,#2,#3, #12 |alvin/FXskeleton, alvin/grade-ui, alvin/grade-and-DB, alvin/model.Grade-Skeleton |#14,#17, #31,#55,#56 |TableView / ListView populated with live data | in-progress |
+| 4 — Grades & Statistics |Alvin Chiu  |achiu-CSUMB |#1,#2,#3, #12 |alvin/FXskeleton, alvin/grade-ui, alvin/grade-and-DB, alvin/model.Grade-Skeleton |#14,#17, #31,#55,#57 |TableView / ListView populated with live data | in-progress |
 
 _Status values: planned · in-progress · complete_
 
@@ -51,7 +51,7 @@ Issue if the team later decides to attempt it for extra credit._
 |[#17](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/17)  |Alvin  |Dominic |——— |Merged  |
 |[#31](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/31)  |Alvin  |Dominic |——— |Merged  |
 |[#55](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/55)  |Alvin  |Dominic |——— |Merged  |
-|[#56](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/56)  |Alvin  |NA |——— |PENDING  |
+|[#57](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/57)  |Alvin  |NA |——— |PENDING  |
 
 ## AI Usage Log
 | John Ly | ChatGPT | Drafted TestFX registration tests; reviewed and corrected ComboBox interaction, expected messages, User import, and H2 test isolation | [Curated Tests / TESTING.md](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/38/changes/1ae9a6030faeae71aa938898ee4a80f08e3f3e82) | [Testing Commit](https://github.com/achiu-CSUMB/CST338-Project2.1/commit/bc1ad70eb5561c33fc37b3d63705eb4d30f3c16f) |
