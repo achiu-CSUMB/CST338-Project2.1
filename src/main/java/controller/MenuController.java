@@ -125,8 +125,23 @@ public class MenuController {
         }
 
     @FXML
-    private void handleAssignments() {
-        // Logic to navigate to the Assignments scene
+    private void handleAssignments(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/views/assignments-view.fxml")
+            );
+
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Node) event.getSource())
+                    .getScene()
+                    .getWindow();
+
+            stage.getScene().setRoot(root);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
