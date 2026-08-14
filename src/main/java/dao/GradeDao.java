@@ -5,7 +5,6 @@ import model.Grade;
 import model.User;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,7 +28,7 @@ public class GradeDao {
         return DatabaseManager.getInstance().getConnection();
     }
     private final UserDao userDao = new UserDao();
-    private final dao.AssignmentDao assignmentDao = new dao.AssignmentDao();
+    private final AssignmentDao assignmentDao = new AssignmentDao();
     /**
      * Inserts a new grade record.
      */
@@ -42,7 +41,7 @@ public class GradeDao {
             stmt.setInt(2, Integer.parseInt(grade.getStudentId()));
             stmt.setInt(3, Integer.parseInt(grade.getAssignmentId()));
             stmt.setDouble(4, grade.getScore());
-            stmt.setDate(5, Date.valueOf(grade.getDate()));
+            stmt.setString(5, grade.getDate().toString());
             stmt.executeUpdate();
         }
     }
@@ -200,7 +199,7 @@ public class GradeDao {
 
         try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
             stmt.setDouble(1, grade.getScore());
-            stmt.setDate(2, Date.valueOf(grade.getDate()));
+            stmt.setString(2, grade.getDate().toString());
             stmt.setInt(3, Integer.parseInt(grade.getCourseId()));
             stmt.setInt(4, Integer.parseInt(grade.getStudentId()));
             stmt.setInt(5, Integer.parseInt(grade.getAssignmentId()));
@@ -229,7 +228,7 @@ public class GradeDao {
                 rs.getDouble("score")
         );
 
-        LocalDate entryDate = rs.getDate("entry_date").toLocalDate();
+        LocalDate entryDate = LocalDate.parse(rs.getString("entry_date"));
         grade.setDate(entryDate);
 
         User student = userDao.findById(rs.getInt("student_id"));
