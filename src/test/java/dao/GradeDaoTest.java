@@ -260,4 +260,51 @@ class GradeDaoTest {
         assertNotNull(found);
         assertEquals(LocalDate.of(2026, 8, 14), found.getDate());
     }
+
+    // ---- Edge cases ----
+
+    @Test
+    void insert_withAssignmentIdThatDoesNotExist_throwsDueToForeignKeyConstraint() {
+        // Edge case: assignment_id has a FOREIGN KEY REFERENCES
+        // assignments(assignment_id), and PRAGMA foreign_keys = ON is set
+        // in setUp() (mirroring DatabaseManager). A grade pointing at a
+        // nonexistent assignment must be rejected rather than silently
+        // stored with a dangling reference.
+        int assignmentIdThatDoesNotExist = 9999;
+        Grade grade = new Grade(String.valueOf(COURSE_ID), String.valueOf(STUDENT_ID),
+                String.valueOf(assignmentIdThatDoesNotExist), 75.0);
+
+        assertThrows(SQLException.class, () -> gradeDao.insert(grade));
+    }
+
+    @Test
+    void insert_boundaryScores_minAndMaxAreStoredExactly() throws SQLException {
+        // Edge case: Grade.MIN_GRADE/MAX_GRADE (0 and 100) are valid
+        // boundary values, not values that should be rejected or rounded.
+        gradeDao.insert(new Grade(String.valueOf(COURSE_ID), String.valueOf(STUDENT_ID),
+                String.valueOf(ASSIGNMENT_ID), 0.0));
+        gradeDao.insert(new Grade(String.valueOf(COURSE_ID), String.valueOf(OTHER_STUDENT_ID),
+                String.valueOf(ASSIGNMENT_ID), 100.0));
+
+        Grade zero = gradeDao.find(String.valueOf(COURSE_ID), String.valueOf(STUDENT_ID),
+                String.valueOf(ASSIGNMENT_ID));
+        Grade hundred = gradeDao.find(String.valueOf(COURSE_ID), String.valueOf(OTHER_STUDENT_ID),
+                String.valueOf(ASSIGNMENT_ID));
+
+        assertEquals(0.0, zero.getScore());
+        assertEquals(100.0, hundred.getScore());
+    }
+
+    @Test
+    void findByCourseIdAndAssignmentId_forAssignmentWithNoGrades_returnsEmptyListNotNull() throws SQLException {
+        // Edge case: an assignment that exists but has no grades yet
+        // (e.g. right after a teacher creates it) should come back as an
+        // empty list, never null, since callers iterate the result
+        // directly without a null check.
+        List<Grade> results = gradeDao.findByCourseIdAndAssignmentId(
+                String.valueOf(COURSE_ID), String.valueOf(OTHER_ASSIGNMENT_ID));
+
+        assertNotNull(results);
+        assertTrue(results.isEmpty());
+    }
 }

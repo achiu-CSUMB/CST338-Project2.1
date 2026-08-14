@@ -169,10 +169,93 @@ class GradeServiceTest {
         assertEquals(80.0, stats.getAverage());
     }
 
-    /**
-     * In-memory stand-in for GradeDao. Overrides every method GradeService
-     * calls so no real database or connection is ever touched. Set
-     * failOnNextCall to true to make the next call throw SQLException, to
+    // ------------------------------------------------------------------
+    // AI-drafted-then-curated tests
+    //
+    // The two tests below started as an AI-generated first draft, then
+    // were reviewed and corrected by hand. The original draft is kept
+    // as a comment for each one so the mistake and the fix are both
+    // visible in the diff, rather than silently replaced. See
+    // REFLECTION.md for the write-up of this process.
+    // ------------------------------------------------------------------
+
+    /*
+     * AI ORIGINAL DRAFT (incorrect — kept for reflection, not run):
+     *
+     * @Test
+     * void saveGrade_whenFindThrows_fallsBackToInsert() {
+     *     fakeGradeDao.failOnNextCall = true; // simulate find() throwing
+     *     Grade grade = new Grade("1", "2", "3", 88.0);
+     *
+     *     boolean saved = gradeService.saveGrade(grade);
+     *
+     *     assertTrue(saved);
+     *     assertEquals(1, fakeGradeDao.insertCallCount);
+     * }
+     *
+     * Why this was wrong: it assumed saveGrade() treats a failed lookup
+     * as "no existing grade found, so insert" and recovers. Reading
+     * GradeService.saveGrade(), the find() call and the insert/update
+     * call happen inside the SAME try block — if find() throws, control
+     * jumps straight to the catch clause and returns false. Neither
+     * insert() nor update() is attempted, and failOnNextCall is a
+     * one-shot flag that resets itself once consumed. The AI drafted
+     * a plausible-sounding "resilience" behavior the code doesn't
+     * actually have. Corrected below to assert the real behavior.
+     */
+    @Test
+    void saveGrade_whenFindThrows_returnsFalseWithoutAttemptingInsertOrUpdate() {
+        fakeGradeDao.failOnNextCall = true; // find() throws
+        Grade grade = new Grade("1", "2", "3", 88.0);
+
+        boolean saved = gradeService.saveGrade(grade);
+
+        assertFalse(saved);
+        assertEquals(0, fakeGradeDao.insertCallCount);
+        assertEquals(0, fakeGradeDao.updateCallCount);
+    }
+
+    /*
+     * AI ORIGINAL DRAFT (incorrect expected value — kept for reflection):
+     *
+     * @Test
+     * void calculateMedian_evenNumberOfGrades_alternateExpectedValue() {
+     *     List<Grade> grades = List.of(
+     *             new Grade("1", "2", "3", 60.0),
+     *             new Grade("1", "5", "3", 70.0),
+     *             new Grade("1", "6", "3", 90.0),
+     *             new Grade("1", "7", "3", 100.0)
+     *     );
+     *     assertEquals(80.0, gradeService.calculateMedian(grades));
+     * }
+     *
+     * This one actually landed on the right answer for the wrong
+     * reason: the AI's stated calculation in its explanation averaged
+     * all four scores ((60+70+90+100)/4 = 80), not the two middle
+     * values after sorting ((70+90)/2 = 80) — they coincide here only
+     * because the list was already sorted and evenly spread. Swapping
+     * in an unsorted, unevenly-spread list exposes the difference: a
+     * true median ignores the outlier at the low end, a mean does not.
+     * Kept as a distinct edge case below instead of overwriting the
+     * existing evenNumberOfGrades test.
+     */
+    @Test
+    void calculateMedian_unsortedInputWithOutlier_ignoresOutlierUnlikeMean() {
+        List<Grade> grades = List.of(
+                new Grade("1", "2", "3", 100.0),
+                new Grade("1", "5", "3", 5.0),   // outlier, pulls the mean down
+                new Grade("1", "6", "3", 92.0),
+                new Grade("1", "7", "3", 88.0)
+        );
+
+        double median = gradeService.calculateMedian(grades);
+        double mean = grades.stream().mapToDouble(Grade::getScore).average().orElseThrow();
+
+        assertEquals(90.0, median); // sorted: 5, 88, 92, 100 -> (88+92)/2
+        assertNotEquals(mean, median, 0.0001);
+    }
+
+    /*
      * exercise GradeService's error-handling branches.
      */
     private static class FakeGradeDao extends GradeDao {
