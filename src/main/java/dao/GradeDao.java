@@ -2,6 +2,7 @@ package dao;
 
 import database.DatabaseManager;
 import model.Grade;
+import model.User;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -27,7 +28,7 @@ public class GradeDao {
     private Connection getConnection() {
         return DatabaseManager.getInstance().getConnection();
     }
-
+    private final UserDao userDao = new UserDao();
     /**
      * Inserts a new grade record.
      */
@@ -151,11 +152,17 @@ public class GradeDao {
         Grade grade = new Grade(
                 String.valueOf(rs.getInt("course_id")),
                 String.valueOf(rs.getInt("student_id")),
+                rs.getString("assignment_id"),
                 rs.getDouble("score")
         );
 
         LocalDate entryDate = rs.getDate("entry_date").toLocalDate();
         grade.setDate(entryDate);
+
+        User student = userDao.findById(rs.getInt("student_id"));
+        if (student != null) {
+            grade.setStudentName(student.getUsername());
+        }
 
         return grade;
     }
