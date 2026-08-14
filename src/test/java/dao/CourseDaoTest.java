@@ -1,4 +1,8 @@
+package dao;
+
+import model.Course;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.sql.Connection;
@@ -12,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * <br>
  * created: 8/4/2026
  * @since '1.0-SNAPSHOT'
- * Description: Tests the CRUD operations and database functionality of CourseDao.
+ * Description: Tests the CRUD operations and database functionality of dao.CourseDao.
  */
 
 class CourseDaoTest {
@@ -77,12 +81,12 @@ class CourseDaoTest {
 
         assertNotNull(found);
 
-        assertEquals(
+        Assertions.assertEquals(
                 "Computer Science",
                 found.getCourseName()
         );
-        assertEquals("Dr.", found.getPrefix());
-        assertEquals("Smith", found.getTeacherName());
+        Assertions.assertEquals("Dr.", found.getPrefix());
+        Assertions.assertEquals("Smith", found.getTeacherName());
     }
 
     @Test
@@ -105,12 +109,12 @@ class CourseDaoTest {
         Course updatedCourse = courseDao.findById(
                 course.getCourseId()
         );
-        assertEquals(
+        Assertions.assertEquals(
                 "Software Engineering",
                 updatedCourse.getCourseName()
         );
-        assertEquals("Prof.", updatedCourse.getPrefix());
-        assertEquals("Jones", updatedCourse.getTeacherName());
+        Assertions.assertEquals("Prof.", updatedCourse.getPrefix());
+        Assertions.assertEquals("Jones", updatedCourse.getTeacherName());
     }
 
     @Test

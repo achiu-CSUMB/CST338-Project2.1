@@ -1,4 +1,7 @@
+package dao;
+
 import database.DatabaseManager;
+import model.Grade;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -13,7 +16,7 @@ import java.util.List;
  * Author: Alvin Chiu
  * Created: 8/4/2026
  * Current version: V1.0 - 8/4/2026
- * Description: Data Access Object for the Grade class. Handles CRUD
+ * Description: Data Access Object for the model.Grade class. Handles CRUD
  * operations against a "grades" table keyed on (course_id, student_id).
  *
  */

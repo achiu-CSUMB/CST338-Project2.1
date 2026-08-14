@@ -1,4 +1,5 @@
 import database.DatabaseManager;
+import factory.SceneFactory;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -11,7 +12,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Grade and Assignment Tracker");
+        primaryStage.setTitle("model.Grade and Assignment Tracker");
 
         SceneFactory sceneFactory = new SceneFactory(primaryStage);
 

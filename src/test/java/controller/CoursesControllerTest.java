@@ -1,9 +1,15 @@
+package controller;
+
+import dao.CourseDao;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+import model.Course;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
+import service.CourseService;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -71,10 +77,10 @@ public class CoursesControllerTest extends ApplicationTest {
 
         assertEquals(1,table.getItems().size());
 
-        assertEquals("Computer Science", table.getItems().get(0).getCourseName());
+        Assertions.assertEquals("Computer Science", table.getItems().get(0).getCourseName());
 
-        assertEquals("Dr.", table.getItems().get(0).getPrefix());
+        Assertions.assertEquals("Dr.", table.getItems().get(0).getPrefix());
 
-        assertEquals("Smith", table.getItems().get(0).getTeacherName());
+        Assertions.assertEquals("Smith", table.getItems().get(0).getTeacherName());
     }
 }
