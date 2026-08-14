@@ -93,7 +93,7 @@ public class DatabaseManager {
                     grade_id INTEGER PRIMARY KEY AUTOINCREMENT,
                     student_id INTEGER NOT NULL,
                     course_id INTEGER NOT NULL,
-                    entry_date TEXT NOT NULL
+                    entry_date TEXT NOT NULL,
                     FOREIGN KEY(course_id) REFERENCES courses(course_id),
                     FOREIGN KEY(student_id) REFERENCES users(user_id)
                 );

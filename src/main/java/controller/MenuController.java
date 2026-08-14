@@ -132,7 +132,7 @@ public class MenuController {
     @FXML
     private void handleGrades(ActionEvent event) {
         // Logic to navigate to the Grades scene
-        if (!currentUser.getRole().equalsIgnoreCase("STUDENT")) {
+        if (currentUser.getRole().equalsIgnoreCase("STUDENT")) {
             try {
                 FXMLLoader loader = new FXMLLoader(
                         getClass().getResource("/views/grades-student-view.fxml")
@@ -150,7 +150,7 @@ public class MenuController {
             }
         }
 
-        if (!currentUser.getRole().equalsIgnoreCase("STUDENT")) {
+        if (currentUser.getRole().equalsIgnoreCase("TEACHER")) {
             try {
                 FXMLLoader loader = new FXMLLoader(
                         getClass().getResource("/views/grades-view.fxml")
