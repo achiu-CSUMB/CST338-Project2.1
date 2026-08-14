@@ -18,14 +18,14 @@ public class CourseService {
     private CourseDao courseDao;
 
     /**
-     * Creates a service.CourseService object.
+     * Creates a CourseService object.
      */
     public CourseService() {
         courseDao = new CourseDao();
     }
 
     /**
-     * Creates service.CourseService using provided DAO.
+     * Creates CourseService using provided DAO.
      * Testing.
      */
     public CourseService(CourseDao courseDao) {

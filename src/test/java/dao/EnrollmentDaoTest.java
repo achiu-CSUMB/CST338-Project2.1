@@ -211,6 +211,37 @@ class EnrollmentDaoTest {
         );
     }
 
+    // AI Drafted Test (I didn't know we could just make tests with the AI, so I guess I'm only doing two)
+    // Model: ChatGPT
+    // Prompt: Based on these rubrics, guidelines, and specific slice... and my current tests, what would be some good JUnit or TextFX tests for this application.
+    // Accepted (Focuses on getStudentEnrollments(int studentId) which my feature relies on; I have no issue with the generated test)
+    @Test
+    void getStudentEnrollments() {
+
+        Enrollment studentOne =
+                new Enrollment(1,1);
+
+        Enrollment studentTwo =
+                new Enrollment(2,1);
+
+
+        enrollmentDao.insert(studentOne);
+        enrollmentDao.insert(studentTwo);
+
+
+        ArrayList<Enrollment> enrollments =
+                enrollmentDao.getStudentEnrollments(1);
+
+
+        assertEquals(1, enrollments.size());
+
+        assertEquals(
+                1,
+                enrollments.get(0).getStudentId()
+        );
+    }
+
+
     @Test
     void hasCourseName() throws SQLException {
         Enrollment enrollment =
