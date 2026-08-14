@@ -48,6 +48,20 @@ public class GradeService {
     }
 
     /**
+     * Retrieves every grade recorded for a single assignment within a course
+     * (e.g. for a teacher viewing grades scoped to one assignment via the
+     * assignment picker). Returns an empty list if none exist or the lookup fails.
+     */
+    public List<Grade> getGradesForAssignment(String courseId, String assignmentId) {
+        try {
+            return gradeDao.findByCourseIdAndAssignmentId(courseId, assignmentId);
+        } catch (SQLException e) {
+            System.err.println("Could not retrieve grades for assignment: " + e.getMessage());
+            return Collections.emptyList();
+        }
+    }
+
+    /**
      * Retrieves a single student's grade in a course (e.g. for a student's own view).
      * Returns null if no grade exists or the lookup fails.
      */

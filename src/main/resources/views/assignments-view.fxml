@@ -26,7 +26,7 @@
                 onAction="#goBackToMenu"/>
     </HBox>
 
-    <Label text="Assignment Management"/>
+    <Label fx:id="headerLabel" text="Assignment Management"/>
 
     <TableView fx:id="assignmentTable"
                prefHeight="250">

@@ -15,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import model.Assignment;
 import model.Grade;
 import model.User;
 import dao.CourseDao;
@@ -51,6 +52,7 @@ public class GradeController implements Initializable {
     private final GradeService gradeService = new GradeService();
     private User currentUser;
     private final List<Grade> grades;
+    private Assignment currentAssignment;
 
     public GradeController() {
         this.grades = new ArrayList<>();
@@ -59,6 +61,16 @@ public class GradeController implements Initializable {
     public void setCurrentUser(User user) {
         this.currentUser = user;
         applyRoleView();
+    }
+
+    /**
+     * Scopes this screen's header to a single assignment (called from the
+     * assignment picker). Optional — if never called, the header falls
+     * back to showing just the course, as before.
+     */
+    public void setAssignment(Assignment assignment) {
+        this.currentAssignment = assignment;
+        updateHeader();
     }
 
 
@@ -129,10 +141,21 @@ public class GradeController implements Initializable {
 
     private void updateHeader() {
         if (maxScoreLabel != null) {
-            maxScoreLabel.setText("Max Score: " + Grade.MAX_GRADE);
+            double maxScore = currentAssignment != null ? currentAssignment.getMaxPoints() : Grade.MAX_GRADE;
+            maxScoreLabel.setText("Max Score: " + maxScore);
         }
 
         if (headerLabel == null) {
+            return;
+        }
+
+        // When scoped to an assignment (via the assignment picker), show
+        // the course + assignment title regardless of whether any grades
+        // have been entered yet.
+        if (currentAssignment != null) {
+            Course course = courseDao.findById(currentAssignment.getCourseId());
+            String courseName = course != null ? course.getCourseName() : "Course " + currentAssignment.getCourseId();
+            headerLabel.setText(courseName + " — " + currentAssignment.getTitle());
             return;
         }
 

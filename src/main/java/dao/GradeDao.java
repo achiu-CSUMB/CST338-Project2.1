@@ -84,6 +84,29 @@ public class GradeDao {
     }
 
     /**
+     * Returns all grade records for a given course, scoped to a single
+     * assignment. Used by the assignment picker so a teacher can view
+     * grades for one assignment at a time instead of every assignment
+     * mixed together.
+     */
+    public List<Grade> findByCourseIdAndAssignmentId(String courseId, String assignmentId) throws SQLException {
+        String sql = "SELECT course_id, student_id, score, entry_date FROM "
+                + TABLE_NAME + " WHERE course_id = ? AND assignment_id = ?";
+
+        List<Grade> results = new ArrayList<>();
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, Integer.parseInt(courseId));
+            stmt.setInt(2, Integer.parseInt(assignmentId));
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    results.add(mapRow(rs));
+                }
+            }
+        }
+        return results;
+    }
+
+    /**
      * Returns the single grade record for a specific student in a specific
      * course, or null if none exists.
      */

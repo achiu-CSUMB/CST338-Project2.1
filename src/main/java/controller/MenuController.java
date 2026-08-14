@@ -126,27 +126,38 @@ public class MenuController {
 
     @FXML
     private void handleAssignments(ActionEvent event) {
+        // Logic to navigate to the course picker, which lets the user choose
+        // which course's assignments to view before landing on the
+        // assignments screen (scoped to that course).
+        if (currentUser == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("No User");
+            alert.setHeaderText(null);
+            alert.setContentText("Current user was lost.");
+            alert.showAndWait();
+            return;
+        }
+
         try {
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/views/assignments-view.fxml")
+                    getClass().getResource("/views/course-picker-view.fxml")
             );
 
             Parent root = loader.load();
 
-            AssignmentsController controller = loader.getController();
+            CoursePickerController controller = loader.getController();
+            controller.setMode(CoursePickerController.Mode.ASSIGNMENTS);
             controller.setCurrentUser(currentUser);
 
             Stage stage = (Stage) ((Node) event.getSource())
                     .getScene()
                     .getWindow();
 
-            stage.getScene().setRoot(root);
-
+            stage.setScene(new Scene(root));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 
     @FXML
     private void handleGrades(ActionEvent event) {
@@ -169,6 +180,7 @@ public class MenuController {
             Parent root = loader.load();
 
             CoursePickerController controller = loader.getController();
+            controller.setMode(CoursePickerController.Mode.GRADES);
             controller.setCurrentUser(currentUser);
 
             Stage stage = (Stage) ((Node) event.getSource())
@@ -179,6 +191,7 @@ public class MenuController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     @FXML
