@@ -2,7 +2,9 @@
 
 # Grade and Assignment Tracker
 
-Grade and Assignment Tracker that allows students and teachers to manage accounts, courses, assignments, grades, and academic records. CST 338 Project 2 — Team **Quintate**.
+A JavaFX grade and assignment tracking application that allows students and teachers to manage accounts, courses, assignments, grades, enrollment, and academic records.
+
+CST 338 Project 2 — Team **Quintate**
 
 ## Team & Slice Ownership
 | Slice | Owner | GitHub username | Issues | Branch(es) | PR(s) | Enhancement chosen | Status |
@@ -29,7 +31,7 @@ Issue if the team later decides to attempt it for extra credit._
 | #25 — dominic/course-enrollment-database | Dominic Casoli | John Ly | — | Feedback accepted, approved, and merged |
 
 ## AI Usage Log
-- | John Ly | ChatGPT | Drafted TestFX registration tests; reviewed and corrected ComboBox interaction, expected messages, User import, and H2 test isolation | [Curated Tests / TESTING.md](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/38/changes/1ae9a6030faeae71aa938898ee4a80f08e3f3e82) | [Testing Commit](https://github.com/achiu-CSUMB/CST338-Project2.1/commit/bc1ad70eb5561c33fc37b3d63705eb4d30f3c16f) |
+| John Ly | ChatGPT | Drafted TestFX registration tests; reviewed and corrected ComboBox interaction, expected messages, User import, and H2 test isolation | [Curated Tests / TESTING.md](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/38/changes/1ae9a6030faeae71aa938898ee4a80f08e3f3e82) | [Testing Commit](https://github.com/achiu-CSUMB/CST338-Project2.1/commit/bc1ad70eb5561c33fc37b3d63705eb4d30f3c16f) |
 - **AI code reviews:** [PR link](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/34) + Slice 2 (Courses & Enrollment), covers EnrollmentController, Enrollment, EnrollmentControllerTest, and EnrollmentServiceTest - Dominic
 - **AI code reviews:** [PR #37 AI review](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/37#issuecomment-5270511821) + Slice 1 (Accounts), covers AccountsController, role updates, account CRUD, and password reset - John
 - **AI code reviews:** [PR #24 AI review](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/24#issuecomment-5275939228) + Slice 3 (Assignments), covers `AssignmentDao.findById()` and database error handling - Oswald
@@ -48,7 +50,7 @@ Issue if the team later decides to attempt it for extra credit._
 .\gradlew run
 .\gradlew test
 ```
-macOS / Linux
+### macOS / Linux
 ```text
 ./gradlew run
 ./gradlew test
@@ -69,3 +71,12 @@ macOS / Linux
 4. Allow Gradle to download the required dependencies.
 5. Run the application using the Gradle wrapper.
 6. Run the full automated test suite before submission.
+
+### Default Demo Admin Account
+
+A default administrator account is created automatically when the application database is initialized.
+
+- Username: `admin`
+- Password: `admin123`
+
+The Admin account can be used to demonstrate account management features such as role updates.
