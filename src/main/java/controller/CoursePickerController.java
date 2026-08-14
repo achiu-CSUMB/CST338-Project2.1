@@ -1,7 +1,6 @@
 package controller;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import dao.CourseDao;
@@ -151,7 +150,7 @@ public class CoursePickerController {
 
             GradeController controller = loader.getController();
             controller.setCurrentUser(currentUser);
-            controller.setGrades(fetchStudentGrade(courseId));
+            controller.setGrades(fetchStudentGrades(courseId));
 
             Stage stage = (Stage) selectCourseButton.getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -192,10 +191,9 @@ public class CoursePickerController {
         }
     }
 
-    private List<Grade> fetchStudentGrade(String courseId) {
+    private List<Grade> fetchStudentGrades(String courseId) {
         String studentId = String.valueOf(currentUser.getUserId());
-        Grade grade = gradeService.getGradeForStudent(courseId, studentId);
-        return grade != null ? Collections.singletonList(grade) : Collections.emptyList();
+        return gradeService.getGradesForStudentInCourse(courseId, studentId);
     }
 
     @FXML

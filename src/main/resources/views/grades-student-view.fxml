@@ -27,7 +27,6 @@
     <HBox alignment="TOP_LEFT">
         <VBox spacing="2">
             <Label fx:id="headerLabel" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
-            <Label fx:id="maxScoreLabel" style="-fx-text-fill: gray;"/>
         </VBox>
 
         <Region HBox.hgrow="ALWAYS"/>
@@ -37,7 +36,9 @@
 
     <TableView fx:id="gradesTable" VBox.vgrow="ALWAYS">
         <columns>
-            <TableColumn fx:id="scoreColumn" text="Score" prefWidth="150"/>
+            <TableColumn fx:id="assignmentColumn" text="Assignment" prefWidth="200"/>
+            <TableColumn fx:id="scoreColumn" text="Score" prefWidth="100"/>
+            <TableColumn fx:id="maxScoreColumn" text="Max" prefWidth="80" sortable="false"/>
             <TableColumn fx:id="statusColumn" text="Grade" prefWidth="60" sortable="false"/>
         </columns>
     </TableView>

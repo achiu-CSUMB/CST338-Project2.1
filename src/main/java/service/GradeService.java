@@ -98,6 +98,21 @@ public class GradeService {
     }
 
     /**
+     * Retrieves every grade a student has in a course, across all
+     * assignments (e.g. for a student's own grades view, so they can see
+     * every assignment they've been graded on rather than just one).
+     * Returns an empty list if none exist or the lookup fails.
+     */
+    public List<Grade> getGradesForStudentInCourse(String courseId, String studentId) {
+        try {
+            return gradeDao.findByCourseIdAndStudentId(courseId, studentId);
+        } catch (SQLException e) {
+            System.err.println("Could not retrieve grades for student: " + e.getMessage());
+            return Collections.emptyList();
+        }
+    }
+
+    /**
      * Converts a numeric score into a letter grade.
      */
     public String calculateLetterGrade(double score) {

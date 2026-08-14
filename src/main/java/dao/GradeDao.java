@@ -29,6 +29,7 @@ public class GradeDao {
         return DatabaseManager.getInstance().getConnection();
     }
     private final UserDao userDao = new UserDao();
+    private final dao.AssignmentDao assignmentDao = new dao.AssignmentDao();
     /**
      * Inserts a new grade record.
      */
@@ -98,6 +99,29 @@ public class GradeDao {
         try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
             stmt.setInt(1, Integer.parseInt(courseId));
             stmt.setInt(2, Integer.parseInt(assignmentId));
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    results.add(mapRow(rs));
+                }
+            }
+        }
+        return results;
+    }
+
+    /**
+     * Returns every grade record for a given student within a single
+     * course, across all assignments. Used by a student's own grades view
+     * so they see every assignment they've been graded on in that course,
+     * not just one.
+     */
+    public List<Grade> findByCourseIdAndStudentId(String courseId, String studentId) throws SQLException {
+        String sql = "SELECT course_id, student_id, assignment_id, score, entry_date FROM "
+                + TABLE_NAME + " WHERE course_id = ? AND student_id = ?";
+
+        List<Grade> results = new ArrayList<>();
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, Integer.parseInt(courseId));
+            stmt.setInt(2, Integer.parseInt(studentId));
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     results.add(mapRow(rs));
@@ -211,6 +235,12 @@ public class GradeDao {
         User student = userDao.findById(rs.getInt("student_id"));
         if (student != null) {
             grade.setStudentName(student.getUsername());
+        }
+
+        model.Assignment assignment = assignmentDao.findById(rs.getInt("assignment_id"));
+        if (assignment != null) {
+            grade.setAssignmentTitle(assignment.getTitle());
+            grade.setMaxPoints(assignment.getMaxPoints());
         }
 
         return grade;

@@ -48,6 +48,8 @@ public class GradeController implements Initializable {
     @FXML private TableColumn<Grade, String> studentColumn;
     @FXML private TableColumn<Grade, String> statusColumn;
     @FXML private TableColumn<Grade, Double> scoreColumn;
+    @FXML private TableColumn<Grade, String> assignmentColumn;
+    @FXML private TableColumn<Grade, Double> maxScoreColumn;
     @FXML
     private void goBackToLogin(ActionEvent event) {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -89,6 +91,12 @@ public class GradeController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         if(studentColumn != null) {
             studentColumn.setCellValueFactory(new PropertyValueFactory<>("studentName"));
+        }
+        if (assignmentColumn != null) {
+            assignmentColumn.setCellValueFactory(new PropertyValueFactory<>("assignmentTitle"));
+        }
+        if (maxScoreColumn != null) {
+            maxScoreColumn.setCellValueFactory(new PropertyValueFactory<>("maxPoints"));
         }
         scoreColumn.setCellValueFactory(new PropertyValueFactory<>("score"));
         scoreColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
