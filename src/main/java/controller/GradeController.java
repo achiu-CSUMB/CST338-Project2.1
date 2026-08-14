@@ -62,13 +62,24 @@ public class GradeController implements Initializable {
     private final CourseDao courseDao = new CourseDao();
     private final EnrollmentDao enrollmentDao = new EnrollmentDao();
     private final UserDao userDao = new UserDao();
-    private final GradeService gradeService = new GradeService();
+    private final GradeService gradeService;
     private User currentUser;
     private final List<Grade> grades;
     private Assignment currentAssignment;
 
     public GradeController() {
         this.grades = new ArrayList<>();
+        this.gradeService = new GradeService();
+    }
+
+    /**
+     * Creates a GradeController using the given service. Used for testing,
+     * so a fake/stub GradeService can be substituted instead of one backed
+     * by the shared application database.
+     */
+    public GradeController(GradeService gradeService) {
+        this.grades = new ArrayList<>();
+        this.gradeService = gradeService;
     }
 
     public void setCurrentUser(User user) {

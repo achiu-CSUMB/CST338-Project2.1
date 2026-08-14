@@ -24,11 +24,35 @@ public class GradeDao {
 
     private static final String TABLE_NAME = "grades";
 
-    private Connection getConnection() {
-        return DatabaseManager.getInstance().getConnection();
+    private final Connection connection;
+    private final UserDao userDao;
+    private final AssignmentDao assignmentDao;
+
+    /**
+     * Creates a GradeDao backed by the shared application database.
+     */
+    public GradeDao() {
+        this.connection = DatabaseManager.getInstance().getConnection();
+        this.userDao = new UserDao();
+        this.assignmentDao = new AssignmentDao();
     }
-    private final UserDao userDao = new UserDao();
-    private final AssignmentDao assignmentDao = new AssignmentDao();
+
+    /**
+     * Creates a GradeDao using the given connection, and wires userDao/
+     * assignmentDao to that same connection. Used for testing against an
+     * isolated (e.g. in-memory) database instead of the shared application
+     * database.
+     */
+    public GradeDao(Connection connection) {
+        this.connection = connection;
+        this.userDao = new UserDao(connection);
+        this.assignmentDao = new AssignmentDao(connection);
+    }
+
+    private Connection getConnection() {
+        return connection;
+    }
+
     /**
      * Inserts a new grade record.
      */
