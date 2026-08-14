@@ -1,15 +1,4 @@
 # CST338-Project2.1
-<!--
-CST 338 Project 2 — README template.
-Copy this file into the ROOT of your team's repository as README.md and keep it current.
-This README is your project dashboard: it is the first thing the instructor reads when
-grading, and a working, up-to-date README is part of your integration score.
-
-GitHub Issues are your LIVE tracker — every slice task, enhancement, and scope decision is
-an Issue: assigned to its owner, labeled (slice-1, testing, enhancement, will-not-do,
-extra-credit), and closed by a PR via "Closes #N". The tables below link into those Issues
-and PRs. Replace every <placeholder> and delete this comment before you submit.
--->
 
 A JavaFX grade and assignment tracking application that allows students and teachers to manage accounts, courses, assignments, grades, enrollment, and academic records.
 
