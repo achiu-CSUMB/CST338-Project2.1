@@ -133,6 +133,9 @@ public class MenuController {
 
             Parent root = loader.load();
 
+            AssignmentsController controller = loader.getController();
+            controller.setCurrentUser(currentUser);
+
             Stage stage = (Stage) ((Node) event.getSource())
                     .getScene()
                     .getWindow();

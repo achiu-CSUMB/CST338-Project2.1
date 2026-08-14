@@ -15,10 +15,16 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Assignment;
+import model.User;
 
 public class AssignmentsController {
 
     private AssignmentDao assignmentDao;
+    private User currentUser;
+
+    public void setCurrentUser(User user) {
+        currentUser = user;
+    }
 
     @FXML
     private TableView<Assignment> assignmentTable;
@@ -256,7 +262,7 @@ public class AssignmentsController {
                 .getWindow();
 
         SceneFactory sceneFactory =
-                new SceneFactory(stage);
+                new SceneFactory(stage, currentUser);
 
         sceneFactory.showScene(
                 SceneFactory.SceneType.MAIN_MENU
