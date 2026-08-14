@@ -61,7 +61,7 @@ Issue if the team later decides to attempt it for extra credit._
 - **AI code reviews:** [PR #37 AI review](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/37#issuecomment-5270511821) + Slice 1 (Accounts), covers AccountsController, role updates, account CRUD, and password reset - John
 - **AI code reviews:** [PR #24 AI review](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/24#issuecomment-5275939228) + Slice 3 (Assignments), covers `AssignmentDao.findById()` and database error handling - Oswald
 
-| Alvin Chiu | Claude |  |  |
+| Alvin Chiu | Claude |  Drafted ControllerUI tests| https://github.com/achiu-CSUMB/CST338-Project2.1/blob/main/REFLECTION.md | PR#57|
 ## Extra Credit Log
 
 | Item | Who | Evidence (Issue/PR) |
