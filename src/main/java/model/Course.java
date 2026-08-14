@@ -1,3 +1,5 @@
+package model;
+
 /**
  * @author Dominic Casoli
  * <br>
