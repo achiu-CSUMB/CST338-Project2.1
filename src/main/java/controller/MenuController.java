@@ -133,6 +133,9 @@ public class MenuController {
 
             Parent root = loader.load();
 
+            AssignmentsController controller = loader.getController();
+            controller.setCurrentUser(currentUser);
+
             Stage stage = (Stage) ((Node) event.getSource())
                     .getScene()
                     .getWindow();
@@ -147,47 +150,34 @@ public class MenuController {
 
     @FXML
     private void handleGrades(ActionEvent event) {
-        // Logic to navigate to the Grades scene
-        if (currentUser.getRole().equalsIgnoreCase("STUDENT")) {
-            try {
-                FXMLLoader loader = new FXMLLoader(
-                        getClass().getResource("/views/grades-student-view.fxml")
-                );
-
-                Parent root = loader.load();
-
-                GradeController controller = loader.getController();
-                controller.setCurrentUser(currentUser);
-
-                Stage stage = (Stage) ((Node) event.getSource())
-                        .getScene()
-                        .getWindow();
-
-                stage.setScene(new Scene(root));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        // Logic to navigate to the course picker, which lets the user choose
+        // which course's grades to view before landing on the grades screen.
+        if (currentUser == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("No User");
+            alert.setHeaderText(null);
+            alert.setContentText("Current user was lost.");
+            alert.showAndWait();
+            return;
         }
 
-        if (currentUser.getRole().equalsIgnoreCase("TEACHER")) {
-            try {
-                FXMLLoader loader = new FXMLLoader(
-                        getClass().getResource("/views/grades-view.fxml")
-                );
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/views/course-picker-view.fxml")
+            );
 
-                Parent root = loader.load();
+            Parent root = loader.load();
 
-                GradeController controller = loader.getController();
-                controller.setCurrentUser(currentUser);
+            CoursePickerController controller = loader.getController();
+            controller.setCurrentUser(currentUser);
 
-                Stage stage = (Stage) ((Node) event.getSource())
-                        .getScene()
-                        .getWindow();
+            Stage stage = (Stage) ((Node) event.getSource())
+                    .getScene()
+                    .getWindow();
 
-                stage.setScene(new Scene(root));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            stage.setScene(new Scene(root));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

@@ -3,7 +3,6 @@ package controller;
 
 import java.net.URL;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import factory.SceneFactory;
 import javafx.beans.property.SimpleStringProperty;
@@ -20,6 +19,7 @@ import model.Grade;
 import model.User;
 import dao.CourseDao;
 import model.Course;
+import service.GradeService;
 /**
  * Author: Alvin Chiu
  * Created: 8/1/2026
@@ -48,6 +48,7 @@ public class GradeController implements Initializable {
     }
 
     private final CourseDao courseDao = new CourseDao();
+    private final GradeService gradeService = new GradeService();
     private User currentUser;
     private final List<Grade> grades;
 
@@ -70,7 +71,7 @@ public class GradeController implements Initializable {
 
         statusColumn.setCellValueFactory(cellData -> {
             double score = cellData.getValue().getScore();
-            return new SimpleStringProperty(calculateLetterGrade(score));
+            return new SimpleStringProperty(gradeService.calculateLetterGrade(score));
         });
 
         if (viewStatisticsButton != null) {
@@ -95,30 +96,6 @@ public class GradeController implements Initializable {
         }
     }
 
-
-    private String calculateLetterGrade(double score) {
-        if (score >= 90) return "A";
-        if (score >= 80) return "B";
-        if (score >= 70) return "C";
-        if (score >= 60) return "D";
-        return "F";
-    }
-
-    private double calculateMedian(List<Grade> gradeList) {
-        List<Double> scores = gradeList.stream()
-                .map(Grade::getScore)
-                .sorted()
-                .collect(Collectors.toList());
-
-        int size = scores.size();
-        int mid = size / 2;
-
-        if (size % 2 == 0) {
-            return (scores.get(mid - 1) + scores.get(mid)) / 2.0;
-        } else {
-            return scores.get(mid);
-        }
-    }
 
     private void applyRoleView() {
         if (currentUser == null) return;
