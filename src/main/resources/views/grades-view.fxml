@@ -32,7 +32,10 @@
 
         <Region HBox.hgrow="ALWAYS"/>
 
-        <Button fx:id="viewStatisticsButton" text="View Statistics"/>
+        <HBox spacing="10">
+            <Button fx:id="addGradeButton" text="+ Add Grade"/>
+            <Button fx:id="viewStatisticsButton" text="View Statistics"/>
+        </HBox>
     </HBox>
 
     <TableView fx:id="gradesTable" VBox.vgrow="ALWAYS">

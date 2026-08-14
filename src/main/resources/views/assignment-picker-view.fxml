@@ -10,7 +10,7 @@
 
 <VBox xmlns="http://javafx.com/javafx/25"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="controller.CoursePickerController"
+      fx:controller="controller.AssignmentPickerController"
       spacing="15"
       alignment="TOP_CENTER">
 
@@ -21,21 +21,21 @@
     <HBox alignment="CENTER_LEFT">
         <Button fx:id="backButton"
                 text="← Back"
-                onAction="#goBackToLogin"/>
+                onAction="#goBackToCoursePicker"/>
     </HBox>
 
-    <Label fx:id="headerLabel" text="Select a Course">
+    <Label fx:id="headerLabel" text="Select an Assignment">
         <font>
             <Font name="System Bold" size="16"/>
         </font>
     </Label>
 
-    <ListView fx:id="courseListView" VBox.vgrow="ALWAYS"/>
+    <ListView fx:id="assignmentListView" VBox.vgrow="ALWAYS"/>
 
     <HBox alignment="CENTER_RIGHT">
-        <Button fx:id="selectCourseButton"
+        <Button fx:id="selectAssignmentButton"
                 text="View Grades"
-                onAction="#handleSelectCourse"/>
+                onAction="#handleSelectAssignment"/>
     </HBox>
 
 </VBox>

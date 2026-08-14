@@ -48,6 +48,43 @@ public class GradeService {
     }
 
     /**
+     * Retrieves every grade recorded for a single assignment within a course
+     * (e.g. for a teacher viewing grades scoped to one assignment via the
+     * assignment picker). Returns an empty list if none exist or the lookup fails.
+     */
+    public List<Grade> getGradesForAssignment(String courseId, String assignmentId) {
+        try {
+            return gradeDao.findByCourseIdAndAssignmentId(courseId, assignmentId);
+        } catch (SQLException e) {
+            System.err.println("Could not retrieve grades for assignment: " + e.getMessage());
+            return Collections.emptyList();
+        }
+    }
+
+    /**
+     * Creates or updates a grade record, deciding automatically based on
+     * whether a grade already exists for that student/course/assignment.
+     * Used when a teacher edits a score in the grades table.
+     * Returns true if the save succeeded.
+     */
+    public boolean saveGrade(Grade grade) {
+        try {
+            Grade existing = gradeDao.find(grade.getCourseId(), grade.getStudentId(), grade.getAssignmentId());
+
+            if (existing != null) {
+                gradeDao.update(grade);
+            } else {
+                gradeDao.insert(grade);
+            }
+
+            return true;
+        } catch (SQLException e) {
+            System.err.println("Could not save grade: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
      * Retrieves a single student's grade in a course (e.g. for a student's own view).
      * Returns null if no grade exists or the lookup fails.
      */

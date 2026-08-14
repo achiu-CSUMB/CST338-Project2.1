@@ -93,9 +93,12 @@ public class DatabaseManager {
                     grade_id INTEGER PRIMARY KEY AUTOINCREMENT,
                     student_id INTEGER NOT NULL,
                     course_id INTEGER NOT NULL,
+                    assignment_id INTEGER,
+                    score REAL NOT NULL DEFAULT 0,
                     entry_date TEXT NOT NULL,
                     FOREIGN KEY(course_id) REFERENCES courses(course_id),
-                    FOREIGN KEY(student_id) REFERENCES users(user_id)
+                    FOREIGN KEY(student_id) REFERENCES users(user_id),
+                    FOREIGN KEY(assignment_id) REFERENCES assignments(assignment_id)
                 );
                 """;
 
@@ -109,6 +112,8 @@ public class DatabaseManager {
             statement.execute(enrollmentSql);
             statement.execute(assignmentSql);
             statement.execute(gradeSql);
+
+            addGradeColumns();
         } catch (SQLException e) {
             System.err.println("Could not create database table: " + e.getMessage());
         }
@@ -136,6 +141,23 @@ public class DatabaseManager {
 
         try (Statement statement= connection.createStatement()) {
             statement.execute("ALTER TABLE users ADD COLUMN teacher_name TEXT;");
+        } catch (SQLException e) {
+            // Ignore if the column already exists
+        }
+    }
+
+    // Adds score/assignment_id to the grades table for databases created
+    // before these columns existed. Safe to call repeatedly; failures mean
+    // the column is already there.
+    private void addGradeColumns() {
+        try (Statement statement = connection.createStatement()) {
+            statement.execute("ALTER TABLE grades ADD COLUMN score REAL NOT NULL DEFAULT 0;");
+        } catch (SQLException e) {
+            // Ignore if the column already exists
+        }
+
+        try (Statement statement = connection.createStatement()) {
+            statement.execute("ALTER TABLE grades ADD COLUMN assignment_id INTEGER;");
         } catch (SQLException e) {
             // Ignore if the column already exists
         }
