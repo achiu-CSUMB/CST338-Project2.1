@@ -21,7 +21,7 @@ CST 338 Project 2 — Team **Quintate**
 | 1 — Accounts |John Ly |6e4st |#7, #8, #9, #36, #39 |john/user-dao, john/account-scene |#15, #19, #35, #37, #38, #40 |Admin role and password reset | planned |
 | 2 — Courses & Enrollment |Dominic Casoli |dcasoliprettyawesome|#4, #5, #6, #30, #32, #53 |dominic/course-management-ui, dominic/course-enrollment-database, dominic/enrollment-ui, dominic/enrollment-waitlist, dominic/final-project-polish |#18, #23, #25, #26, #33, #34, #41, #44, #47, #54 |Waitlists, Capacity Limits | finished |
 | 3 – Assignments | Oswald Perales | operalescs | #20, #21, #22 | oswald/assignments-skeleton | #24 (Reviewed by Alvin) | Assignment table and DAO test | in-progress |
-| 4 — Grades & Statistics |Alvin Chiu  |achiu-CSUMB |#1,#2,#3, #12 |alvin/FXskeleton, alvin/grade-ui, alvin/grade-and-DB, alvin/model.Grade-Skeleton |#14,#17, #31,#55 |TableView / ListView populated with live data | in-progress |
+| 4 — Grades & Statistics |Alvin Chiu  |achiu-CSUMB |#1,#2,#3, #12 |alvin/FXskeleton, alvin/grade-ui, alvin/grade-and-DB, alvin/model.Grade-Skeleton |#14,#17, #31,#55,#56 |TableView / ListView populated with live data | in-progress |
 
 _Status values: planned · in-progress · complete_
 
@@ -60,6 +60,8 @@ Issue if the team later decides to attempt it for extra credit._
 - **AI code reviews:** [PR link](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/34) + Slice 2 (Courses & Enrollment), covers EnrollmentController, Enrollment, EnrollmentControllerTest, and EnrollmentServiceTest - Dominic
 - **AI code reviews:** [PR #37 AI review](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/37#issuecomment-5270511821) + Slice 1 (Accounts), covers AccountsController, role updates, account CRUD, and password reset - John
 - **AI code reviews:** [PR #24 AI review](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/24#issuecomment-5275939228) + Slice 3 (Assignments), covers `AssignmentDao.findById()` and database error handling - Oswald
+
+| Alvin Chiu | Claude |  |  |
 ## Extra Credit Log
 
 | Item | Who | Evidence (Issue/PR) |
@@ -67,7 +69,7 @@ Issue if the team later decides to attempt it for extra credit._
 | Password reset enhancement for Accounts | John Ly |#36, #37 |
 | User role/admin management enhancement | John Ly |#36, #37 |
 |Waitlists and Capacity Limits (The way I did it made them kind of hand in hand)  | Dominic Casoli |[#41](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/41), [#44](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/44), [#47](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/47), [#54](https://github.com/achiu-CSUMB/CST338-Project2.1/pull/54)  |
-
+| Statistics for Grades | Alvin Chiu | Issue: #2 /PR:#37, #51 |
 ## Build & Run
 
 ### Windows PowerShell
