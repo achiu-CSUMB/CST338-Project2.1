@@ -39,7 +39,7 @@
         <columns>
             <TableColumn fx:id="studentColumn" text="Student" prefWidth="220"/>
             <TableColumn fx:id="scoreColumn" text="Score" prefWidth="100"/>
-            <TableColumn fx:id="statusColumn" text="" prefWidth="40" sortable="false"/>
+            <TableColumn fx:id="statusColumn" text="Grade" prefWidth="60" sortable="false"/>
         </columns>
     </TableView>
 </VBox>

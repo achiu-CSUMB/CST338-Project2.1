@@ -38,7 +38,7 @@
     <TableView fx:id="gradesTable" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="scoreColumn" text="Score" prefWidth="150"/>
-            <TableColumn fx:id="statusColumn" text="" prefWidth="40" sortable="false"/>
+            <TableColumn fx:id="statusColumn" text="Grade" prefWidth="60" sortable="false"/>
         </columns>
     </TableView>
 </VBox>
