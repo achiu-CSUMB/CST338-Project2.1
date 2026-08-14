@@ -1,6 +1,7 @@
 package controller;
 
 import dao.AssignmentDao;
+import dao.CourseDao;
 import factory.SceneFactory;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -14,10 +15,46 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Assignment;
+import model.Course;
+import model.User;
+
+import java.util.List;
 
 public class AssignmentsController {
 
-    private AssignmentDao assignmentDao;
+    private final AssignmentDao assignmentDao = new AssignmentDao();
+    private final CourseDao courseDao = new CourseDao();
+    private User currentUser;
+    private Integer filterCourseId;
+
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
+    }
+
+    /**
+     * Scopes this screen to a single course (called from the course picker).
+     * Locks the course ID field so new assignments default to this course,
+     * and reloads the table to show only that course's assignments.
+     */
+    public void setCourseFilter(int courseId) {
+        this.filterCourseId = courseId;
+
+        courseIdField.setText(String.valueOf(courseId));
+        courseIdField.setDisable(true);
+
+        if (headerLabel != null) {
+            Course course = courseDao.findById(courseId);
+            String label = course != null
+                    ? (course.getPrefix() != null ? course.getPrefix() + " " : "") + course.getCourseName()
+                    : "Course " + courseId;
+            headerLabel.setText("Assignments — " + label);
+        }
+
+        loadAssignments();
+    }
+
+    @FXML
+    private Label headerLabel;
 
     @FXML
     private TableView<Assignment> assignmentTable;
@@ -69,8 +106,6 @@ public class AssignmentsController {
 
     @FXML
     public void initialize() {
-        assignmentDao = new AssignmentDao();
-
         assignmentIdColumn.setCellValueFactory(
                 data -> new SimpleIntegerProperty(
                         data.getValue().getAssignmentId()
@@ -141,10 +176,12 @@ public class AssignmentsController {
     }
 
     private void loadAssignments() {
+        List<Assignment> assignments = filterCourseId != null
+                ? assignmentDao.findByCourseId(filterCourseId)
+                : assignmentDao.findAll();
+
         assignmentTable.setItems(
-                FXCollections.observableArrayList(
-                        assignmentDao.findAll()
-                )
+                FXCollections.observableArrayList(assignments)
         );
     }
 
@@ -254,7 +291,7 @@ public class AssignmentsController {
                 (Stage) assignmentTable.getScene().getWindow();
 
         SceneFactory sceneFactory =
-                new SceneFactory(stage);
+                new SceneFactory(stage, currentUser);
 
         sceneFactory.showScene(
                 SceneFactory.SceneType.MAIN_MENU

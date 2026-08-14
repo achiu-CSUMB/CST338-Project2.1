@@ -21,6 +21,8 @@ public class Grade {
     private double score;
     private LocalDate entryDate;
     private String studentName;
+    private String assignmentTitle;
+    private double maxPoints;
 
     private final String assignmentId;
     private final String courseId;
@@ -79,6 +81,20 @@ public class Grade {
     }
     public void setStudentName(String studentName) {
         this.studentName = studentName;
+    }
+
+    public String getAssignmentTitle() {
+        return this.assignmentTitle;
+    }
+    public void setAssignmentTitle(String assignmentTitle) {
+        this.assignmentTitle = assignmentTitle;
+    }
+
+    public double getMaxPoints() {
+        return this.maxPoints;
+    }
+    public void setMaxPoints(double maxPoints) {
+        this.maxPoints = maxPoints;
     }
 
 }

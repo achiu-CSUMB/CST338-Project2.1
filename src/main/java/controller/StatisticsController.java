@@ -8,6 +8,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import model.Grade;
 import model.User;
+import service.GradeService;
 
 import java.util.DoubleSummaryStatistics;
 import java.util.List;
@@ -30,6 +31,7 @@ public class StatisticsController {
     @FXML private GridPane breakdownGrid;
 
     private User currentUser;
+    private final GradeService gradeService = new GradeService();
 
     public void setCurrentUser(User user) {
         this.currentUser = user;
@@ -45,13 +47,11 @@ public class StatisticsController {
             return;
         }
 
-        DoubleSummaryStatistics summary = grades.stream()
-                .mapToDouble(Grade::getScore)
-                .summaryStatistics();
+        DoubleSummaryStatistics summary = gradeService.getSummaryStatistics(grades);
 
         countLabel.setText(String.valueOf(grades.size()));
         averageLabel.setText(String.format("%.1f", summary.getAverage()));
-        medianLabel.setText(String.format("%.1f", calculateMedian(grades)));
+        medianLabel.setText(String.format("%.1f", gradeService.calculateMedian(grades)));
         highLabel.setText(String.format("%.1f", summary.getMax()));
         lowLabel.setText(String.format("%.1f", summary.getMin()));
 
@@ -60,7 +60,7 @@ public class StatisticsController {
 
     private void populateBreakdown(List<Grade> grades) {
         Map<String, Long> letterCounts = grades.stream()
-                .map(g -> calculateLetterGrade(g.getScore()))
+                .map(g -> gradeService.calculateLetterGrade(g.getScore()))
                 .collect(Collectors.groupingBy(letter -> letter, Collectors.counting()));
 
         List<String> letters = List.of("A", "B", "C", "D", "F");
@@ -71,28 +71,6 @@ public class StatisticsController {
             breakdownGrid.add(new Label(letter + ":"), 0, i);
             breakdownGrid.add(new Label(String.valueOf(count)), 1, i);
         }
-    }
-
-    private String calculateLetterGrade(double score) {
-        if (score >= 90) return "A";
-        if (score >= 80) return "B";
-        if (score >= 70) return "C";
-        if (score >= 60) return "D";
-        return "F";
-    }
-
-    private double calculateMedian(List<Grade> grades) {
-        List<Double> scores = grades.stream()
-                .map(Grade::getScore)
-                .sorted()
-                .collect(Collectors.toList());
-
-        int size = scores.size();
-        int mid = size / 2;
-
-        return (size % 2 == 0)
-                ? (scores.get(mid - 1) + scores.get(mid)) / 2.0
-                : scores.get(mid);
     }
 
     @FXML

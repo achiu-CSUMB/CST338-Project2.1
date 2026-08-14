@@ -97,6 +97,41 @@ public class AssignmentDao {
         return null;
     }
 
+    // Finds all assignments for a specific course
+    public List<Assignment> findByCourseId(int courseId) {
+        List<Assignment> assignments = new ArrayList<>();
+
+        String sql = """
+                SELECT assignment_id, course_id, title,
+                       description, due_date, max_points
+                FROM assignments
+                WHERE course_id = ?;
+                """;
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, courseId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    assignments.add(new Assignment(
+                            resultSet.getInt("assignment_id"),
+                            resultSet.getInt("course_id"),
+                            resultSet.getString("title"),
+                            resultSet.getString("description"),
+                            resultSet.getString("due_date"),
+                            resultSet.getDouble("max_points")
+                    ));
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Could not load assignments for course: "
+                    + e.getMessage());
+        }
+
+        return assignments;
+    }
+
     // Finds all assignments
     public List<Assignment> findAll() {
         List<Assignment> assignments = new ArrayList<>();
