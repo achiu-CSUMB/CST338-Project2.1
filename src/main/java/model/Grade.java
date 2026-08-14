@@ -7,11 +7,11 @@ import java.time.LocalDate;
  * Created: 8/1/2026
  * Current version: V1.0 - 8/1/2026
  * Description: This class will be used to store the grades of a student in a course.
- * It will have the following attributes:
- * - courseName: The name of the course.
- * - studentName: The name of the student.
- * - score: The grade of the student in the course.
- * - entryDate: The date the grade was recorded.
+ *  It will have the following attributes:
+ *  - courseId: The ID of the course.
+ *  - studentId: The ID of the student.
+ *  - score: The grade of the student in the course.
+ *  - entryDate: The date the grade was recorded.
  */
 
 public class Grade {
@@ -20,20 +20,24 @@ public class Grade {
 
     private double score;
     private LocalDate entryDate;
+    private String studentName;
 
+    private final String assignmentId;
     private final String courseId;
     private final String studentId;
 
-    public Grade(String courseId, String studentId, double score){
+    public Grade(String courseId, String studentId,String assignmentId, double score){
         this.courseId = courseId;
         this.studentId = studentId;
+        this.assignmentId = assignmentId;
         this.score = score;
         this.entryDate = LocalDate.now(); // Set to current date
     }
 
-    public Grade(String courseId, String studentId, int score){
+    public Grade(String courseId, String studentId,String assignmentId, int score){
         this.courseId = courseId;
         this.studentId = studentId;
+        this.assignmentId = assignmentId;
         this.score = score;
         this.entryDate = LocalDate.now(); // Set to current date
     }
@@ -65,6 +69,16 @@ public class Grade {
 
     public String getStudentId(){
         return this.studentId;
+    }
+
+    public String getAssignmentId(){
+        return this.assignmentId;
+    }
+    public String getStudentName() {
+        return this.studentName;
+    }
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
     }
 
 }

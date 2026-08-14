@@ -4,13 +4,20 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import factory.SceneFactory;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import model.Grade;
+import model.User;
 
 /**
  * Author: Alvin Chiu
@@ -25,12 +32,14 @@ public class GradeController implements Initializable {
 
     @FXML
     private TableView<Grade> gradesTable;
+    private User currentUser;
 
-    @FXML
-    private TableColumn<Grade, String> courseColumn;
-
-    @FXML
-    private TableColumn<Grade, String> assignmentColumn;
+    @FXML private Label headerLabel;
+    @FXML private Label maxScoreLabel;
+    @FXML private Button viewStatisticsButton;
+    @FXML private TableColumn<Grade, String> studentColumn;
+    @FXML private TableColumn<Grade, String> statusColumn;
+    @FXML private Button backButton;
 
     @FXML
     private TableColumn<Grade, Double> scoreColumn;
@@ -42,13 +51,46 @@ public class GradeController implements Initializable {
         this.grades = new ArrayList<>();
     }
 
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
+        applyRoleView();
+    }
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        courseColumn.setCellValueFactory(new PropertyValueFactory<>("course"));
-        assignmentColumn.setCellValueFactory(new PropertyValueFactory<>("assignmentName"));
+        if(studentColumn != null) {
+            studentColumn.setCellValueFactory(new PropertyValueFactory<>("studentName"));
+        }
         scoreColumn.setCellValueFactory(new PropertyValueFactory<>("score"));
 
+        // No "status" field on Grade, so this needs a computed value, not PropertyValueFactory
+        statusColumn.setCellValueFactory(cellData -> {
+            double score = cellData.getValue().getScore();
+            return new javafx.beans.property.SimpleStringProperty(score >= 60 ? "Pass" : "Fail");
+        });
+
+
         refreshTable();
+    }
+
+    private void applyRoleView() {
+        if (currentUser == null) return;
+
+        boolean isTeacher = currentUser.getRole().equalsIgnoreCase("TEACHER");
+
+        if (studentColumn != null) {
+            studentColumn.setVisible(isTeacher);
+        }
+    }
+
+    @FXML
+    private void goBackToLogin(ActionEvent event) {
+        Stage stage = (Stage) backButton.getScene().getWindow();
+
+        SceneFactory sceneFactory = new SceneFactory(stage, currentUser);
+
+        sceneFactory.showScene(SceneFactory.SceneType.MAIN_MENU);
     }
 
     /**

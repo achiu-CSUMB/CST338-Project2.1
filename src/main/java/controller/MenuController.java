@@ -130,8 +130,43 @@ public class MenuController {
     }
 
     @FXML
-    private void handleGrades() {
+    private void handleGrades(ActionEvent event) {
         // Logic to navigate to the Grades scene
+        if (!currentUser.getRole().equalsIgnoreCase("STUDENT")) {
+            try {
+                FXMLLoader loader = new FXMLLoader(
+                        getClass().getResource("/views/grades-student-view.fxml")
+                );
+
+                Parent root = loader.load();
+
+                Stage stage = (Stage) ((Node) event.getSource())
+                        .getScene()
+                        .getWindow();
+
+                stage.setScene(new Scene(root));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (!currentUser.getRole().equalsIgnoreCase("STUDENT")) {
+            try {
+                FXMLLoader loader = new FXMLLoader(
+                        getClass().getResource("/views/grades-view.fxml")
+                );
+
+                Parent root = loader.load();
+
+                Stage stage = (Stage) ((Node) event.getSource())
+                        .getScene()
+                        .getWindow();
+
+                stage.setScene(new Scene(root));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @FXML

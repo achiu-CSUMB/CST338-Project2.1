@@ -17,18 +17,18 @@
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
+    <HBox alignment="CENTER_LEFT">
+        <Button
+                fx:id="backButton"
+                text="← Back"
+                onAction="#goBackToLogin"/>
+    </HBox>
 
     <HBox alignment="TOP_LEFT">
         <VBox spacing="2">
             <Label fx:id="headerLabel" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
             <Label fx:id="maxScoreLabel" style="-fx-text-fill: gray;"/>
         </VBox>
-        <HBox alignment="CENTER_LEFT">
-            <Button
-                    fx:id="backButton"
-                    text="← Back"
-                    onAction="#goBackToLogin"/>
-        </HBox>
 
         <Region HBox.hgrow="ALWAYS"/>
 
@@ -37,8 +37,7 @@
 
     <TableView fx:id="gradesTable" VBox.vgrow="ALWAYS">
         <columns>
-            <TableColumn fx:id="studentColumn" text="Student" prefWidth="220"/>
-            <TableColumn fx:id="scoreColumn" text="Score" prefWidth="100"/>
+            <TableColumn fx:id="scoreColumn" text="Score" prefWidth="150"/>
             <TableColumn fx:id="statusColumn" text="" prefWidth="40" sortable="false"/>
         </columns>
     </TableView>

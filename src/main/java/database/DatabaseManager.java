@@ -91,10 +91,11 @@ public class DatabaseManager {
         String gradeSql = """
                 CREATE TABLE IF NOT EXISTS grades (
                     grade_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    user_id INTEGER NOT NULL,
+                    student_id INTEGER NOT NULL,
                     course_id INTEGER NOT NULL,
-                    due_date TEXT NOT NULL,
-                    max_points REAL NOT NULL
+                    entry_date TEXT NOT NULL
+                    FOREIGN KEY(course_id) REFERENCES courses(course_id),
+                    FOREIGN KEY(student_id) REFERENCES users(user_id)
                 );
                 """;
 
@@ -107,6 +108,7 @@ public class DatabaseManager {
             statement.execute(courseSql);
             statement.execute(enrollmentSql);
             statement.execute(assignmentSql);
+            statement.execute(gradeSql);
         } catch (SQLException e) {
             System.err.println("Could not create database table: " + e.getMessage());
         }
